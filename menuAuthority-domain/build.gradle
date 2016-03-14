@@ -1,0 +1,11 @@
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+    compile ("cn.thinkjoy.zgk.zgksystem:zgksystem-api:$k12systemVersion") {
+        exclude group: 'cn.thinkjoy.zgk.zgksystem', module: 'menuAuthority-domain'
+    }
+
+    compile "cn.thinkjoy.zgk.zgksystem:zgksystem-common:$k12systemVersion"
+    compile project(':statistics-common')
+}

@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IBillingDAO">
+<!--
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+      id,
+    time,
+    classId,
+    className,
+    schoolId,
+    schoolName,
+    areaId,
+    areaName,
+    num
+    </sql>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="Billing">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="Billing">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_statistics WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="Billing">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_statistics WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="Billing">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_statistics
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryByPage" resultType="ClassDayBilling">
+        select areaId,areaName,SUM(NUM) AS NUM FROM ms_billing_statistics
+        <where>
+            <if test="condition.areaIds!=null">
+                and  areaId in
+                <foreach item="item" index="index" collection="condition.areaIds"
+                         open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+
+
+            <if test="condition.schoolIds!=null">
+                and  schoolId in
+                <foreach item="item" index="index" collection="condition.schoolIds"
+                         open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+
+
+        </where>
+         group by areaId,areaName
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="queryByPageTimeAndAreaId" resultType="ClassDayBilling">
+        select schoolId,schoolName,SUM(NUM) AS NUM FROM ms_billing_statistics WHERE areaId=#{condition.areaId}
+            <if test="condition.schoolIds!=null">
+                and  schoolId in
+                <foreach item="item" index="index" collection="condition.schoolIds"
+                         open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+        group by schoolId,schoolName
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select  id="queryByPageTimeAndSchoolId" resultType="ClassDayBilling">
+        select classId,className,SUM(NUM) AS NUM FROM ms_billing_statistics
+        WHERE  schoolId=#{condition.schoolId} AND className NOT LIKE '%毕业%' group by classId,className
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*) from ( select areaId,areaName,SUM(NUM) AS NUM FROM ms_billing_statistics
+        <where>
+            <if test="condition.areaIds!=null">
+                and  areaId in
+                <foreach item="item" index="index" collection="condition.areaIds"
+                        open="(" separator="," close=")">#{item}
+                </foreach>
+
+            </if>
+
+
+            <if test="condition.schoolIds!=null">
+                and  schoolId in
+                <foreach item="item" index="index" collection="condition.schoolIds"
+                         open="(" separator="," close=")">#{item}
+                </foreach>
+            </if>
+
+        </where>
+         group by areaId,areaName ) as c
+    </select>
+
+    <select id="countByPageTimeAndAreaId" resultType="java.lang.Integer">
+        select count(*) from ( select schoolId,schoolName,SUM(NUM) AS NUM FROM ms_billing_statistics WHERE  areaId=#{condition.areaId}
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+         group by schoolId,schoolName) as c
+    </select>
+
+    <select id="countByPageTimeAndSchoolId" resultType="java.lang.Integer">
+        select count(*) from ( select classId,className,SUM(NUM) AS NUM FROM ms_billing_statistics
+        WHERE  schoolId=#{condition.schoolId} AND className NOT LIKE '%毕业%' group by classId,className) as c
+    </select>
+    <select id="queryByPageAndCondition" resultType="Billing">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.classId!=null">
+                AND classId = #{condition.classId}
+            </if>
+            <if test="condition.className!=null">
+                AND className = #{condition.className}
+            </if>
+            <if test="condition.schoolId!=null">
+                AND schoolId = #{condition.schoolId}
+            </if>
+            <if test="condition.schoolName!=null">
+                AND schoolName = #{condition.schoolName}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.areaName!=null">
+                AND areaName = #{condition.areaName}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM ms_billing_statistics
+        <where>
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.classId!=null">
+                AND classId = #{condition.classId}
+            </if>
+            <if test="condition.className!=null">
+                AND className = #{condition.className}
+            </if>
+            <if test="condition.schoolId!=null">
+                AND schoolId = #{condition.schoolId}
+            </if>
+            <if test="condition.schoolName!=null">
+                AND schoolName = #{condition.schoolName}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.areaName!=null">
+                AND areaName = #{condition.areaName}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </where>
+    </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM ms_billing_statistics
+    </select>
+
+</mapper>
+

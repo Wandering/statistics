@@ -1,0 +1,430 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IDateDecreaseUserDAO">
+
+    <select id="queryByTime" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+      SELECT * FROM (
+SELECT A.CREATEDATE dateDay,
+SUM(A.USERTYPE_1) teacherNum,SUM(A.USERTYPE_2) delStudentNum,SUM(A.USERTYPE_3) graduateStudentNum
+FROM (
+SELECT T.CREATEDATE,
+CASE WHEN T.USERTYPE = 1 THEN T.QTY ELSE 0 END USERTYPE_1,
+CASE WHEN T.USERTYPE = 2 THEN T.QTY ELSE 0 END USERTYPE_2,
+CASE WHEN T.USERTYPE = 3 THEN T.QTY ELSE 0 END USERTYPE_3
+FROM (
+ SELECT DISTINCT A.CREATEDATE,A.USERTYPE ,COUNT(1) QTY
+ FROM ms_decreaseuser_statistics A WHERE A.CREATEDATE BETWEEN #{condition.dateStart} and #{condition.dateEnd} GROUP BY A.CREATEDATE,A.USERTYPE) T
+   ) A GROUP BY A.CREATEDATE) B ORDER BY B.dateDay ASC;
+    </select>
+
+    <select id="queryByAreaIds" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+        SELECT h.*,a.*,b.*,c.* FROM
+        (SELECT areaName,areaId  FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )h,
+        (SELECT COUNT(*)AS teacherNum FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+       )a,
+        (SELECT COUNT(*)AS delStudentNum FROM ms_decreaseuser_statistics WHERE userType=2 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )b,
+        (SELECT COUNT(*)AS graduateStudentNum FROM ms_decreaseuser_statistics WHERE userType=3 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )c
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+
+    <select id="queryBySchoolIds" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+        SELECT h.*,a.*,b.*,c.* FROM
+        (SELECT schoolName,schoolId FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )h,
+        (SELECT COUNT(*)AS teacherNum FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )a,
+        (SELECT COUNT(*)AS delStudentNum FROM ms_decreaseuser_statistics WHERE userType=2 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )b,
+        (SELECT COUNT(*)AS graduateStudentNum FROM ms_decreaseuser_statistics WHERE userType=3 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )c
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+
+    <select id="queryByClassIds" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+        SELECT h.*,a.*,b.*,c.* FROM
+        (SELECT className,classId FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )h,
+        (SELECT COUNT(*)AS teacherNum FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )a,
+        (SELECT COUNT(*)AS delStudentNum FROM ms_decreaseuser_statistics WHERE userType=2 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )b,
+        (SELECT COUNT(*)AS graduateStudentNum FROM ms_decreaseuser_statistics WHERE userType=3 and createDate = #{condition.dateDay}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.classIds!=null">
+            and  classId in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        )c
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <insert id="saveStatistics"  useGeneratedKeys="true"  parameterType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+        insert into ms_decreaseuser_statistics(areaId, areaName, schoolId, schoolName,classId,className,userId,userType,createDate)
+        values
+        (#{areaId},#{areaName},#{schoolId},#{schoolName},#{classId},#{className},#{userId},#{userType},NOW())
+    </insert>
+
+
+    <insert id="saveWebLoginStatistics"  useGeneratedKeys="true"  parameterType="java.lang.Long">
+        INSERT INTO statistics.ms_user_day_wb_login_statistics
+        (
+        userId,
+        userType,
+        classId,
+        className,
+        schoolId,
+        schoolName,
+        areaId,
+        areaName,
+        loginType,
+        dateDay,
+        num)
+        SELECT
+        userId,
+        userType,
+        classId,
+        className,
+        schoolId,
+        schoolName,
+        areaId,
+        areaName,
+        1,
+        dateDay,
+        count(1) AS count
+        FROM
+        (
+
+        <if test="userType==1">
+            SELECT
+            teacher_account_id as userId,
+            1 as userType,
+            curdate() AS dateDay,
+            c.class_id AS classId,
+            c.className,
+            c.school_id AS schoolId,
+            c.schoolName AS schoolName,
+            c.xzq_id AS areaId,
+            c.areaName AS areaName
+            from
+            microschool_test.v_teacher_class c where c.teacher_account_id=#{userId}
+            and c.className IS NOT NULL  limit 1
+        </if>
+        <if test="userType==2">
+            SELECT
+            parent_account_id as userId,
+            2 as userType,
+            curdate() AS dateDay,
+            c.class_id AS classId,
+            c.className,
+            c.school_id AS schoolId,
+            c.schoolName,
+            c.xzq_id AS areaId,
+            c.areaName
+            FROM
+            microschool_test.v_parent_student_class c where c.parent_account_id =#{userId}
+            and
+            c.className IS NOT NULL  limit 1
+        </if>
+
+        ) aa
+        GROUP BY
+        classId,
+        dateDay,
+        userType,
+        userId
+    </insert>
+
+    <insert id="saveAppActiontatistics"  useGeneratedKeys="true"  parameterType="java.lang.Long">
+        INSERT INTO statistics.ms_user_day_action_statistics
+        (
+        userId,
+        userType,
+        classId,
+        className,
+        schoolId,
+        schoolName,
+        areaId,
+        areaName,
+        loginType,
+        dateDay,
+        num,
+        actionType
+        )
+        SELECT
+        userId,
+        userType,
+        classId,
+        className,
+        schoolId,
+        schoolName,
+        areaId,
+        areaName,
+        1,
+        dateDay,
+        count(1) AS count,
+        #{actionType} as actionType
+        FROM
+        (
+
+        <if test="userType==1">
+            SELECT
+            teacher_account_id as userId,
+            1 as userType,
+            curdate() AS dateDay,
+            c.class_id AS classId,
+            c.className,
+            c.school_id AS schoolId,
+            c.schoolName AS schoolName,
+            c.xzq_id AS areaId,
+            c.areaName AS areaName
+            from
+            microschool_test.v_teacher_class c where c.teacher_account_id=#{userId}
+            and c.className IS NOT NULL  limit 1
+        </if>
+        <if test="userType==2">
+            SELECT
+            parent_account_id as userId,
+            2 as userType,
+            curdate() AS dateDay,
+            c.class_id AS classId,
+            c.className,
+            c.school_id AS schoolId,
+            c.schoolName,
+            c.xzq_id AS areaId,
+            c.areaName
+            FROM
+            microschool_test.v_parent_student_class c where c.parent_account_id =#{userId}
+            and
+            c.className IS NOT NULL  limit 1
+        </if>
+
+        ) aa
+        GROUP BY
+        classId,
+        dateDay,
+        userType,
+        userId
+    </insert>
+</mapper>

@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IShareUserDAO">
+<!--
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+      id,
+      userId,
+      userType,
+    classId,
+    className,
+    schoolId,
+    schoolName,
+    areaId,
+    areaName,
+    dateTime,
+    num
+    </sql>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="ShareUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_share_user_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="ShareUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_share_user_statistics WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="ShareUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_share_user_statistics WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="ShareUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_share_user_statistics
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryByTime" resultType="StatisticsPojo">
+        select dateDay,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT dayTime as dateDay ,sum(num) as teacherNum,sum(0) as parentNum  FROM ms_share_user_statistics   where userType=1 and dayTime BETWEEN #{condition.dateStart} and #{condition.dateEnd}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        group by dayTime union all
+        SELECT dayTime as dateDay,sum(0) as teacherNum ,sum(num) as parentNum  FROM ms_share_user_statistics   where userType=2 and dayTime BETWEEN #{condition.dateStart} and #{condition.dateEnd}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+
+        group by dayTime) as t group by t.dateDay
+    </select>
+
+    <select id="queryByPageTime" resultType="StatisticsPojo">
+        select areaId,areaName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT areaId,areaName,sum(num) teacherNum,0 as parentNum  FROM ms_share_user_statistics   where userType=1 and dayTime =#{condition.dateDay} group by areaId,areaName union all
+        SELECT areaId,areaName, 0 as teacherNum,sum(num) parentNum  FROM ms_share_user_statistics   where userType=2 and  dayTime =#{condition.dateDay} group by areaId,areaName ) as t
+        where t.areaId is not null
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        group by areaId,areaName
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="queryByPageTimeAndAreaId" resultType="StatisticsPojo">
+        select schoolId,schoolName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT schoolId,schoolName,sum(num) teacherNum ,0 as parentNum FROM ms_share_user_statistics   where userType=1 and dayTime =#{condition.dateDay}  and areaId=#{condition.areaId} group by schoolId,schoolName union all
+        SELECT schoolId,schoolName,0 as teacherNum ,sum(num) parentNum  FROM ms_share_user_statistics   where userType=2 and  dayTime =#{condition.dateDay}  and areaId=#{condition.areaId}  group by schoolId,schoolName) as t where t.schoolId is not null
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by schoolId,schoolName
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select  id="queryByPageTimeAndSchoolId" resultType="StatisticsPojo">
+        select classId,className,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT classId,className,sum(num) teacherNum,0 as parentNum   FROM ms_share_user_statistics   where userType=1 and dayTime =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className union all
+        SELECT classId,className,0 as teacherNum,sum(num) parentNum  FROM ms_share_user_statistics   where userType=2 and  dayTime =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className ) as t group by classId,className
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="countByPageTime" resultType="java.lang.Integer">
+        select count(*) from ( select areaId,areaName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT areaId,areaName,sum(num) teacherNum,0 as parentNum  FROM ms_share_user_statistics   where userType=1 and dayTime=#{condition.dateDay} group by areaId,areaName union all
+        SELECT areaId,areaName, 0 as teacherNum,sum(num) parentNum  FROM ms_share_user_statistics   where userType=2 and  dayTime =#{condition.dateDay} group by areaId,areaName ) as t
+        where t.areaId is not null
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        group by areaId,areaName ) as c
+    </select>
+
+    <select id="countByPageTimeAndAreaId" resultType="java.lang.Integer">
+        select count(*) from (select schoolId,schoolName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT schoolId,schoolName,sum(num) teacherNum ,0 as parentNum FROM ms_share_user_statistics   where userType=1 and dayTime =#{condition.dateDay}  and areaId=#{condition.areaId} group by schoolId,schoolName union all
+        SELECT schoolId,schoolName,0 as teacherNum ,sum(num) parentNum  FROM ms_share_user_statistics   where userType=2 and  dayTime =#{condition.dateDay}  and areaId=#{condition.areaId}  group by schoolId,schoolName) as t
+         where t.schoolId is not null
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by schoolId,schoolName) as c
+    </select>
+
+    <select id="countByPageTimeAndSchoolId" resultType="java.lang.Integer">
+       select count(*) from ( select classId,className,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT classId,className,sum(num) teacherNum,0 as parentNum   FROM ms_share_user_statistics   where userType=1 and dayTime =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className union all
+        SELECT classId,className,0 as teacherNum,sum(num) parentNum  FROM ms_share_user_statistics   where userType=2 and  dayTime =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className ) as t group by classId,className) as c
+    </select>
+    <select id="queryByPageAndCondition" resultType="ShareUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_share_user_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.userType!=null">
+                AND userType = #{condition.userType}
+            </if>
+            <if test="condition.classId!=null">
+                AND classId = #{condition.classId}
+            </if>
+            <if test="condition.className!=null">
+                AND className = #{condition.className}
+            </if>
+            <if test="condition.schoolId!=null">
+                AND schoolId = #{condition.schoolId}
+            </if>
+            <if test="condition.schoolName!=null">
+                AND schoolName = #{condition.schoolName}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.areaName!=null">
+                AND areaName = #{condition.areaName}
+            </if>
+            <if test="condition.dateTime!=null">
+                AND dateTime = #{condition.dateTime}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM ms_share_user_statistics
+        <where>
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.userType!=null">
+                AND userType = #{condition.userType}
+            </if>
+            <if test="condition.classId!=null">
+                AND classId = #{condition.classId}
+            </if>
+            <if test="condition.className!=null">
+                AND className = #{condition.className}
+            </if>
+            <if test="condition.schoolId!=null">
+                AND schoolId = #{condition.schoolId}
+            </if>
+            <if test="condition.schoolName!=null">
+                AND schoolName = #{condition.schoolName}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.areaName!=null">
+                AND areaName = #{condition.areaName}
+            </if>
+            <if test="condition.dateTime!=null">
+                AND dateTime = #{condition.dateTime}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </where>
+    </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM ms_share_user_statistics
+    </select>
+
+</mapper>
+

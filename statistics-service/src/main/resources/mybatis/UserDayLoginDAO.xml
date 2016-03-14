@@ -1,0 +1,1082 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IUserDayLoginDAO">
+<!--
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+      id,
+      userId,
+      userType,
+    classId,
+    className,
+    schoolId,
+    schoolName,
+    areaId,
+    areaName,
+    dateDay,
+    loginType,
+    num
+    </sql>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="ClassDayLogin">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_user_day_login_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="ClassDayLogin">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_user_day_login_statistics WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="ClassDayLogin">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_user_day_login_statistics WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="ClassDayLogin">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_user_day_login_statistics
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryByTime" resultType="StatisticsPojo">
+        select dateDay,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT dateDay as dateDay ,sum(num) as teacherNum,sum(0) as parentNum  FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay BETWEEN #{condition.dateStart} and #{condition.dateEnd}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+
+        group by dateDay union all
+        SELECT dateDay as dateDay,sum(0) as teacherNum ,sum(num) as parentNum  FROM ms_user_day_login_statistics   where userType=2 and loginType=2 and dateDay BETWEEN #{condition.dateStart} and #{condition.dateEnd}
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+
+        group by dateDay) as t group by t.dateDay
+    </select>
+
+    <select id="queryByPageTime" resultType="StatisticsPojo">
+        select areaId,areaName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT areaId,areaName,sum(num) teacherNum,0 as parentNum  FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay =#{condition.dateDay} group by areaId,areaName union all
+        SELECT areaId,areaName, 0 as teacherNum,sum(num) parentNum  FROM ms_user_day_login_statistics   where userType=2 and loginType=2 and  dateDay =#{condition.dateDay} group by areaId,areaName ) as t
+         where t.areaId is not null
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+
+
+
+        group by areaId,areaName
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="queryByPageTimeAndAreaId" resultType="StatisticsPojo">
+        select schoolId,schoolName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT schoolId,schoolName,sum(num) teacherNum ,0 as parentNum FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay =#{condition.dateDay}  and areaId=#{condition.areaId} group by schoolId,schoolName union all
+        SELECT schoolId,schoolName,0 as teacherNum ,sum(num) parentNum  FROM ms_user_day_login_statistics   where userType=2 and loginType=2 and  dateDay =#{condition.dateDay}  and areaId=#{condition.areaId}  group by schoolId,schoolName) as t
+        where t.schoolId is not null
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by schoolId,schoolName
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select  id="queryByPageTimeAndSchoolId" resultType="StatisticsPojo">
+        select classId,className,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT classId,className,sum(num) teacherNum,0 as parentNum   FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className union all
+        SELECT classId,className,0 as teacherNum,sum(num) parentNum  FROM ms_user_day_login_statistics   where userType=2 and loginType=2 and  dateDay =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className ) as t group by classId,className
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="countByPageTime" resultType="java.lang.Integer">
+        select count(*) from ( select areaId,areaName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT areaId,areaName,sum(num) teacherNum,0 as parentNum  FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay=#{condition.dateDay} group by areaId,areaName union all
+        SELECT areaId,areaName, 0 as teacherNum,sum(num) parentNum  FROM ms_user_day_login_statistics   where userType=2 and loginType=2 and  dateDay =#{condition.dateDay} group by areaId,areaName ) as t
+        where t.areaId is not null
+        <if test="condition.areaIds!=null">
+            and  areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        group by areaId,areaName ) as c
+    </select>
+
+    <select id="countByPageTimeAndAreaId" resultType="java.lang.Integer">
+        select count(*) from (select schoolId,schoolName,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT schoolId,schoolName,sum(num) teacherNum ,0 as parentNum FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay =#{condition.dateDay}  and areaId=#{condition.areaId} group by schoolId,schoolName union all
+        SELECT schoolId,schoolName,0 as teacherNum ,sum(num) parentNum  FROM ms_user_day_login_statistics   where userType=2  and loginType=2 and  dateDay =#{condition.dateDay}  and areaId=#{condition.areaId}  group by schoolId,schoolName) as t
+        where t.schoolId is not null
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+         group by schoolId,schoolName) as c
+    </select>
+
+    <select id="countByPageTimeAndSchoolId" resultType="java.lang.Integer">
+        select count(*) from ( select classId,className,sum(teacherNum) as teacherNum,sum(parentNum) as parentNum from (SELECT classId,className,sum(num) teacherNum,0 as parentNum   FROM ms_user_day_login_statistics   where userType=1 and loginType=2 and dateDay =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className union all
+        SELECT classId,className,0 as teacherNum,sum(num) parentNum  FROM ms_user_day_login_statistics   where userType=2 and loginType=2 and  dateDay =#{condition.dateDay} and schoolId=#{condition.schoolId}  group by classId,className ) as t group by classId,className) as c
+    </select>
+
+    <select id="queryByPageAndCondition" resultType="ClassDayLogin">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_user_day_login_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.userType!=null">
+                AND userType = #{condition.userType}
+            </if>
+            <if test="condition.classId!=null">
+                AND classId = #{condition.classId}
+            </if>
+            <if test="condition.className!=null">
+                AND className = #{condition.className}
+            </if>
+            <if test="condition.schoolId!=null">
+                AND schoolId = #{condition.schoolId}
+            </if>
+            <if test="condition.schoolName!=null">
+                AND schoolName = #{condition.schoolName}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.areaName!=null">
+                AND areaName = #{condition.areaName}
+            </if>
+            <if test="condition.loginType!=null">
+                AND loginType = #{condition.loginType}
+            </if>
+            <if test="condition.dateDay!=null">
+                AND dateDay = #{condition.dateDay}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM ms_user_day_login_statistics
+        <where>
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.userType!=null">
+                AND userType = #{condition.userType}
+            </if>
+            <if test="condition.classId!=null">
+                AND classId = #{condition.classId}
+            </if>
+            <if test="condition.className!=null">
+                AND className = #{condition.className}
+            </if>
+            <if test="condition.schoolId!=null">
+                AND schoolId = #{condition.schoolId}
+            </if>
+            <if test="condition.schoolName!=null">
+                AND schoolName = #{condition.schoolName}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.areaName!=null">
+                AND areaName = #{condition.areaName}
+            </if>
+            <if test="condition.loginType!=null">
+                AND loginType = #{condition.loginType}
+            </if>
+            <if test="condition.dateDay!=null">
+                AND dateDay = #{condition.dateDay}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </where>
+    </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM ms_user_day_login_statistics
+    </select>
+
+
+    <select id="queryLoginUserCountByTime" resultType="StatisticsPojo">
+      select total.days as dateDay
+        ,max(case when total.col='teacherAppNum' then total.num else 0 end) as teacherAppNum
+--         ,max(case when total.col='teacherWebNum' then total.num else 0 end) as teacherWebNum
+        ,max(case when total.col='parentAppNum' then total.num else 0 end) as parentAppNum
+--         ,max(case when total.col='parentWebNum' then total.num else 0 end) as parentWebNum
+        from (
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherAppNum' as col, count(t.userId) as num
+            from (
+                select count(distinct dateDay) dayNum, userId
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=1
+                and loginType=2
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+                <if test="condition.areaIds!=null">
+                    and areaId in
+                    <foreach item="item" index="index" collection="condition.areaIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+
+
+                group by userId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherWebNum' as col, count(t.userId) as num
+            from (
+                select count(distinct dateDay) dayNum, userId
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=1
+                and loginType=1
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+                <if test="condition.areaIds!=null">
+                    and areaId in
+                    <foreach item="item" index="index" collection="condition.areaIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+
+
+                group by userId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentAppNum' as col, count(t.userId) as num
+            from (
+                select count(distinct dateDay) dayNum, userId
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=2
+                and loginType=2
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+
+                <if test="condition.areaIds!=null">
+                    and areaId in
+                    <foreach item="item" index="index" collection="condition.areaIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+                group by userId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+
+
+
+
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentWebNum' as col, count(t.userId) as num
+            from (
+                select count(distinct dateDay) dayNum, userId
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=2
+                and loginType=1
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+
+                <if test="condition.areaIds!=null">
+                    and areaId in
+                    <foreach item="item" index="index" collection="condition.areaIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+                group by userId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+
+        ) as total
+
+    </select>
+
+    <select id="queryLoginUserCountByPageTimeAndAreaId" resultType="StatisticsPojo">
+        select total.days as dateDay, total.areaId as areaId, total.areaName as areaName
+        ,max(case when total.col='teacherAppNum' then total.num else 0 end) as teacherAppNum
+        --         ,max(case when total.col='teacherWebNum' then total.num else 0 end) as teacherWebNum
+        ,max(case when total.col='parentAppNum' then total.num else 0 end) as parentAppNum
+        --         ,max(case when total.col='parentWebNum' then total.num else 0 end) as parentWebNum
+        from (
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherAppNum' as col, count(t.userId) as num, t.areaId as areaId, t.areaName as areaName
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId, areaName
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=1
+        and loginType=2
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        union all
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherWebNum' as col, count(t.userId) as num, t.areaId as areaId, t.areaName as areaName
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId, areaName
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=1
+        and loginType=1
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        union all
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentAppNum' as col, count(t.userId) as num, t.areaId as areaId, t.areaName as areaName
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId, areaName
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=2
+        and loginType=2
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        union all
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentWebNum' as col, count(t.userId) as num, t.areaId as areaId, t.areaName as areaName
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId, areaName
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=2
+        and loginType=1
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        ) as total
+        group by dateDay, areaId
+        order by areaId asc, dateDay asc
+        limit #{offset},#{rows}
+    </select>
+
+    <select id="countLoginUserCountByPageTimeAndAreaId" resultType="java.lang.Integer">
+        select count(*)
+        from (
+        select total.days as dateDay, total.areaId as areaId
+        from (
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.areaId as areaId
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=1
+        and loginType=2
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        union all
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.areaId as areaId
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=1
+        and loginType=1
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        union all
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.areaId as areaId
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=2
+        and loginType=2
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        union all
+        select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.areaId as areaId
+        from (
+        select count(distinct dateDay) dayNum, userId, areaId
+        from ms_user_day_login_statistics
+        where areaId is not null and areaName is not null
+        and userType=2
+        and loginType=1
+        and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+
+
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+
+
+        <if test="condition.schoolIds!=null">
+            and  schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+
+        group by userId, areaId
+        ) t
+        where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+        group by areaId
+        ) as total
+        group by dateDay, areaId
+        ) tt
+    </select>
+
+    <select id="queryLoginUserCountByPageTimeAndSchoolId" resultType="StatisticsPojo">
+        select total.days as dateDay, total.schoolId as schoolId, total.schoolName as schoolName
+        ,max(case when total.col='teacherAppNum' then total.num else 0 end) as teacherAppNum
+--         ,max(case when total.col='teacherWebNum' then total.num else 0 end) as teacherWebNum
+        ,max(case when total.col='parentAppNum' then total.num else 0 end) as parentAppNum
+--         ,max(case when total.col='parentWebNum' then total.num else 0 end) as parentWebNum
+        from (
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherAppNum' as col, count(t.userId) as num, t.schoolId as schoolId, t.schoolName as schoolName
+            from (
+                select count(distinct dateDay) dayNum, userId, schoolId, schoolName
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=1
+                and loginType=2
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and areaId=#{condition.areaId}
+
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+                group by userId, schoolId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by schoolId
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherWebNum' as col, count(t.userId) as num, t.schoolId as schoolId, t.schoolName as schoolName
+            from (
+                select count(distinct dateDay) dayNum, userId, schoolId, schoolName
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=1
+                and loginType=1
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and areaId=#{condition.areaId}
+
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+                group by userId, schoolId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by schoolId
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentAppNum' as col, count(t.userId) as num, t.schoolId as schoolId, t.schoolName as schoolName
+            from (
+                select count(distinct dateDay) dayNum, userId, schoolId, schoolName
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=2
+                and loginType=2
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and areaId=#{condition.areaId}
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+                group by userId, schoolId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by schoolId
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentWebNum' as col, count(t.userId) as num, t.schoolId as schoolId, t.schoolName as schoolName
+            from (
+                select count(distinct dateDay) dayNum, userId, schoolId, schoolName
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=2
+                and loginType=1
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and areaId=#{condition.areaId}
+
+                <if test="condition.schoolIds!=null">
+                    and  schoolId in
+                    <foreach item="item" index="index" collection="condition.schoolIds"
+                             open="(" separator="," close=")">#{item}
+                    </foreach>
+                </if>
+
+
+
+
+                group by userId, schoolId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by schoolId
+        ) as total
+        group by dateDay, schoolId
+        order by schoolId asc, dateDay asc
+        limit #{offset},#{rows}
+    </select>
+
+    <select id="countLoginUserCountByPageTimeAndSchoolId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM (
+            select total.days as dateDay, total.schoolId as schoolId
+            from (
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.schoolId as schoolId
+                from (
+                    select count(distinct dateDay) dayNum, userId, schoolId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=1
+                    and loginType=2
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and areaId=#{condition.areaId}
+
+
+                    <if test="condition.schoolIds!=null">
+                        and  schoolId in
+                        <foreach item="item" index="index" collection="condition.schoolIds"
+                                 open="(" separator="," close=")">#{item}
+                        </foreach>
+                    </if>
+
+
+
+
+                    group by userId, schoolId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by schoolId
+                union all
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.schoolId as schoolId
+                from (
+                    select count(distinct dateDay) dayNum, userId, schoolId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=1
+                    and loginType=1
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and areaId=#{condition.areaId}
+
+
+                    <if test="condition.schoolIds!=null">
+                        and  schoolId in
+                        <foreach item="item" index="index" collection="condition.schoolIds"
+                                 open="(" separator="," close=")">#{item}
+                        </foreach>
+                    </if>
+
+
+                    group by userId, schoolId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by schoolId
+                union all
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.schoolId as schoolId
+                from (
+                    select count(distinct dateDay) dayNum, userId, schoolId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=2
+                    and loginType=2
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and areaId=#{condition.areaId}
+
+                    <if test="condition.schoolIds!=null">
+                        and  schoolId in
+                        <foreach item="item" index="index" collection="condition.schoolIds"
+                                 open="(" separator="," close=")">#{item}
+                        </foreach>
+                    </if>
+
+
+
+
+                    group by userId, schoolId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by schoolId
+                union all
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.schoolId as schoolId
+                from (
+                    select count(distinct dateDay) dayNum, userId, schoolId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=2
+                    and loginType=1
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and areaId=#{condition.areaId}
+
+                    <if test="condition.schoolIds!=null">
+                        and  schoolId in
+                        <foreach item="item" index="index" collection="condition.schoolIds"
+                                 open="(" separator="," close=")">#{item}
+                        </foreach>
+                    </if>
+
+
+                    group by userId, schoolId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by schoolId
+            ) as total
+            group by dateDay, schoolId
+        ) tt
+    </select>
+
+    <select id="queryLoginUserCountByPageTimeAndClassId" resultType="StatisticsPojo">
+        select total.days as dateDay, total.classId as classId, total.className as className
+        ,max(case when total.col='teacherAppNum' then total.num else 0 end) as teacherAppNum
+--         ,max(case when total.col='teacherWebNum' then total.num else 0 end) as teacherWebNum
+        ,max(case when total.col='parentAppNum' then total.num else 0 end) as parentAppNum
+--         ,max(case when total.col='parentWebNum' then total.num else 0 end) as parentWebNum
+        from (
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherAppNum' as col, count(t.userId) as num, t.classId as classId, t.className as className
+            from (
+                select count(distinct dateDay) dayNum, userId, classId, className
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=1
+                and loginType=2
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and schoolId=#{condition.schoolId}
+                group by userId, classId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by classId
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'teacherWebNum' as col, count(t.userId) as num, t.classId as classId, t.className as className
+            from (
+                select count(distinct dateDay) dayNum, userId, classId, className
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=1
+                and loginType=1
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and schoolId=#{condition.schoolId}
+                group by userId, classId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by classId
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentAppNum' as col, count(t.userId) as num, t.classId as classId, t.className as className
+            from (
+                select count(distinct dateDay) dayNum, userId, classId, className
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=2
+                and loginType=2
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and schoolId=#{condition.schoolId}
+                group by userId, classId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by classId
+            union all
+            select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, 'parentWebNum' as col, count(t.userId) as num, t.classId as classId, t.className as className
+            from (
+                select count(distinct dateDay) dayNum, userId, classId, className
+                from ms_user_day_login_statistics
+                where areaId is not null and areaName is not null
+                and userType=2
+                and loginType=1
+                and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                and schoolId=#{condition.schoolId}
+                group by userId, classId
+            ) t
+            where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+            group by classId
+        ) as total
+        group by dateDay, classId
+        order by classId asc, dateDay asc
+        limit #{offset},#{rows}
+    </select>
+
+    <select id="countLoginUserCountByPageTimeAndClassId" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM (
+            select total.days as dateDay, total.classId as classId
+            from (
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.classId as classId
+                from (
+                    select count(distinct dateDay) dayNum, userId, classId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=1
+                    and loginType=2
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and schoolId=#{condition.schoolId}
+                    group by userId, classId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by classId
+                union all
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.classId as classId
+                from (
+                    select count(distinct dateDay) dayNum, userId, classId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=1
+                    and loginType=1
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and schoolId=#{condition.schoolId}
+                    group by userId, classId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by classId
+                union all
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.classId as classId
+                from (
+                    select count(distinct dateDay) dayNum, userId, classId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=2
+                    and loginType=2
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and schoolId=#{condition.schoolId}
+                    group by userId, classId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by classId
+                union all
+                select concat(concat(concat(#{condition.minRange},'-'),#{condition.maxRange}),'天') as days, t.classId as classId
+                from (
+                    select count(distinct dateDay) dayNum, userId, classId
+                    from ms_user_day_login_statistics
+                    where areaId is not null and areaName is not null
+                    and userType=2
+                    and loginType=1
+                    and dateDay between #{condition.dateStart} and #{condition.dateEnd}
+                    and schoolId=#{condition.schoolId}
+                    group by userId, classId
+                ) t
+                where t.dayNum between #{condition.minRange} and #{condition.maxRange}
+                group by classId
+            ) as total
+            group by dateDay, classId
+        ) tt
+    </select>
+</mapper>
+

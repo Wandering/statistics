@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IOpStatisticsDao">
+<!--
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+
+
+
+
+    <select id="getClassfyInfo" resultType="java.util.Map">
+        SELECT
+         classfyId as id,classfyName as name
+        FROM userservice.classfy_info where state !='D'
+    </select>
+
+
+    <select id="getAccountInfoByClassfyId"  resultType="OpAccount">
+        SELECT
+        b.userId as id,b.userName as name
+        FROM userservice.classfy_user a ,userservice.user_info  b  where  a.userId=b.userId
+         and a.classfyId=#{classfyId} and  b.state !='D'
+
+    </select>
+
+
+    <select id="getAccountFans" resultType="java.util.Map">
+        SELECT
+          dayTime as date, num as count
+        FROM ms_op_fans_statistics where  userId=#{userId} and  dayTime BETWEEN #{dateStart} and  #{dateEnd}
+          order by dayTime
+    </select>
+
+
+    <select id="getAccountArticles" resultType="java.util.Map">
+        SELECT
+        dayTime as date,num as count
+        FROM ms_op_article_statistics where  userId=#{userId}   and
+
+         dayTime BETWEEN #{dateStart} and  #{dateEnd} order by dayTime
+    </select>
+
+
+    <select id="getAccountEvents" resultType="java.util.Map">
+        SELECT
+        dayTime as date,num as count
+        FROM ms_op_fans_statistics where  userId=#{userId} and  dayTime BETWEEN #{dateStart}  and  #{dateEnd}
+         ORDER  by  dayTime
+    </select>
+
+</mapper>
+

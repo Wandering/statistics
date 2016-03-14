@@ -1,0 +1,17 @@
+
+
+include 'statistics-domain'
+
+include 'statistics-api'
+
+include 'statistics-service'
+
+include 'statistics-web-war'
+
+include 'menuAuthority-domain'
+
+include 'menuAuthority-service'
+
+include 'statistics-common'
+include 'statistics-app-war'
+

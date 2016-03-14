@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.ArrearAnalysisDAO">
+
+    <select id="getPackageInfoByPackageName" resultType="PackageInfo">
+        select
+        packageName,
+        chargeType,
+        chargeLabel,
+        labelPriority,
+        status
+        from ms_package_info
+        where
+        packageName IN
+        <foreach item="item" index="index" collection="list"
+                 open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY labelPriority ASC limit 0,1
+    </select>
+
+    <select id="getStudentInfoByPayNumber" parameterType="String" resultType="StudentInfo">
+         select vpsc.student_id as studentId, wuix.userName as studentName, vpsc.parent_id as userId,
+         wuij.userName as userName, vpsc.xzq_id as areaId, vpsc.areaName as areaName, vpsc.school_id as schoolId,
+         vpsc.schoolName as schoolName, vpsc.class_id as classId, vpsc.nickName as className,
+         vpsc.stuPayNumber as payNumber, wua.loginNumber as loginNumber
+        from microschool.v_parent_student_class vpsc
+        left join microschool.wx_user_info as wuij on wuij.userId = vpsc.parent_id
+        left join microschool.wx_user_info as wuix on wuix.userId = vpsc.student_id
+        left join microschool.wx_useraccount as wua  on wua.id = vpsc.parent_account_id
+        where vpsc.stuPayNumber like #{payNumber}
+        and wuix.userType = 3 and wuij.userType = 2  and vpsc.student_class_sfjh=1
+
+    </select>
+
+    <select id="getStudentInfoByLoginNumber" parameterType="String" resultType="StudentInfo">
+        select vpsc.student_id as studentId, wuix.userName as studentName, vpsc.parent_id as userId,
+         wuij.userName as userName, vpsc.xzq_id as areaId, vpsc.areaName as areaName, vpsc.school_id as schoolId,
+         vpsc.schoolName as schoolName, vpsc.class_id as classId, vpsc.nickName as className,
+         vpsc.stuPayNumber as payNumber, wua.loginNumber as loginNumber
+        from microschool.v_parent_student_class vpsc
+        left join microschool.wx_user_info as wuij on wuij.userId = vpsc.parent_id
+        left join microschool.wx_user_info as wuix on wuix.userId = vpsc.student_id
+        left join microschool.wx_useraccount as wua  on wua.id = wuij.account_id
+        where wua.loginNumber like #{loginNumber}
+        and wuix.userType = 3 and wuij.userType = 2  and vpsc.student_class_sfjh=1
+    </select>
+
+    <select id="getArrearInfoByPhoneNumberTemplateId" parameterType="java.util.Map" resultType="ArrearInfo">
+        select
+        phoneNumber, deviceStatus, productInstance,commodityInstance,goodsName,arrearAge,
+        arrearAmount, effective, charge, billingType, billingLabel, userId, areaId
+        schoolId, classId, studentId
+        from ms_arrear_info
+        where phoneNumber=#{phoneNumber} and templateId=#{templateId}
+    </select>
+
+    <!--保存处理过的数据(临时)-->
+    <update id="saveDealData" parameterType="java.lang.String">
+        load data local infile #{fileName} INTO TABLE ms_arrear_info CHARACTER SET gbk  FIELDS TERMINATED BY ',' IGNORE 1 LINES
+        (phoneNumber,deviceStatus,goodsName,arrearAge,arrearAmount,effective,charge,billingType,billingLabel,productInstance,commodityInstance,userId,
+        userName,areaId,areaName,schoolId, schoolName,classId, className, studentId, studentName, payNumber, loginNumber);
+    </update>
+
+    <!--更新保存数据templateId-->
+    <update id="updateTemplateId" parameterType="java.lang.Long">
+        update ms_arrear_info set templateId = #{templateId} where templateId is null
+    </update>
+
+    <select id="getStudentInfoBystudentId" resultType="StudentInfo">
+        select vpsc.student_id as studentId, wuix.userName as studentName, vpsc.parent_id as userId,
+         wuij.userName as userName, vpsc.xzq_id as areaId, vpsc.areaName as areaName, vpsc.school_id as schoolId,
+         vpsc.schoolName as schoolName, vpsc.class_id as classId, vpsc.nickName as className,
+         vpsc.stuPayNumber as payNumber, wua.loginNumber as loginNumber
+        from v_parent_student_class vpsc
+        left join microschool.wx_user_info as wuij on wuij.userId = vpsc.parent_id
+        left join microschool.wx_user_info as wuix on wuix.userId = vpsc.student_id
+        left join microschool.wx_useraccount as wua  on wua.id = wuij.account_id
+        where vpsc.student_id = #{studentId}
+        and wuix.userType = 3 and wuij.userType = 2 and and vpsc.student_class_sfjh=1
+    </select>
+
+    <insert id="saveTemplateInfo"  useGeneratedKeys="true"  keyProperty="templateId" parameterType="TemplateInfo">
+            insert into ms_arrear_template(templateName, importDate, accountId, status)
+            values
+            (#{templateName},#{importDate},#{accountId},#{status})
+    </insert>
+
+    <insert id="saveArrearInfo" parameterType="TemplateInfo">
+        insert into ms_arrear_info(phoneNumber, deviceStatus, productInstance,commodityInstance,
+        goodsName,arrearAge,arrearAmount,effective,charge,billingType,billingLabel,userId,userName,
+        areaId,areaName,schoolId, schoolName, classId, className, studentId, studentName, payNumber,
+        loginNumber, templateId)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.phoneNumber},#{item.deviceStatus},#{item.productInstance},#{item.commodityInstance},#{item.goodsName},#{item.arrearAge},
+            #{item.arrearAmount},#{item.effective},#{item.charge},#{item.billingType},#{item.billingLabel},#{item.userId},#{item.userName},#{item.areaId},
+            #{item.areaName},#{item.schoolId},#{item.shoolName},#{item.classId},#{item.className},#{item.studentId},#{item.studentName},#{item.payNumber},
+            #{item.loginNumber}, #{item.templateId})
+        </foreach>
+    </insert>
+
+    <update id="updateArearInfo" parameterType="ArrearInfo">
+    UPDATE ms_arrear_info
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="deviceStatus!=null">
+            deviceStatus = #{deviceStatus},
+        </if>
+        <if test="goodsName!=null">
+            goodsName = #{goodsName},
+        </if>
+        <if test="productInstance!=null">
+            productInstance = #{productInstance},
+        </if>
+        <if test="commodityInstance!=null">
+            commodityInstance = #{commodityInstance},
+        </if>
+        <if test="effective!=null">
+            effective = #{effective},
+        </if>
+        <if test="charge!=null">
+            charge = #{charge},
+        </if>
+        <if test="billingType!=null">
+            billingType = #{billingType},
+        </if>
+        <if test="billingLabel!=null">
+            billingLabel = #{billingLabel},
+        </if>
+    </trim>
+     WHERE
+     templateId = #{templateId} and phoneNumber = #{phoneNumber}
+    </update>
+
+    <select id="getArrearImportHistory" resultType="TemplateInfo">
+        select id as templateId,templateName,importDate
+        from ms_arrear_template
+    </select>
+
+    <update id="updateTemplateInfo" >
+        update ms_arrear_template
+        <if test="condition.status!=null">
+            set status=#{condition.status},
+        </if>
+        <if test="condition.errorData!=null">
+            errorData=#{condition.errorData}
+        </if>
+        where id=#{condition.templateId}
+    </update>
+
+    <select id="getTemplateInfoHistory" resultType="TemplateInfo">
+        select id as templateId, templateName, importDate, accountId, status, errorData
+        FROM ms_arrear_template
+        <where>
+            <if test="condition.fileName!=null">
+                templateName like ${condition.fileName}
+            </if>
+            <if test="condition.dateDay!=null">
+                and DATE_FORMAT(FROM_UNIXTIME(importDate/1000),'%Y-%m-%d') LIKE ${condition.dateDay}
+            </if>
+        </where>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="getEffectiveArrearInfoByPage" resultType="ArrearInfo">
+        select phoneNumber, deviceStatus,goodsName,arrearAge,arrearAmount,effective,charge,billingType,billingLabel,userName,
+        areaName, schoolName,className, studentName, payNumber,
+        loginNumber
+        from ms_arrear_info
+        <where>
+         effective='有效' AND
+        <if test="condition.areaIds!=null">
+         areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.templateId!=null">
+            and templateId in
+            <foreach item="item" index="index" collection="condition.templateId"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        </where>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+
+    </select>
+
+    <select id="countRowNum" resultType="java.lang.Long">
+        select count(id) from test1
+    </select>
+
+    <select id="getOriginalArrearTemplate"  parameterType="java.lang.Integer" resultType="OriginalArrearTemplate">
+        select phoneNumber,productInstance,deviceStatus,commodityCase,commodityName,arrearAge,
+        arrearAmount,setMeal300121616,setMeal300133506,setMeal300115156,setMeal300110676,
+        setMeal300123703,setMeal300140736,setMeal300142333,setMeal300141804,setMea23020027
+        from test1
+        <if test="offset != null">
+            limit ${offset}, 3000
+        </if>
+    </select>
+
+    <update id="saveAllData" parameterType="java.lang.String">
+        load data local infile #{fileName} INTO TABLE test1 CHARACTER SET gbk  FIELDS TERMINATED BY ',' IGNORE 1 LINES (phoneNumber,productInstance,deviceStatus,commodityCase,commodityName,arrearAge,arrearAmount,setMeal300121616,setMeal300133506,setMeal300115156,setMeal300110676,setMeal300123703,setMeal300140736,setMeal300142333,setMeal300141804,setMea23020027);
+    </update>
+
+
+    <insert id="savePageUserInfo">
+        insert into ms_user_statistics
+        (userTotalNumber,userTollNumber,userEffective,areaName,areaId,templateId)
+        (SELECT count(1) as userTotalNumber, if(isnull(g.chargeNum),0,g.chargeNum) as chargeNum,if(isnull(g.effectiveNum),0,g.effectiveNum) as userEffectiveNum,h.areaName as areaName,h.areaId,if(isnull(g.templateId),#{templateId},g.templateId) as templateId from ms_arrear_info h
+         left JOIN
+        (select t.areaId as areaId,c.effectiveNum as effectiveNum,d.chargeNum as chargeNum,t.templateId as templateId from ms_arrear_info t
+        left JOIN
+        (select templateId,areaId,count(1) as effectiveNum from
+        (SELECT * from ms_arrear_info where effective = '有效' AND templateId = #{templateId}) a group by areaId,templateId) c on t.areaId=c.areaId and t.templateId = c.templateId
+        left join
+        (select areaId,templateId,count(1) as chargeNum from
+        (select * from ms_arrear_info where charge = '收费' AND templateId = #{templateId}) b group by areaId,templateId) d on t.areaId = d.areaId and t.templateId = d.templateId group by areaId,templateId
+        ) g on h.areaId=g.areaId
+        where areaName in('灞桥分部','碑林分部','沣东分部','高陵分公司','航天分公司','户县分公司','蓝田分公司','莲湖分部','临潼分公司','未央分部','新城分部','阎良分公司','雁塔分部','杨凌分公司','长安分公司','周至分公司')
+        and h.templateId=#{templateId} and g.templateId=#{templateId}
+        group by h.areaId ORDER BY areaId ASC)
+    </insert>
+
+    <insert id="saveCityUserInfo">
+        insert into ms_user_statistics
+        (areaName,userTotalNumber,userTollNumber,userEffective,areaId,templateId)
+        SELECT '市区合计' as areaName, sum(userTotalNumber),sum(userTollNumber),sum(userEffective),'101',templateId
+        from ms_user_statistics where templateId = #{templateId} and areaId in (5,7,8,9,10,11,22) group by templateId
+    </insert>
+
+    <insert id="saveSuburbanite">
+        insert into ms_user_statistics
+        (areaName,userTotalNumber,userTollNumber,userEffective,areaId,templateId)
+        SELECT '郊县合计' as areaName, sum(userTotalNumber),sum(userTollNumber),sum(userEffective),'102',templateId
+        from ms_user_statistics where templateId = #{templateId} and areaId in (13,14,15,16,17,18,20,23) group by templateId
+    </insert>
+
+    <insert id="saveTotalUserInfo">
+        insert into ms_user_statistics
+        (areaName,userTotalNumber,userTollNumber,userEffective,areaId,templateId)
+        SELECT '汇总' as areaName, sum(userTotalNumber),sum(userTollNumber),sum(userEffective),'1000',templateId
+        from ms_user_statistics where templateId = #{templateId} and areaId IN (101,102)group by templateId
+    </insert>
+
+    <insert id="saveOutUserInfo">
+        insert into ms_arrear_info
+        (phoneNumber,userId,userName,areaId,areaName,schoolId,schoolName,classId,className,studentId,studentName,templateId,payNumber,loginNumber)
+        SELECT
+        if(left(replace(jz.`计费号码`,' ',''),2 )in(13,15,17,18),replace(jz.`计费号码`,' ',''),right(replace(jz.`登录账号`,' ',''),11))as phoneNumber,
+        jz.`家长id`as userId,
+        jz.`姓名`as userName,
+        jz.`区域Id`as areaId,
+        jz.`区域`as areaName,
+        jz.`学校id`as schoolId,
+        jz.`学校`as schoolName,
+        jz.`班级id`as classId,
+        jz.`班级`as className,
+        jz.`孩子id`as studentId,
+        jz.`孩子`as studentName,
+        #{templateId} as templateId,
+        replace(jz.`计费号码`,' ','') as payNumber,
+        replace(jz.`登录账号`,' ','')as loginNumber
+        FROM (SELECT c.userName as 姓名,parent_id as 家长id,b.loginNumber as 登录账号,c.identityCard as 身份证,stuPayNumber as 计费号码,areaName as 区域,xzq_id as 区域Id,schoolName as 学校,school_id as 学校id,roadCode as 路名编码,className as  班级,class_id as 班级id,d.userName as 孩子,student_id as 孩子id,(case when parent_student_sfyz='2' then '等待审核' when parent_student_sfyz='1' then '通过审核' else '未申请'end ) as 审核状态,b.registerDate as 账号创建时间, buildTime as 孩子导入时间,studentClassCreateDate as 加入班级时间 FROM microschool.v_parent_student_class a
+        LEFT JOIN microschool.wx_user_info c on a.parent_account_id=c.account_id
+        and c.userType=2
+        LEFT JOIN microschool.wx_useraccount b on a.parent_account_id=b.id and b.userType=2
+        left join microschool.wx_user_info d on d.userId=a.student_id and d.userType=3
+        where
+        parent_student_sfyz=1 and#审核状态 通过审核 sfyz=1,等待审核=2,未申请=0
+        student_class_sfjh=1 # 激活状态 激活
+        and student_class_sfby is null )jz
+        where jz.`区域` in('灞桥分部','碑林分部','沣东分部','高陵分公司','航天分公司','户县分公司','蓝田分公司','莲湖分部','临潼分公司','未央分部','新城分部','阎良分公司','雁塔分部','杨凌分公司','长安分公司','周至分公司')
+        and jz.`班级` not like '%毕业%' /*去除毕业班*/
+        and  left(if(left(replace(jz.`计费号码`,' ',''),2 )in(13,15,17,18),replace(jz.`计费号码`,' ',''),right(replace(jz.`登录账号`,' ',''),11)),3)not in('133','153','177','180','181','189')
+    </insert>
+
+    <select id="queryPageUser" resultType="PageUserInfo">
+        select areaName,userTotalNumber,userTollNumber,userEffective,areaId from ms_user_statistics where templateId = #{templateId} ORDER BY areaId
+    </select>
+
+    <!-- 根据时间查询是否有记录  suzhou 20151223 -->
+    <select id="checkDate" parameterType="String" resultType="Long">
+        SELECT MAX(id) FROM ms_arrear_template WHERE DATE_FORMAT(FROM_UNIXTIME(importDate/1000),'%Y-%m-%d %H:%m:%s') LIKE #{date};
+    </select>
+
+
+    <select id="queryNumberByTemplateId" resultType="String">
+        select phoneNumber from ms_arrear_info where templateId = #{templateId} and userId is null
+    </select>
+
+    <!-- 计算导入欠费数据次数-->
+    <select id="countImportNum" resultType="java.lang.Integer">
+        select count(id) from ms_arrear_template
+    </select>
+
+    <!--计算导入用户总数-->
+    <select id="countArrearNum" resultType="java.lang.Integer">
+        select count(id) from ms_arrear_info
+        <where>
+            <if test="condition.templateId!=null">
+                templateId=${condition.templateId}
+            </if>
+            <if test="condition.effective!=null">
+                and effective="有效"
+            </if>
+            <if test="condition.areaId!=null">
+                and  areaId = ${condition.areaId}
+            </if>
+        </where>
+    </select>
+
+    <!--查询用户信息-->
+    <select id="getArrearInfoByPage" resultType="ArrearInfo">
+        select phoneNumber, deviceStatus,goodsName,arrearAge,arrearAmount,effective,charge,billingType,billingLabel,userName,
+        areaName, schoolName as shoolName,className, studentName, payNumber,userId, areaId, schoolId, classId, studentId,
+        loginNumber
+        from ms_arrear_info
+       <where>
+            templateId = ${condition.templateId}
+            <if test="condition.areaId!=null">
+                and areaId = ${condition.areaId}
+            </if>
+            <if test="condition.effective!=null">
+                and effective= '有效'
+            </if>
+       </where>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <!--计算错误数据-->
+    <select id="countErrorData" resultType="java.lang.Integer">
+        select count(id) from ms_arrear_info where userId is null and templateId =#{templateId}
+    </select>
+
+    <delete id="deleteTempData">
+        delete from test1
+    </delete>
+</mapper>
+

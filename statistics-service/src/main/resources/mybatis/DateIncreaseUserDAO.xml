@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IDateIncreaseUserDao">
+    <!--
+    fetch
+    findOne
+    findList
+    findAll
+    queryPage
+    like
+    queryList
+    queryOne
+    count
+    selectMaxId
+    updateOrSave
+    selectOne
+    selectList
+    -->
+
+    <select id="queryByTime" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+        select sum(teacherNum) as teacherNum,sum(parentNum) as parentNum,date_format(t.dateDay,'%Y-%m-%d') as dateDay
+        from
+        ( select createDate as dateDay,count(1) as teacherNum,0 as parentNum,areaId
+        from ms_teacher_info_statistics
+        where areaId is not NULL and createDate BETWEEN #{condition.dateStart} and #{condition.dateEnd}
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by date_format(createDate,'%Y-%m-%d'),areaId
+        UNION ALL
+        select createDate as dateDay,0 as teacherNum,count(1) as parentNum,areaId
+        from ms_parent_info_statistics
+        where areaId is not NULL and createDate BETWEEN #{condition.dateStart} and #{condition.dateEnd}
+        <if test="condition.areaIds!=null">
+            and areaId in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="condition.schoolIds!=null">
+            and schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by date_format(createDate,'%Y-%m-%d'),areaId ) t
+        group by date_format(t.dateDay,'%Y-%m-%d')
+    </select>
+
+    <select id="countByPageTime" resultType="java.lang.Integer">
+        SELECT count(1) FROM
+        (SELECT i.id as areaId,mc as areaName,if (isnull (a.teacherNum),0,a.teacherNum) as teacherNum,if (isnull(b.parentNum),0,b.parentNum) as parentNum
+        FROM microschool.xzq i LEFT JOIN
+        (select areaName,areaId,count(1) as teacherNum from ms_teacher_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        <if test="condition.schoolIds!=null">
+            and schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by areaId) a on i.id=a.areaId LEFT JOIN
+        (select areaName,areaId,count(1) as parentNum from ms_parent_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        <if test="condition.schoolIds!=null">
+            and schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by areaId) b on i.id = b.areaId
+        WHERE 1=1 and i.mc in ('灞桥分部','碑林分部','沣东分部','高陵分公司','航天分公司','户县分公司','蓝田分公司','莲湖分部','临潼分公司','未央分部','新城分部','阎良分公司','雁塔分部','杨凌分公司','长安分公司','周至分公司','测试分部')
+        <if test="condition.areaIds!=null">
+            and i.id in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        ) t
+    </select>
+
+    <select id="queryByPageTime" resultType="StatisticsPojo">
+        SELECT i.id as areaId,mc as areaName,if (isnull (a.teacherNum),0,a.teacherNum) as teacherNum,if (isnull(b.parentNum),0,b.parentNum) as parentNum
+        FROM microschool.xzq i LEFT JOIN
+        (select areaName,areaId,count(1) as teacherNum from ms_teacher_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        <if test="condition.schoolIds!=null">
+            and schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by areaId) a on i.id=a.areaId LEFT JOIN
+        (select areaName,areaId,count(1) as parentNum from ms_parent_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        <if test="condition.schoolIds!=null">
+            and schoolId in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by areaId) b on i.id = b.areaId
+        WHERE 1=1 and i.mc in ('灞桥分部','碑林分部','沣东分部','高陵分公司','航天分公司','户县分公司','蓝田分公司','莲湖分部','临潼分公司','未央分部','新城分部','阎良分公司','雁塔分部','杨凌分公司','长安分公司','周至分公司','测试分部')
+        <if test="condition.areaIds!=null">
+            and i.id in
+            <foreach item="item" index="index" collection="condition.areaIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+
+    </select>
+
+    <select id="countByPageTimeAndAreaId" resultType="java.lang.Integer">
+        SELECT count(1) FROM
+        (    SELECT x.school_id as schoolId,x.schoolName as schoolName,if (isnull (a.teacherNum),0,a.teacherNum) as teacherNum,if (isnull(b.parentNum),0,b.parentNum) as parentNum
+        FROM  microschool.v_parent_student_class x LEFT JOIN
+        (select schoolName,schoolId,count(1) as teacherNum from ms_teacher_info_statistics where createDate  LIKE "%"#{condition.dateDay}"%"
+        group by schoolId) a on x.school_id =a.schoolId LEFT JOIN
+        (select schoolName,schoolId,count(1) as parentNum from ms_parent_info_statistics where createDate  LIKE "%"#{condition.dateDay}"%"
+        group by schoolId) b on x.school_id = b.schoolId
+        WHERE xzq_id = #{condition.areaId}
+        <if test="condition.schoolIds!=null">
+            and  x.school_id in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by x.school_id
+        ) t
+    </select>
+
+    <select id="queryByPageTimeAndAreaId" resultType="StatisticsPojo">
+        SELECT x.school_id as schoolId,x.schoolName as schoolName,if (isnull (a.teacherNum),0,a.teacherNum) as teacherNum,if (isnull(b.parentNum),0,b.parentNum) as parentNum
+        FROM  microschool.v_parent_student_class x LEFT JOIN
+        (select schoolName,schoolId,count(1) as teacherNum from ms_teacher_info_statistics where createDate  LIKE "%"#{condition.dateDay}"%"
+        group by schoolId) a on x.school_id =a.schoolId LEFT JOIN
+        (select schoolName,schoolId,count(1) as parentNum from ms_parent_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        group by schoolId) b on x.school_id = b.schoolId
+        WHERE xzq_id = #{condition.areaId}
+        <if test="condition.schoolIds!=null">
+            and  x.school_id in
+            <foreach item="item" index="index" collection="condition.schoolIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by x.school_id
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+
+    </select>
+
+    <select id="countByPageTimeAndSchoolId" resultType="java.lang.Integer">
+        SELECT count(1) FROM
+        ( SELECT n.class_id, nickName as className,if (isnull (a.teacherNum),0,a.teacherNum) as teacherNum,if (isnull(b.parentNum),0,b.parentNum) as parentNum
+        FROM microschool.v_parent_student_class n LEFT JOIN
+        (select className,classId,count(1) as teacherNum from ms_teacher_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        group by classId) a on n.class_id = a.classId LEFT JOIN
+        (select className,classId,count(1) as parentNum from ms_parent_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        group by classId) b on n.class_id = b.classId
+        WHERE school_id = #{condition.schoolId}
+        <if test="condition.classIds!=null">
+            and  n.class_id in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by n.class_id
+        ) t
+    </select>
+
+    <select id="queryByPageTimeAndSchoolId" resultType="StatisticsPojo">
+        SELECT n.class_id as classId, nickName as className,if (isnull (a.teacherNum),0,a.teacherNum) as teacherNum,if (isnull(b.parentNum),0,b.parentNum) as parentNum
+        FROM microschool.v_parent_student_class n LEFT JOIN
+        (select className,classId,count(1) as teacherNum from ms_teacher_info_statistics where createDate LIKE "%"#{condition.dateDay}"%"
+        group by classId) a on n.class_id = a.classId LEFT JOIN
+        (select className,classId,count(1) as parentNum from ms_parent_info_statistics where createDate  LIKE "%"#{condition.dateDay}"%"
+        group by classId) b on n.class_id = b.classId
+        WHERE school_id = #{condition.schoolId}
+        <if test="condition.classIds!=null">
+            and  n.class_id in
+            <foreach item="item" index="index" collection="condition.classIds"
+                     open="(" separator="," close=")">#{item}
+            </foreach>
+        </if>
+        group by n.class_id
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+
+    </select>
+
+
+    <select id="countParentIncreaseUserDetail" resultType="java.lang.Integer">
+        SELECT count(*) FROM ms_parent_info_statistics WHERE createDate LIKE "%"#{condition.dateDay}"%" AND classId = #{condition.classId}
+    </select>
+
+    <select id="countTeacherIncreaseUserDetail" resultType="java.lang.Integer">
+        SELECT count(*) FROM ms_teacher_info_statistics WHERE createDate LIKE "%"#{condition.dateDay}"%" AND classId = #{condition.classId}
+    </select>
+
+    <select id="queryParentIncreaseUserDetail" resultType="ParentIncreaseDetail">
+        SELECT parentName,parentId,loginNumber,areaName,schoolName,className,childName,studentId
+        FROM ms_parent_info_statistics
+        WHERE createDate LIKE "%"#{condition.dateDay}"%" AND classId = #{condition.classId}
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="queryTeacherIncreaseUserDetail" resultType="TeacherIncreaseDetail">
+        SELECT createDate,teacherName,teacherId,loginNumber,areaName,schoolName,className
+        FROM ms_teacher_info_statistics
+        WHERE createDate LIKE "%"#{condition.dateDay}"%" AND classId = #{condition.classId}
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+</mapper>

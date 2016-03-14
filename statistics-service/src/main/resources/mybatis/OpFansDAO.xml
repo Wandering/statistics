@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IOpFansDAO">
+<!--
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+    id,
+    userId,
+    userName,
+    dayTime,
+    num
+    </sql>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="OpFans">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_op_fans_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="OpFans">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_op_fans_statistics WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="OpFans">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_op_fans_statistics WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="OpFans">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_op_fans_statistics
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryByPageAndCondition" resultType="OpFans">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_op_fans_statistics
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.userName!=null">
+                AND userName = #{condition.userName}
+            </if>
+            <if test="condition.dayTime!=null">
+                AND dayTime = #{condition.dayTime}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM ms_op_fans_statistics
+        <where>
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.userName!=null">
+                AND userName = #{condition.userName}
+            </if>
+            <if test="condition.dayTime!=null">
+                AND dayTime = #{condition.dayTime}
+            </if>
+            <if test="condition.num!=null">
+                AND num = #{condition.num}
+            </if>
+        </where>
+    </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM ms_op_fans_statistics
+    </select>
+
+    <select id="quertByPageAndClassfy" resultType="OpFans">
+        select
+        s.id as id,
+        s.userId as userId,
+        s.userName as userName,
+        s.dayTime as dayTime,
+        s.num as num
+        from ms_op_fans_statistics s
+        left join userservice.classfy_user u on s.userId=u.userId
+        where u.classfyId=#{classfyId}
+        and u.state!='D'
+        and s.dayTime=#{dayTime}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="countByPageAndClassfy" resultType="java.lang.Integer">
+        select count(*)
+        from ms_op_fans_statistics s
+        left join userservice.classfy_user c on s.userId=c.userId
+        where c.classfyId=#{classfyId}
+        and c.state!='D'
+        and s.dayTime=#{dayTime}
+    </select>
+</mapper>
+

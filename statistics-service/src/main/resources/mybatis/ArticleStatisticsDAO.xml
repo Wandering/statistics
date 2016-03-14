@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IArticleStatisticsDAO">
+
+    <select id="queryArticleStatistics" resultType="ArticleStatisticsPojo">
+        select distinct
+        user.userName as userName,
+        sm.createDate as reviewTime,
+        message.subject as subject,
+        countm.readCount as readCount,
+        countm.hit as hitg
+        from messageservice.message message
+        left join messageservice.system_message sm on message.id=sm.affectId
+        left join userservice.user_info user on user.userId = message.sendUserId
+        left join messageservice.message_count countm on message.id=countm.messageId
+        where
+        sm.createDate between #{beginTime} and #{endTime}
+        and message.state != 'D' and message.checkState > 0
+        and user.userName is not null
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="countArticleStatistics" resultType="java.lang.Integer">
+        select count(distinct subject)
+        from messageservice.message message
+        left join messageservice.system_message sm on message.id=sm.affectId
+        left join userservice.user_info user on user.userId = message.sendUserId
+        left join messageservice.message_count countm on message.id=countm.messageId
+        where
+        sm.createDate between #{beginTime} and #{endTime}
+        and message.state != 'D' and message.checkState > 0
+        and user.userName is not null
+    </select>
+
+</mapper>
+

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IUserActiveDao">
+
+    <select id="queryByPage" resultType="UserActiveInfo">
+        select classfyName, b.userId as userId, userName, articleNum,activityNum,ifnull(activeNum,0) as activeDayNum
+        from (
+        select classfyName, a.userId as userId, userName, ifnull(count(messageId), 0) as articleNum
+        from (
+        select classfyName, uui.userId as userId, userName
+        from
+        userservice.classfy_user ucu ,userservice.user_info uui,userservice.classfy_info uci
+        where
+        ucu.userId=uui.userId
+        and uci.classfyId = ucu.classfyId
+        and ucu.state !='D'
+        group by userId
+        ) a
+        left join messageservice.message mm on mm.sendUserId = a.userId
+        and state != 'D'
+        and checkState =1
+        and contentType = 1
+        and createDate between #{condition.startDay} and #{condition.endDay}
+        group by userId
+        ) b
+        left join
+        (select a1.userId as userId, ifnull(count(messageId), 0) as activityNum
+        from (
+        select uui.userId as userId
+        from
+        userservice.classfy_user ucu ,userservice.user_info uui,userservice.classfy_info uci
+        where
+        ucu.userId=uui.userId
+        and uci.classfyId = ucu.classfyId
+        and uui.state !='D'
+        and ucu.state !='D'
+        group by userId
+        ) a1
+        left join
+        messageservice.message mm1 on mm1.sendUserId = a1.userId
+        and state != 'D'
+        and checkState =1
+        and contentType = 2
+        and createDate between #{condition.startDay} and #{condition.endDay}
+        group by userId
+        ) c on c.userId = b.userId
+        left join
+        (select userId, count(createDate) as activeNum
+        from
+        (select distinct sendUserId as userId,DATE_FORMAT(from_unixtime(createDate/1000), '%Y%m%d') createDate
+        from messageservice.message
+        where state != 'D'
+        and checkState =1
+        and createDate between #{condition.startDay} and #{condition.endDay}
+        group by userId, createDate)d group by userId)e on e.userId = b.userId
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(1) from
+          (select uui.userId as userId
+	        from userservice.classfy_user ucu ,userservice.user_info uui,userservice.classfy_info uci
+	        where ucu.userId=uui.userId
+		    and uci.classfyId = ucu.classfyId
+		    and ucu.state !='D'
+	        group by uui.userId) a
+    </select>
+</mapper>
+

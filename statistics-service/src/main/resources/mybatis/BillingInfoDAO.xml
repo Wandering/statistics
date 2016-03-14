@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.IBillingInfoDAO">
+<!--
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+      id,
+    time,
+    userId,
+    userName,
+    studentName,
+    phoneNum,
+    eMoney,
+    eAge,
+    eLevel,
+    classId,
+    className,
+    schoolId,
+    schoolName,
+    isNew
+    </sql>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="BillingInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_info
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="BillingInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_info WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="BillingInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_info WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="BillingInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM ms_billing_info
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryByPageAndCondition" resultType="BillingInfo">
+        SELECT id, TIME, userId, userName, studentName, phoneNum, CAST(eMoney AS DECIMAL(10,2)) AS eMoney, eAge,
+        eLevel, classId, className, schoolId, schoolName, isNew FROM ms_billing_info WHERE isNew=0
+        <if test="condition.id!=null">
+            AND id = #{condition.id}
+        </if>
+        <if test="condition.userId!=null">
+            AND userId = #{condition.userId}
+        </if>
+        <if test="condition.userName!=null">
+            AND userName = #{condition.userName}
+        </if>
+        <if test="condition.studentName!=null">
+            AND studentName = #{studentName.studentName}
+        </if>
+        <if test="condition.phoneNum!=null">
+            AND phoneNum = #{condition.phoneNum}
+        </if>
+        <if test="condition.eMoney!=null">
+            AND eMoney = #{condition.eMoney}
+        </if>
+        <if test="condition.eAge!=null">
+            AND eAge = #{condition.eAge}
+        </if>
+        <if test="condition.eLevel!=null">
+            AND eLevel = #{condition.eLevel}
+        </if>
+        <if test="condition.classId!=null">
+            AND classId = #{condition.classId}
+        </if>
+        <if test="condition.className!=null">
+            AND className = #{condition.className}
+        </if>
+        <if test="condition.schoolId!=null">
+            AND schoolId = #{condition.schoolId}
+        </if>
+        <if test="condition.schoolName!=null">
+            AND schoolName = #{condition.schoolName}
+        </if>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+    <select id="totalCount" resultType="java.lang.Integer">
+        SELECT count(id) FROM ms_billing_info WHERE isNew=0
+        <if test="condition.id!=null">
+            AND id = #{condition.id}
+        </if>
+        <if test="condition.userId!=null">
+            AND userId = #{condition.userId}
+        </if>
+        <if test="condition.userName!=null">
+            AND userName = #{condition.userName}
+        </if>
+        <if test="condition.studentName!=null">
+            AND studentName = #{studentName.addressJson}
+        </if>
+        <if test="condition.phoneNum!=null">
+            AND phoneNum = #{condition.phoneNum}
+        </if>
+        <if test="condition.eMoney!=null">
+            AND eMoney = #{condition.eMoney}
+        </if>
+        <if test="condition.eAge!=null">
+            AND eAge = #{condition.eAge}
+        </if>
+        <if test="condition.eLevel!=null">
+            AND eLevel = #{condition.eLevel}
+        </if>
+        <if test="condition.classId!=null">
+            AND classId = #{condition.classId}
+        </if>
+        <if test="condition.className!=null">
+            AND className = #{condition.className}
+        </if>
+        <if test="condition.schoolId!=null">
+            AND schoolId = #{condition.schoolId}
+        </if>
+        <if test="condition.schoolName!=null">
+            AND schoolName = #{condition.schoolName}
+        </if>
+    </select>
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM ms_billing_info
+    </select>
+
+    <!-- 导入欠费数据  苏州 20151217-->
+    <insert id="importInsert" parameterType="BillingInfo">
+        INSERT INTO ms_billing_info (time,userId,phoneNum,eAge,eMoney,eLevel,classId,isNew) VALUES
+        (NOW(),0,#{condition.phoneNum},#{condition.eAge},#{condition.eMoney},#{condition.eLevel},0,1)
+    </insert>
+
+    <!-- 更新 userId 字段  苏州 20151218-->
+    <update id="updateUserId">
+        UPDATE statistics.ms_billing_info AS sm LEFT JOIN microschool.wx_number_pool AS mw ON sm.phoneNum=mw.numberCode SET sm.userId=mw.bindAccountId WHERE mw.bindAccountId IS NOT NULL;
+    </update>
+
+    <!-- 删除无效用户 （账户id不存在）  苏州 20151218-->
+    <delete id="deleteInvalidUserId">
+        DELETE FROM statistics.ms_billing_info WHERE userId=0;
+    </delete>
+
+    <!-- 批量更新导入的欠费数据  苏州 20151218-->
+    <insert id="updateImportBatch">
+        INSERT INTO statistics.ms_billing_info
+        (time,userId,userName,studentName,phoneNum,eMoney,eAge,eLevel,classId,className,schoolId,schoolName,isNew,studentId, payNumber)
+        SELECT NOW(),a.userId, info.userName, infoa.userName, phoneNum, eMoney, eAge, eLevel, c.class_id, c.className,c.school_id ,c.schoolName,2,c.student_id, c.stuPayNumber FROM
+        (SELECT userId, phoneNum, eMoney, eAge, eLevel FROM statistics.ms_billing_info) a
+        LEFT JOIN microschool.v_parent_student_class c ON a.userId = c.parent_account_id and a.phoneNum = c.stuPaynumber
+        LEFT JOIN microschool.wx_user_info info ON a.userId = info.account_id
+        LEFT JOIN microschool.wx_user_info infoa ON c.student_id = infoa.userId
+        WHERE c.className IS NOT NULL AND infoa.userType = 3 AND info.userType = 2 AND c.student_class_sfjh=1;
+    </insert>
+
+    <!-- 删除旧数据  苏州 20151218-->
+    <delete id="deleteOldBillingInfo">
+        DELETE FROM ms_billing_info WHERE isNew!=2;
+    </delete>
+
+    <!--删除phoneNum payNumber不一致数据-->
+    <delete id="deleteDifferentNumber">
+        delete from ms_billing_info where phoneNum != payNumber
+    </delete>
+    <!-- 将新导入数据新旧标示修改为旧数据  苏州 20151218-->
+    <update id="updateNewBillingInfo">
+        UPDATE ms_billing_info SET isNew=0 WHERE isNew=2;
+    </update>
+
+    <!-- 清空统计数据  苏州 20151223 -->
+    <delete id="deleteBillingStatistics">
+        DELETE FROM statistics.ms_billing_statistics;
+    </delete>
+
+    <!-- 填入统计数据  苏州 20151223 -->
+    <insert id="updateBillingStatistics">
+        INSERT INTO statistics.ms_billing_statistics(time,classId,className,schoolId,schoolName,areaId,areaName,num)
+        select now(),classId,className, schoolId,schoolName,areaId, areaName,count(1) as num
+        from (select a.userId, c.class_id as classId, c.className,c.school_id as schoolId ,c.schoolName,c.xzq_id as areaId,c.areaName from
+        (SELECT userId, studentId FROM ms_billing_info ) a left join microschool.v_parent_student_class c on a.userId = c.parent_account_id and c.student_id = a.studentId
+        where c.className is not null and c.student_class_sfjh=1) aa group by classId;
+    </insert>
+
+    <!--删除历史数据 -->
+    <delete id="deleteHistoryData">
+        delete from ms_billing_info;
+    </delete>
+</mapper>
+

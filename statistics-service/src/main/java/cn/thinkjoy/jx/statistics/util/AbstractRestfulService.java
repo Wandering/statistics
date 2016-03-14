@@ -1,0 +1,24 @@
+package cn.thinkjoy.jx.statistics.util;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import static org.springframework.security.core.context.SecurityContextHolder.getContext;
+
+
+public class AbstractRestfulService {
+    public static UserCredentials getUserCredentials(){
+        Authentication authentication = getContext().getAuthentication();
+        if (authentication != null) {
+            UserDetails details = (UserDetails) authentication.getPrincipal();
+            return new UserCredentials(details.getUsername(), "[PROTECTED]", details.isEnabled(), details.isAccountNonExpired(), details.isCredentialsNonExpired(), details.isAccountNonLocked(), details.getAuthorities());
+        } else {
+            return null;
+        }
+    }
+}
