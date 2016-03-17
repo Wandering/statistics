@@ -49,8 +49,7 @@ public class MenuController {
     public TreePojo getMenuTree(HttpServletRequest request){
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
 
-        String systemCode = "7";
-//        String systemCode = request.getParameter("systemCode");
+        String systemCode = request.getParameter("systemCode");
         if(StringUtils.isBlank(systemCode)){
             throw new BizException(ERRORCODE.PARAM_ISNULL.getCode(),ERRORCODE.PARAM_ISNULL.getMessage());
         }

@@ -15,3 +15,7 @@ include 'menuAuthority-service'
 include 'statistics-common'
 include 'statistics-app-war'
 
+include 'agents-domain'
+include 'agents-api'
+include 'agents-service'
+
