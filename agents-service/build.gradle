@@ -1,0 +1,35 @@
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+
+//    compile (group: "cn.thinkjoy.common", name: "thinkjoy-mus-common", version: "$thinkjoyCommonVersion", changing: true)
+//            {
+//                exclude group:'cn.thinkjoy.cloudstack',module: 'cs-spring-redis'
+//            }
+
+    //自动注册自己到cmc
+//    compile (group: "cn.thinkjoy.cloudstack", name: "cs-clustermanager-client", version: "$thinkjoyCloudstackVersion", changing: true)
+//            {
+//                exclude group:'cn.thinkjoy.cloudstack',module: 'cs-spring-redis'
+//            }
+
+    compile "cn.thinkjoy.common:thinkjoy-biz-common:$thinkjoyCommonVersionNew"
+    compile "org.freemarker:freemarker:$freemarkerVersion"
+    compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
+    compile "com.google.guava:guava:17.0"
+    compile "org.springframework:spring-context:$springVersion"
+    compile "org.springframework:spring-core:$springVersion"
+    compile "org.springframework:spring-tx:$springVersion"
+    compile "org.springframework:spring-jdbc:$springVersion"
+    compile "cn.thinkjoy.cloudstack:cs-spring-zkconfig:$thinkjoyCloudstackVersionNew"
+    compile "org.mybatis:mybatis-spring:1.2.4"
+    compile "com.alibaba:dubbo:2.5.3"
+    compile "com.alibaba:druid:1.0.7"
+    compile "org.springframework:spring-beans:$springVersion"
+    compile "org.aspectj:aspectjweaver:1.7.4"
+    compile "com.esotericsoftware:reflectasm:1.11.0"
+    compile "org.springframework:spring-web:$springVersion"
+    compile "org.mybatis:mybatis:3.3.1"
+    compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
+
+    compile project(":agents-api")
+}

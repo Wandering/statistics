@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.agents.dao.ex.IAreaExDAO">
+
+        <select id="queryCity" resultType="java.util.Map" >
+            select id,name from zgk_city;
+        </select>
+        <select id="queryCityById" resultType="java.lang.String">
+            select name from zgk_city WHERE id=#{id};
+        </select>
+
+        <select id="queryCounty" resultType="java.util.Map">
+           select id,name from zgk_county;
+        </select>
+        <select id="queryCountyById" resultType="java.lang.String">
+            select name from zgk_county WHERE id=#{id};
+        </select>
+
+        <select id="queryProvince" resultType="java.util.Map">
+            select id,name from zgk_county;
+        </select>
+        <select id="queryProvinceById" resultType="java.lang.String">
+            select name from zgk_county WHERE id=#{id};
+        </select>
+
+</mapper>

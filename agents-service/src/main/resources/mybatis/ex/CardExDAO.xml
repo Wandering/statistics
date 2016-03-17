@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.agents.dao.ex.ICardExDAO">
+
+    <sql id="Base_Column_List">
+        id as id ,
+        goodsNumber as goodsNumber ,
+        cardNumber as cardNumber ,
+        password as password ,
+        userId as userId ,
+        status as status ,
+        cardType as cardType ,
+        endDate as endDate ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        areaId as areaId ,
+        outputDate1 as outputDate1 ,
+        outputDate2 as outputDate2 ,
+        outputDate3 as outputDate3 ,
+        activeDate as activeDate
+    </sql>
+
+    <select id="queryPage" resultType="java.util.Map">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.goodsNumber!=null">
+                    , goodsNumber
+                </if>
+                <if test="selector.cardNumber!=null">
+                    , cardNumber
+                </if>
+                <if test="selector.password!=null">
+                    , password
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.status!=null">
+                    , status
+                </if>
+                <if test="selector.cardType!=null">
+                    , cardType
+                </if>
+                <if test="selector.endDate!=null">
+                    , endDate
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.areaId!=null">
+                    , areaId
+                </if>
+                <if test="selector.outputDate1!=null">
+                    , outputDate1
+                </if>
+                <if test="selector.outputDate2!=null">
+                    , outputDate2
+                </if>
+                <if test="selector.outputDate3!=null">
+                    , outputDate3
+                </if>
+                <if test="selector.activeDate!=null">
+                    , activeDate
+                </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List"/>
+        </if>
+        FROM zgk_card
+        <where>
+            <!--标记当前用户查询范围-->
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+            <!--未出库查询-->
+            <if test="condition.output!=null">
+                ${condition.groupOp} goodsNumber=#{condition.userArea}
+            </if>
+            <!--已出库查询-->
+            <if test="condition.notoutput!=null">
+                ${condition.groupOp} goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
+            </if>
+            <!--流向地查询-->
+            <if test="condition.flow!=null">
+                ${condition.groupOp} goodsNumber LIKE CONCAT(#{condition.userArea} , #{condition.flow}, '%')
+            </if>
+            <!--卡号查询-->
+            <if test="condition.cardNumber!=null">
+                ${condition.groupOp} cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
+            </if>
+        </where>
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM zgk_card
+        <where>
+            <!--标记当前用户查询范围-->
+            <if test="whereSql != null">
+                and id in (#{whereSql})
+            </if>
+            <!--未出库查询-->
+            <if test="output!=null">
+                ${groupOp} goodsNumber=#{userArea}
+            </if>
+            <!--已出库查询-->
+            <if test="notoutput!=null">
+                ${groupOp} goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
+            </if>
+            <!--流向地查询-->
+            <if test="flow!=null">
+                ${groupOp} goodsNumber LIKE CONCAT(#{userArea} , #{flow}, '%')
+            </if>
+            <!--卡号查询-->
+            <if test="cardNumber!=null">
+                ${groupOp} cardNumber LIKE CONCAT('%', #{cardNumber} , '%')
+            </if>
+        </where>
+    </select>
+
+
+    <!-- 更新 -->
+    <update id="output" parameterType="java.util.Map">
+        UPDATE zgk_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="flow!=null">
+                goodsNumber = CONCAT(goodsNumber,#{flow}),
+            </if>
+            <if test="outputDate1!=null">
+                outputDate1 = #{outputDate1},
+            </if>
+            <if test="outputDate2!=null">
+                outputDate2 = #{outputDate2},
+            </if>
+            <if test="outputDate3!=null">
+                outputDate3 = #{outputDate3},
+            </if>
+            <if test="activeDate!=null">
+                activeDate = #{activeDate},
+            </if>
+        </trim>
+        <where>
+            <if test="userArea != null">
+                and goodsNumber = #{userArea}
+            </if>
+            <if test="idlist != null">
+                and id in (#{idlist})
+            </if>
+            <if test="idlist != null">
+                and id in (#{idlist})
+            </if>
+        </where>
+        <if test="rows!=null">
+            limit ${rows}
+        </if>
+    </update>
+</mapper>

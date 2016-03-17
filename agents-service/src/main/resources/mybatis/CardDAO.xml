@@ -1,0 +1,1034 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.agents.dao.ICardDAO">
+<!--
+insert
+update
+updateNull
+deleteById
+deleteByCondition
+deleteByProperty
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+
+    <sql id="Base_Column_List">
+        id as id ,
+        goodsNumber as goodsNumber ,
+        cardNumber as cardNumber ,
+        password as password ,
+        userId as userId ,
+        status as status ,
+        cardType as cardType ,
+        endDate as endDate ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        areaId as areaId ,
+        outputDate1 as outputDate1 ,
+        outputDate2 as outputDate2 ,
+        outputDate3 as outputDate3 ,
+        activeDate as activeDate 
+    </sql>
+    <insert id="insert" parameterType="Card">
+        INSERT INTO zgk_card (
+        goodsNumber,
+        cardNumber,
+        password,
+        userId,
+        status,
+        cardType,
+        endDate,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        areaId,
+        outputDate1,
+        outputDate2,
+        outputDate3,
+        activeDate
+        ) VALUES (
+        #{goodsNumber},
+        #{cardNumber},
+        #{password},
+        #{userId},
+        #{status},
+        #{cardType},
+        #{endDate},
+        #{creator},
+        #{createDate},
+        #{lastModifier},
+        #{lastModDate},
+        #{areaId},
+        #{outputDate1},
+        #{outputDate2},
+        #{outputDate3},
+        #{activeDate}
+        )
+            <selectKey resultType="java.lang.Long" keyProperty="id">
+                SELECT LAST_INSERT_ID() AS ID
+            </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="Card">
+        UPDATE zgk_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="goodsNumber!=null">
+                goodsNumber = #{goodsNumber},
+            </if>
+            <if test="cardNumber!=null">
+                cardNumber = #{cardNumber},
+            </if>
+            <if test="password!=null">
+                password = #{password},
+            </if>
+            <if test="userId!=null">
+                userId = #{userId},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="cardType!=null">
+                cardType = #{cardType},
+            </if>
+            <if test="endDate!=null">
+                endDate = #{endDate},
+            </if>
+            <if test="creator!=null">
+                creator = #{creator},
+            </if>
+            <if test="createDate!=null">
+                createDate = #{createDate},
+            </if>
+            <if test="lastModifier!=null">
+                lastModifier = #{lastModifier},
+            </if>
+            <if test="lastModDate!=null">
+                lastModDate = #{lastModDate},
+            </if>
+            <if test="areaId!=null">
+                areaId = #{areaId},
+            </if>
+            <if test="outputDate1!=null">
+                outputDate1 = #{outputDate1},
+            </if>
+            <if test="outputDate2!=null">
+                outputDate2 = #{outputDate2},
+            </if>
+            <if test="outputDate3!=null">
+                outputDate3 = #{outputDate3},
+            </if>
+            <if test="activeDate!=null">
+                activeDate = #{activeDate},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMap">
+        UPDATE zgk_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.goodsNumber!=null">
+                goodsNumber = #{map.goodsNumber},
+            </if>
+            <if test="map.cardNumber!=null">
+                cardNumber = #{map.cardNumber},
+            </if>
+            <if test="map.password!=null">
+                password = #{map.password},
+            </if>
+            <if test="map.userId!=null">
+                userId = #{map.userId},
+            </if>
+            <if test="map.status!=null">
+                status = #{map.status},
+            </if>
+            <if test="map.cardType!=null">
+                cardType = #{map.cardType},
+            </if>
+            <if test="map.endDate!=null">
+                endDate = #{map.endDate},
+            </if>
+            <if test="map.creator!=null">
+                creator = #{map.creator},
+            </if>
+            <if test="map.createDate!=null">
+                createDate = #{map.createDate},
+            </if>
+            <if test="map.lastModifier!=null">
+                lastModifier = #{map.lastModifier},
+            </if>
+            <if test="map.lastModDate!=null">
+                lastModDate = #{map.lastModDate},
+            </if>
+            <if test="map.areaId!=null">
+                areaId = #{map.areaId},
+            </if>
+            <if test="map.outputDate1!=null">
+                outputDate1 = #{map.outputDate1},
+            </if>
+            <if test="map.outputDate2!=null">
+                outputDate2 = #{map.outputDate2},
+            </if>
+            <if test="map.outputDate3!=null">
+                outputDate3 = #{map.outputDate3},
+            </if>
+            <if test="map.activeDate!=null">
+                activeDate = #{map.activeDate},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE zgk_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.goodsNumber!=null">
+                goodsNumber = #{update.goodsNumber},
+            </if>
+            <if test="update.cardNumber!=null">
+                cardNumber = #{update.cardNumber},
+            </if>
+            <if test="update.password!=null">
+                password = #{update.password},
+            </if>
+            <if test="update.userId!=null">
+                userId = #{update.userId},
+            </if>
+            <if test="update.status!=null">
+                status = #{update.status},
+            </if>
+            <if test="update.cardType!=null">
+                cardType = #{update.cardType},
+            </if>
+            <if test="update.endDate!=null">
+                endDate = #{update.endDate},
+            </if>
+            <if test="update.creator!=null">
+                creator = #{update.creator},
+            </if>
+            <if test="update.createDate!=null">
+                createDate = #{update.createDate},
+            </if>
+            <if test="update.lastModifier!=null">
+                lastModifier = #{update.lastModifier},
+            </if>
+            <if test="update.lastModDate!=null">
+                lastModDate = #{update.lastModDate},
+            </if>
+            <if test="update.areaId!=null">
+                areaId = #{update.areaId},
+            </if>
+            <if test="update.outputDate1!=null">
+                outputDate1 = #{update.outputDate1},
+            </if>
+            <if test="update.outputDate2!=null">
+                outputDate2 = #{update.outputDate2},
+            </if>
+            <if test="update.outputDate3!=null">
+                outputDate3 = #{update.outputDate3},
+            </if>
+            <if test="update.activeDate!=null">
+                activeDate = #{update.activeDate},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.goodsNumber!=null">
+                AND goodsNumber = #{condition.goodsNumber}
+            </if>
+            <if test="condition.cardNumber!=null">
+                AND cardNumber = #{condition.cardNumber}
+            </if>
+            <if test="condition.password!=null">
+                AND password = #{condition.password}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.cardType!=null">
+                AND cardType = #{condition.cardType}
+            </if>
+            <if test="condition.endDate!=null">
+                AND endDate = #{condition.endDate}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.outputDate1!=null">
+                AND outputDate1 = #{condition.outputDate1}
+            </if>
+            <if test="condition.outputDate2!=null">
+                AND outputDate2 = #{condition.outputDate2}
+            </if>
+            <if test="condition.outputDate3!=null">
+                AND outputDate3 = #{condition.outputDate3}
+            </if>
+            <if test="condition.activeDate!=null">
+                AND activeDate = #{condition.activeDate}
+            </if>
+        </trim>
+    </update>
+
+    <insert id="insertMap" >
+        INSERT INTO zgk_card (
+                goodsNumber,
+                cardNumber,
+                password,
+                userId,
+                status,
+                cardType,
+                endDate,
+                creator,
+                createDate,
+                lastModifier,
+                lastModDate,
+                areaId,
+                outputDate1,
+                outputDate2,
+                outputDate3,
+                activeDate
+        ) VALUES (
+                    #{map.goodsNumber},
+                    #{map.cardNumber},
+                    #{map.password},
+                    #{map.userId},
+                    #{map.status},
+                    #{map.cardType},
+                    #{map.endDate},
+                    #{map.creator},
+                    #{map.createDate},
+                    #{map.lastModifier},
+                    #{map.lastModDate},
+                    #{map.areaId},
+                    #{map.outputDate1},
+                    #{map.outputDate2},
+                    #{map.outputDate3},
+                    #{map.activeDate}
+        )
+    </insert>
+
+
+    <update id="updateNull" parameterType="Card">
+        UPDATE zgk_card
+        <trim prefix="SET" suffixOverrides=",">
+            goodsNumber = #{goodsNumber},
+            cardNumber = #{cardNumber},
+            password = #{password},
+            userId = #{userId},
+            status = #{status},
+            cardType = #{cardType},
+            endDate = #{endDate},
+            creator = #{creator},
+            createDate = #{createDate},
+            lastModifier = #{lastModifier},
+            lastModDate = #{lastModDate},
+            areaId = #{areaId},
+            outputDate1 = #{outputDate1},
+            outputDate2 = #{outputDate2},
+            outputDate3 = #{outputDate3},
+            activeDate = #{activeDate},
+        </trim>
+        WHERE
+        id = #{id} 
+    </update>
+
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM zgk_card
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM zgk_card
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="goodsNumber!=null">
+                AND goodsNumber = #{goodsNumber}
+            </if>
+            <if test="cardNumber!=null">
+                AND cardNumber = #{cardNumber}
+            </if>
+            <if test="password!=null">
+                AND password = #{password}
+            </if>
+            <if test="userId!=null">
+                AND userId = #{userId}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="cardType!=null">
+                AND cardType = #{cardType}
+            </if>
+            <if test="endDate!=null">
+                AND endDate = #{endDate}
+            </if>
+            <if test="creator!=null">
+                AND creator = #{creator}
+            </if>
+            <if test="createDate!=null">
+                AND createDate = #{createDate}
+            </if>
+            <if test="lastModifier!=null">
+                AND lastModifier = #{lastModifier}
+            </if>
+            <if test="lastModDate!=null">
+                AND lastModDate = #{lastModDate}
+            </if>
+            <if test="areaId!=null">
+                AND areaId = #{areaId}
+            </if>
+            <if test="outputDate1!=null">
+                AND outputDate1 = #{outputDate1}
+            </if>
+            <if test="outputDate2!=null">
+                AND outputDate2 = #{outputDate2}
+            </if>
+            <if test="outputDate3!=null">
+                AND outputDate3 = #{outputDate3}
+            </if>
+            <if test="activeDate!=null">
+                AND activeDate = #{activeDate}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty" parameterType="java.util.Map">
+        DELETE FROM zgk_card WHERE
+        ${property} = #{value}
+    </delete>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="Card">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_card
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="Card">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_card WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="Card">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_card WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="Card">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_card
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" resultType="Card">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                        <if test="selector.id!=null">
+                            , id
+                        </if>
+                        <if test="selector.goodsNumber!=null">
+                            , goodsNumber
+                        </if>
+                        <if test="selector.cardNumber!=null">
+                            , cardNumber
+                        </if>
+                        <if test="selector.password!=null">
+                            , password
+                        </if>
+                        <if test="selector.userId!=null">
+                            , userId
+                        </if>
+                        <if test="selector.status!=null">
+                            , status
+                        </if>
+                        <if test="selector.cardType!=null">
+                            , cardType
+                        </if>
+                        <if test="selector.endDate!=null">
+                            , endDate
+                        </if>
+                        <if test="selector.creator!=null">
+                            , creator
+                        </if>
+                        <if test="selector.createDate!=null">
+                            , createDate
+                        </if>
+                        <if test="selector.lastModifier!=null">
+                            , lastModifier
+                        </if>
+                        <if test="selector.lastModDate!=null">
+                            , lastModDate
+                        </if>
+                        <if test="selector.areaId!=null">
+                            , areaId
+                        </if>
+                        <if test="selector.outputDate1!=null">
+                            , outputDate1
+                        </if>
+                        <if test="selector.outputDate2!=null">
+                            , outputDate2
+                        </if>
+                        <if test="selector.outputDate3!=null">
+                            , outputDate3
+                        </if>
+                        <if test="selector.activeDate!=null">
+                            , activeDate
+                        </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+        <include refid="Base_Column_List" />
+        </if>
+        FROM zgk_card
+        <where>
+
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+
+            <if test="condition.id!=null">
+                ${condition.groupOp}   ${condition.id.field}  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.goodsNumber!=null">
+                ${condition.groupOp}   ${condition.goodsNumber.field}  ${condition.goodsNumber.op}  #{condition.goodsNumber.data}
+            </if>
+            <if test="condition.cardNumber!=null">
+                ${condition.groupOp}   ${condition.cardNumber.field}  ${condition.cardNumber.op}  #{condition.cardNumber.data}
+            </if>
+            <if test="condition.password!=null">
+                ${condition.groupOp}   ${condition.password.field}  ${condition.password.op}  #{condition.password.data}
+            </if>
+            <if test="condition.userId!=null">
+                ${condition.groupOp}   ${condition.userId.field}  ${condition.userId.op}  #{condition.userId.data}
+            </if>
+            <if test="condition.status!=null">
+                ${condition.groupOp}   ${condition.status.field}  ${condition.status.op}  #{condition.status.data}
+            </if>
+            <if test="condition.cardType!=null">
+                ${condition.groupOp}   ${condition.cardType.field}  ${condition.cardType.op}  #{condition.cardType.data}
+            </if>
+            <if test="condition.endDate!=null">
+                ${condition.groupOp}   ${condition.endDate.field}  ${condition.endDate.op}  #{condition.endDate.data}
+            </if>
+            <if test="condition.creator!=null">
+                ${condition.groupOp}   ${condition.creator.field}  ${condition.creator.op}  #{condition.creator.data}
+            </if>
+            <if test="condition.createDate!=null">
+                ${condition.groupOp}   ${condition.createDate.field}  ${condition.createDate.op}  #{condition.createDate.data}
+            </if>
+            <if test="condition.lastModifier!=null">
+                ${condition.groupOp}   ${condition.lastModifier.field}  ${condition.lastModifier.op}  #{condition.lastModifier.data}
+            </if>
+            <if test="condition.lastModDate!=null">
+                ${condition.groupOp}   ${condition.lastModDate.field}  ${condition.lastModDate.op}  #{condition.lastModDate.data}
+            </if>
+            <if test="condition.areaId!=null">
+                ${condition.groupOp}   ${condition.areaId.field}  ${condition.areaId.op}  #{condition.areaId.data}
+            </if>
+            <if test="condition.outputDate1!=null">
+                ${condition.groupOp}   ${condition.outputDate1.field}  ${condition.outputDate1.op}  #{condition.outputDate1.data}
+            </if>
+            <if test="condition.outputDate2!=null">
+                ${condition.groupOp}   ${condition.outputDate2.field}  ${condition.outputDate2.op}  #{condition.outputDate2.data}
+            </if>
+            <if test="condition.outputDate3!=null">
+                ${condition.groupOp}   ${condition.outputDate3.field}  ${condition.outputDate3.op}  #{condition.outputDate3.data}
+            </if>
+            <if test="condition.activeDate!=null">
+                ${condition.groupOp}   ${condition.activeDate.field}  ${condition.activeDate.op}  #{condition.activeDate.data}
+            </if>
+
+
+    </where>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="Card">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.goodsNumber!=null">
+                        , goodsNumber
+                    </if>
+                    <if test="selector.cardNumber!=null">
+                        , cardNumber
+                    </if>
+                    <if test="selector.password!=null">
+                        , password
+                    </if>
+                    <if test="selector.userId!=null">
+                        , userId
+                    </if>
+                    <if test="selector.status!=null">
+                        , status
+                    </if>
+                    <if test="selector.cardType!=null">
+                        , cardType
+                    </if>
+                    <if test="selector.endDate!=null">
+                        , endDate
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.areaId!=null">
+                        , areaId
+                    </if>
+                    <if test="selector.outputDate1!=null">
+                        , outputDate1
+                    </if>
+                    <if test="selector.outputDate2!=null">
+                        , outputDate2
+                    </if>
+                    <if test="selector.outputDate3!=null">
+                        , outputDate3
+                    </if>
+                    <if test="selector.activeDate!=null">
+                        , activeDate
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+        FROM zgk_card
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id like CONCAT('%', #{condition.id} , '%')
+            </if>
+            <if test="condition.goodsNumber!=null">
+                AND goodsNumber like CONCAT('%', #{condition.goodsNumber} , '%')
+            </if>
+            <if test="condition.cardNumber!=null">
+                AND cardNumber like CONCAT('%', #{condition.cardNumber} , '%')
+            </if>
+            <if test="condition.password!=null">
+                AND password like CONCAT('%', #{condition.password} , '%')
+            </if>
+            <if test="condition.userId!=null">
+                AND userId like CONCAT('%', #{condition.userId} , '%')
+            </if>
+            <if test="condition.status!=null">
+                AND status like CONCAT('%', #{condition.status} , '%')
+            </if>
+            <if test="condition.cardType!=null">
+                AND cardType like CONCAT('%', #{condition.cardType} , '%')
+            </if>
+            <if test="condition.endDate!=null">
+                AND endDate like CONCAT('%', #{condition.endDate} , '%')
+            </if>
+            <if test="condition.creator!=null">
+                AND creator like CONCAT('%', #{condition.creator} , '%')
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate like CONCAT('%', #{condition.createDate} , '%')
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier like CONCAT('%', #{condition.lastModifier} , '%')
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate like CONCAT('%', #{condition.lastModDate} , '%')
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId like CONCAT('%', #{condition.areaId} , '%')
+            </if>
+            <if test="condition.outputDate1!=null">
+                AND outputDate1 like CONCAT('%', #{condition.outputDate1} , '%')
+            </if>
+            <if test="condition.outputDate2!=null">
+                AND outputDate2 like CONCAT('%', #{condition.outputDate2} , '%')
+            </if>
+            <if test="condition.outputDate3!=null">
+                AND outputDate3 like CONCAT('%', #{condition.outputDate3} , '%')
+            </if>
+            <if test="condition.activeDate!=null">
+                AND activeDate like CONCAT('%', #{condition.activeDate} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+
+    <select id="queryList" parameterType="java.util.Map" resultType="Card">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                <if test="selector.id!=null">
+                    , id
+                </if>
+                <if test="selector.goodsNumber!=null">
+                    , goodsNumber
+                </if>
+                <if test="selector.cardNumber!=null">
+                    , cardNumber
+                </if>
+                <if test="selector.password!=null">
+                    , password
+                </if>
+                <if test="selector.userId!=null">
+                    , userId
+                </if>
+                <if test="selector.status!=null">
+                    , status
+                </if>
+                <if test="selector.cardType!=null">
+                    , cardType
+                </if>
+                <if test="selector.endDate!=null">
+                    , endDate
+                </if>
+                <if test="selector.creator!=null">
+                    , creator
+                </if>
+                <if test="selector.createDate!=null">
+                    , createDate
+                </if>
+                <if test="selector.lastModifier!=null">
+                    , lastModifier
+                </if>
+                <if test="selector.lastModDate!=null">
+                    , lastModDate
+                </if>
+                <if test="selector.areaId!=null">
+                    , areaId
+                </if>
+                <if test="selector.outputDate1!=null">
+                    , outputDate1
+                </if>
+                <if test="selector.outputDate2!=null">
+                    , outputDate2
+                </if>
+                <if test="selector.outputDate3!=null">
+                    , outputDate3
+                </if>
+                <if test="selector.activeDate!=null">
+                    , activeDate
+                </if>
+        </trim>
+    </if>
+<if test="selector==null">
+<include refid="Base_Column_List" />
+</if>
+        FROM zgk_card
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.goodsNumber!=null">
+                AND goodsNumber = #{condition.goodsNumber}
+            </if>
+            <if test="condition.cardNumber!=null">
+                AND cardNumber = #{condition.cardNumber}
+            </if>
+            <if test="condition.password!=null">
+                AND password = #{condition.password}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.cardType!=null">
+                AND cardType = #{condition.cardType}
+            </if>
+            <if test="condition.endDate!=null">
+                AND endDate = #{condition.endDate}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.outputDate1!=null">
+                AND outputDate1 = #{condition.outputDate1}
+            </if>
+            <if test="condition.outputDate2!=null">
+                AND outputDate2 = #{condition.outputDate2}
+            </if>
+            <if test="condition.outputDate3!=null">
+                AND outputDate3 = #{condition.outputDate3}
+            </if>
+            <if test="condition.activeDate!=null">
+                AND activeDate = #{condition.activeDate}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="Card">
+        SELECT
+        <if test="selector!=null">
+            <trim prefixOverrides=",">
+                    <if test="selector.id!=null">
+                        , id
+                    </if>
+                    <if test="selector.goodsNumber!=null">
+                        , goodsNumber
+                    </if>
+                    <if test="selector.cardNumber!=null">
+                        , cardNumber
+                    </if>
+                    <if test="selector.password!=null">
+                        , password
+                    </if>
+                    <if test="selector.userId!=null">
+                        , userId
+                    </if>
+                    <if test="selector.status!=null">
+                        , status
+                    </if>
+                    <if test="selector.cardType!=null">
+                        , cardType
+                    </if>
+                    <if test="selector.endDate!=null">
+                        , endDate
+                    </if>
+                    <if test="selector.creator!=null">
+                        , creator
+                    </if>
+                    <if test="selector.createDate!=null">
+                        , createDate
+                    </if>
+                    <if test="selector.lastModifier!=null">
+                        , lastModifier
+                    </if>
+                    <if test="selector.lastModDate!=null">
+                        , lastModDate
+                    </if>
+                    <if test="selector.areaId!=null">
+                        , areaId
+                    </if>
+                    <if test="selector.outputDate1!=null">
+                        , outputDate1
+                    </if>
+                    <if test="selector.outputDate2!=null">
+                        , outputDate2
+                    </if>
+                    <if test="selector.outputDate3!=null">
+                        , outputDate3
+                    </if>
+                    <if test="selector.activeDate!=null">
+                        , activeDate
+                    </if>
+            </trim>
+        </if>
+        <if test="selector==null">
+            <include refid="Base_Column_List" />
+        </if>
+        FROM zgk_card
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.goodsNumber!=null">
+                AND goodsNumber = #{condition.goodsNumber}
+            </if>
+            <if test="condition.cardNumber!=null">
+                AND cardNumber = #{condition.cardNumber}
+            </if>
+            <if test="condition.password!=null">
+                AND password = #{condition.password}
+            </if>
+            <if test="condition.userId!=null">
+                AND userId = #{condition.userId}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.cardType!=null">
+                AND cardType = #{condition.cardType}
+            </if>
+            <if test="condition.endDate!=null">
+                AND endDate = #{condition.endDate}
+            </if>
+            <if test="condition.creator!=null">
+                AND creator = #{condition.creator}
+            </if>
+            <if test="condition.createDate!=null">
+                AND createDate = #{condition.createDate}
+            </if>
+            <if test="condition.lastModifier!=null">
+                AND lastModifier = #{condition.lastModifier}
+            </if>
+            <if test="condition.lastModDate!=null">
+                AND lastModDate = #{condition.lastModDate}
+            </if>
+            <if test="condition.areaId!=null">
+                AND areaId = #{condition.areaId}
+            </if>
+            <if test="condition.outputDate1!=null">
+                AND outputDate1 = #{condition.outputDate1}
+            </if>
+            <if test="condition.outputDate2!=null">
+                AND outputDate2 = #{condition.outputDate2}
+            </if>
+            <if test="condition.outputDate3!=null">
+                AND outputDate3 = #{condition.outputDate3}
+            </if>
+            <if test="condition.activeDate!=null">
+                AND activeDate = #{condition.activeDate}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM zgk_card
+       <where>
+           <if test="id!=null">
+               ${groupOp} ${id.field} ${id.op}  #{id.data}
+           </if>
+           <if test="goodsNumber!=null">
+               ${groupOp} ${goodsNumber.field} ${goodsNumber.op}  #{goodsNumber.data}
+           </if>
+           <if test="cardNumber!=null">
+               ${groupOp} ${cardNumber.field} ${cardNumber.op}  #{cardNumber.data}
+           </if>
+           <if test="password!=null">
+               ${groupOp} ${password.field} ${password.op}  #{password.data}
+           </if>
+           <if test="userId!=null">
+               ${groupOp} ${userId.field} ${userId.op}  #{userId.data}
+           </if>
+           <if test="status!=null">
+               ${groupOp} ${status.field} ${status.op}  #{status.data}
+           </if>
+           <if test="cardType!=null">
+               ${groupOp} ${cardType.field} ${cardType.op}  #{cardType.data}
+           </if>
+           <if test="endDate!=null">
+               ${groupOp} ${endDate.field} ${endDate.op}  #{endDate.data}
+           </if>
+           <if test="creator!=null">
+               ${groupOp} ${creator.field} ${creator.op}  #{creator.data}
+           </if>
+           <if test="createDate!=null">
+               ${groupOp} ${createDate.field} ${createDate.op}  #{createDate.data}
+           </if>
+           <if test="lastModifier!=null">
+               ${groupOp} ${lastModifier.field} ${lastModifier.op}  #{lastModifier.data}
+           </if>
+           <if test="lastModDate!=null">
+               ${groupOp} ${lastModDate.field} ${lastModDate.op}  #{lastModDate.data}
+           </if>
+           <if test="areaId!=null">
+               ${groupOp} ${areaId.field} ${areaId.op}  #{areaId.data}
+           </if>
+           <if test="outputDate1!=null">
+               ${groupOp} ${outputDate1.field} ${outputDate1.op}  #{outputDate1.data}
+           </if>
+           <if test="outputDate2!=null">
+               ${groupOp} ${outputDate2.field} ${outputDate2.op}  #{outputDate2.data}
+           </if>
+           <if test="outputDate3!=null">
+               ${groupOp} ${outputDate3.field} ${outputDate3.op}  #{outputDate3.data}
+           </if>
+           <if test="activeDate!=null">
+               ${groupOp} ${activeDate.field} ${activeDate.op}  #{activeDate.data}
+           </if>
+
+       </where>
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM zgk_card
+    </select>
+
+</mapper>
+

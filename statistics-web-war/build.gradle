@@ -26,6 +26,7 @@ compile ("cn.thinkjoy.mock:mock-scan:$mockVersion"){
 
 
     compile project(':statistics-service')
+    compile project(':agents-service')
 
 }
 

@@ -34,4 +34,11 @@ allprojects {
 
     k12systemVersion = "0.0.1-SNAPSHOT"
 
+    springTestVersion = "4.1.0.RELEASE"
+
+    mysqlConnectorVersion= "5.1.26"
+
+    thinkjoyCommonVersionNew = "0.1.43-SNAPSHOT"
+    thinkjoyCloudstackVersionNew = "0.0.32-SNAPSHOT"
+
 }
