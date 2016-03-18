@@ -12,7 +12,7 @@ dependencies {
 //                exclude group:'cn.thinkjoy.cloudstack',module: 'cs-spring-redis'
 //            }
 
-    compile "cn.thinkjoy.common:thinkjoy-biz-common:$thinkjoyCommonVersionNew"
+    compile "cn.thinkjoy.common:thinkjoy-biz-common:$thinkjoyCommonVersion"
     compile "org.freemarker:freemarker:$freemarkerVersion"
     compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
     compile "com.google.guava:guava:17.0"
@@ -20,7 +20,7 @@ dependencies {
     compile "org.springframework:spring-core:$springVersion"
     compile "org.springframework:spring-tx:$springVersion"
     compile "org.springframework:spring-jdbc:$springVersion"
-    compile "cn.thinkjoy.cloudstack:cs-spring-zkconfig:$thinkjoyCloudstackVersionNew"
+    compile "cn.thinkjoy.cloudstack:cs-spring-zkconfig:$thinkjoyCloudstackVersion"
     compile "org.mybatis:mybatis-spring:1.2.4"
     compile "com.alibaba:dubbo:2.5.3"
     compile "com.alibaba:druid:1.0.7"
