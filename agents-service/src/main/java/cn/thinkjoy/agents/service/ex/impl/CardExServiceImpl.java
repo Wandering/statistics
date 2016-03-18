@@ -9,9 +9,9 @@ package cn.thinkjoy.agents.service.ex.impl;
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
 import cn.thinkjoy.agents.dao.ex.ICardExDAO;
 import cn.thinkjoy.agents.service.ex.ICardExService;
+import cn.thinkjoy.agents.service.ex.common.AgentsConstant;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.impl.BaseExService;
-import cn.thinkjoy.common.domain.SearchField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ import java.util.Map;
 
 @Service("CardExServiceImpl")
 @Scope("prototype")
-public class CardServiceExImpl extends BaseExService implements ICardExService {
+public class CardExServiceImpl extends BaseExService implements ICardExService {
     @Autowired
     private ICardExDAO cardExDAO;
     @Autowired
@@ -54,10 +54,23 @@ public class CardServiceExImpl extends BaseExService implements ICardExService {
      */
     @Override
     public boolean goodsOutput(Map<String, Object> condition) {
-        if(condition.containsKey("userArea")){
-            return getDao().output(condition)>0;
+        switch (AgentsInfoUtils.getAgentsRank()){
+            case AgentsConstant.RANKONE:
+                condition.put("outputDate1",System.currentTimeMillis());
+                break;
+            case AgentsConstant.RANKTWO:
+                condition.put("outputDate2",System.currentTimeMillis());
+                break;
+            case AgentsConstant.RANKTHREE:
+                condition.put("outputDate3",System.currentTimeMillis());
+                break;
+            case AgentsConstant.RANKERROR:
+                break;
+            default:
+                break;
         }
-        return false;
+        conditionHandler(condition);
+        return getDao().output(condition)>0;
     }
 
 
@@ -74,7 +87,8 @@ public class CardServiceExImpl extends BaseExService implements ICardExService {
 
     @Override
     protected void conditionHandler(Map<String, Object> condition) {
-        super.conditionHandler(condition);
+        condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
+        condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
     }
 
 
