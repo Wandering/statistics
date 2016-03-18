@@ -300,13 +300,13 @@ public class AgentsInfoUtils {
                     //判断当前位数，不够6位的后面补0
                     area = addZeroForNum(goosNumber, 6);
                     //市表中查
-                    areaName = getAreaExDAO().queryCityById(area);
+                    areaName = AreaCacheUtils.getAreaCache("city",area);
                     break;
                 case 3:
                 case 4:
                     area = addZeroForNum(goosNumber, 6);
                     //区县表中查
-                    areaName = getAreaExDAO().queryCountyById(area);
+                    areaName = AreaCacheUtils.getAreaCache("county", area);
                     break;
                 case 5:
                 case 6:
@@ -314,7 +314,7 @@ public class AgentsInfoUtils {
                     break;
                 default:
                     //默认走省份表
-                    areaName = getAreaExDAO().queryProvinceById(area);
+                    areaName = AreaCacheUtils.getAreaCache("province", area);
                     break;
             }
             map.put("flow", areaName);
@@ -351,7 +351,37 @@ public class AgentsInfoUtils {
         }
         return areaNames;
     }
-
+    /**
+     * 获取用户当前所在区域的下一级列表
+     *
+     * @return
+     */
+    public static List<Map<String, Object>> getVIPUserAreaLine(Map<String,Object> map) {
+        List<Map<String, Object>> areaNames = null;
+        String userArea = getAgentsUserArea();
+        if(map.containsKey("area")) {//一切建立在area！=null
+            switch (getAgentsType()) {
+                case 2:
+                    //市列
+                    map.put("cityId", addZeroForNum(userArea + map.get("area"), 6));
+                    break;
+                case 3:
+                case 4:
+                    //区县列
+                    map.put("countyId", addZeroForNum(userArea + map.get("area"), 6));
+                    break;
+                case 5:
+                case 6:
+                case 8:
+                    break;
+                default:
+                    //默认省列
+                    map.put("provinceId", addZeroForNum(userArea + map.get("area"), 6));
+                    break;
+            }
+        }
+        return areaNames;
+    }
     /**
      * 批量模式
      *
