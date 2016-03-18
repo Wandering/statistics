@@ -179,7 +179,7 @@ public class MenuController {
         menuPojo.setMenuIcon(menu.getMenuIcon());
         menuPojo.setMenuCode(menu.getMenuCode());
         menuPojo.setDescription(menu.getDescription());
-        menuPojo.setMenuId(menu.getId());
+        menuPojo.setMenuId(Long.valueOf(menu.getId().toString()));
         menuPojo.setSeqSort(menu.getSeqSort());
         return menuPojo;
     }

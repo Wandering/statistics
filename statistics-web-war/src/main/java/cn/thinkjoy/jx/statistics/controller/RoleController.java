@@ -241,7 +241,7 @@ public class RoleController {
             throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
         }
         RolesPojo rolesPojo = new RolesPojo();
-        rolesPojo.setRolesId(roles.getId());
+        rolesPojo.setRolesId(Long.valueOf(roles.getId().toString()));
         rolesPojo.setRoleCode(roles.getRoleCode());
         rolesPojo.setRoleName(roles.getRoleName());
         rolesPojo.setDescription(roles.getDescription());

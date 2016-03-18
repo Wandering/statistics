@@ -207,7 +207,7 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
 			 */
 			onlineExpert: function() {
 				Nav.changeSection('tmpl_3');
-				require.async(['static/scripts/index/userAction/userActionOnlineExpertChart'], function(pastRecordsDebt) {
+				require.async(['./userAction/userActionOnlineExpertChart'], function(pastRecordsDebt) {
 					pastRecordsDebt();
 				});
 			},
@@ -217,7 +217,7 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
 			 */
 			teacherFaceToFace: function() {
 				Nav.changeSection('tmpl_3');
-				require.async(['static/scripts/index/userAction/userActionTeacherFaceToFaceChart'], function(pastRecordsDebt) {
+				require.async(['./userAction/userActionTeacherFaceToFaceChart'], function(pastRecordsDebt) {
 					pastRecordsDebt();
 				});
 			},

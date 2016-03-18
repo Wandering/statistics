@@ -40,8 +40,6 @@ seajs.config({alias:{
   "static/scripts/index/userActiveClass/userActiveClassTable": "/dist/static/scripts/index/userActiveClass/userActiveClassTable",
   "static/scripts/index/userActiveClass/userActiveClassChart": "/dist/static/scripts/index/userActiveClass/userActiveClassChart",
   "static/scripts/index/userAction/userActionFindTutorChart": "/dist/static/scripts/index/userAction/userActionFindTutorChart",
-  "static/scripts/index/userAction/userActionOnlineExpertChart": "/dist/static/scripts/index/userAction/userActionOnlineExpertChart",
-  "static/scripts/index/userAction/userActionTeacherFaceToFaceChart": "/dist/static/scripts/index/userAction/userActionTeacherFaceToFaceChart",
   "static/scripts/index/userSendClass/userSendClassTable": "/dist/static/scripts/index/userSendClass/userSendClassTable",
   "static/scripts/index/userSendClass/userSendClassChart": "/dist/static/scripts/index/userSendClass/userSendClassChart",
   "static/scripts/index/userLogin/userLoginTable": "/dist/static/scripts/index/userLogin/userLoginTable",
