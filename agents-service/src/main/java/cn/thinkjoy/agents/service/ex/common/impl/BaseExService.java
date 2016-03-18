@@ -77,7 +77,6 @@ public abstract class BaseExService implements IBaseExService {
      */
     protected void mainDataHandler(List list){}
     protected void conditionHandler(Map<String,Object> condition){
-        condition.put("groupOp", "and");
     }
 
 

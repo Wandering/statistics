@@ -4,17 +4,16 @@ import cn.thinkjoy.agents.service.ex.common.IBaseExService;
 import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by admin on 2016/3/16.
  */
-public class BaseCommonController <T extends IBaseExService>{
+public class BaseCommonController<T extends IBaseExService>{
     private static String DEFAULTORDERBY="id";
-    public BizData4Page doPage(Integer page,Integer rows){
-
-        return getService().queryPageByDataPerm(getCondition(),page,rows,getDefaultOrderBy(), getSqlOrder(),getSelector());
+    public BizData4Page doPage(Integer page,Integer rows,Map<String,Object> condition){
+        enhanceCondition(condition);
+        return getService().queryPageByDataPerm(condition,page,rows,getDefaultOrderBy(), getSqlOrder(),getSelector());
     }
 
     protected T getService(){
@@ -25,8 +24,7 @@ public class BaseCommonController <T extends IBaseExService>{
         return null;
     }
 
-    protected Map<String,Object> getCondition(){
-        return new HashMap<>();
+    protected void enhanceCondition(Map<String,Object> condition){
     }
 
     protected SqlOrderEnum getSqlOrder(){

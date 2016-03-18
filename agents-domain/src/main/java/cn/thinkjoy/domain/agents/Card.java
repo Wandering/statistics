@@ -11,13 +11,11 @@
 
 package cn.thinkjoy.domain.agents;
 
+import cn.thinkjoy.common.domain.CreateBaseDomain;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import cn.thinkjoy.common.domain.CreateBaseDomain;
-
-import java.util.*;
 
 public class Card extends CreateBaseDomain<Long>{
     /** 货号 */
@@ -124,7 +122,7 @@ public class Card extends CreateBaseDomain<Long>{
     }
 
 	public String toString() {
-		return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
+		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("GoodsNumber",getGoodsNumber())
 			.append("CardNumber",getCardNumber())

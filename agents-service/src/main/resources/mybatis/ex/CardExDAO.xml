@@ -90,20 +90,20 @@
                 and id in (#{condition.whereSql})
             </if>
             <!--未出库查询-->
-            <if test="condition.output!=null">
-                ${condition.groupOp} goodsNumber=#{condition.userArea}
+            <if test="condition.notoutput!=null">
+                and goodsNumber=#{condition.userArea}
             </if>
             <!--已出库查询-->
-            <if test="condition.notoutput!=null">
-                ${condition.groupOp} goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
+            <if test="condition.output!=null">
+                and goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
             <if test="condition.flow!=null">
-                ${condition.groupOp} goodsNumber LIKE CONCAT(#{condition.userArea} , #{condition.flow}, '%')
+                and goodsNumber LIKE CONCAT(#{condition.userArea} , #{condition.flow}, '%')
             </if>
             <!--卡号查询-->
             <if test="condition.cardNumber!=null">
-                ${condition.groupOp} cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
+                and cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
             </if>
         </where>
         <if test="orderBy!=null">
@@ -123,19 +123,19 @@
             </if>
             <!--未出库查询-->
             <if test="output!=null">
-                ${groupOp} goodsNumber=#{userArea}
+                and goodsNumber=#{userArea}
             </if>
             <!--已出库查询-->
             <if test="notoutput!=null">
-                ${groupOp} goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
+                and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
             <if test="flow!=null">
-                ${groupOp} goodsNumber LIKE CONCAT(#{userArea} , #{flow}, '%')
+                and goodsNumber LIKE CONCAT(#{userArea} , #{flow}, '%')
             </if>
             <!--卡号查询-->
             <if test="cardNumber!=null">
-                ${groupOp} cardNumber LIKE CONCAT('%', #{cardNumber} , '%')
+                and cardNumber LIKE CONCAT('%', #{cardNumber} , '%')
             </if>
         </where>
     </select>
@@ -162,11 +162,9 @@
             </if>
         </trim>
         <where>
+            <!--用户可操作范围-->
             <if test="userArea != null">
                 and goodsNumber = #{userArea}
-            </if>
-            <if test="idlist != null">
-                and id in (#{idlist})
             </if>
             <if test="idlist != null">
                 and id in (#{idlist})

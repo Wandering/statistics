@@ -3,25 +3,33 @@
 
 <mapper namespace="cn.thinkjoy.agents.dao.ex.IAreaExDAO">
 
-        <select id="queryCity" resultType="java.util.Map" >
+    <select id="queryCity" resultType="java.util.Map">
             select id,name from zgk_city;
         </select>
-        <select id="queryCityById" resultType="java.lang.String">
+    <select id="queryCityById" resultType="java.lang.String">
             select name from zgk_city WHERE id=#{id};
         </select>
 
-        <select id="queryCounty" resultType="java.util.Map">
+    <select id="queryCounty" resultType="java.util.Map">
            select id,name from zgk_county;
         </select>
-        <select id="queryCountyById" resultType="java.lang.String">
+    <select id="queryCountyById" resultType="java.lang.String">
             select name from zgk_county WHERE id=#{id};
         </select>
 
-        <select id="queryProvince" resultType="java.util.Map">
+    <select id="queryProvince" resultType="java.util.Map">
             select id,name from zgk_county;
         </select>
-        <select id="queryProvinceById" resultType="java.lang.String">
-            select name from zgk_county WHERE id=#{id};
+    <select id="queryProvinceById" resultType="java.lang.String">
+            select name from zgk_county WHERE id = #{id};
         </select>
-
+    <select id="likeProvinceById" resultType="java.util.Map">
+        select id,left(id,2) as simpleCode,name from zgk_county WHERE id like #{id};
+    </select>
+    <select id="likeCountyById" resultType="java.util.Map">
+        select id,right(id,2) as simpleCode,name from zgk_county WHERE id like #{id};
+    </select>
+    <select id="likeCityById" resultType="java.util.Map">
+        select id,substring(id,3,2) as simpleCode,name from zgk_city WHERE id LIKE #{id};
+    </select>
 </mapper>

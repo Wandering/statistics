@@ -10,6 +10,7 @@ public interface AgentsConstant {
     public static int RANKONE=1;
     public static int RANKTWO=2;
     public static int RANKTHREE=4;
+    public static int RANKERROR=-1;
 
     /**
      * 区域等级
@@ -17,6 +18,7 @@ public interface AgentsConstant {
     public static String AREAONE="1";
     public static String AREATWO="2";
     public static String AREATHREE="4";
+    public static String AREAERROR="-1";
 
     /**
      * 出库状态

@@ -23,11 +23,11 @@ public interface ICardExDAO{
          * @return
          */
         public List<Map<String,Object>> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
-                                 @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+                                                  @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
 
 
         public List<Map<String,Object>>  queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
-                                 @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector")Map<String, Object> selector);
+                                                   @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector") Map<String, Object> selector);
 
         public int count(Map<String, Object> condition);
 
