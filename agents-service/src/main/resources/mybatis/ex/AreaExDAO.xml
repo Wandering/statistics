@@ -18,13 +18,13 @@
         </select>
 
     <select id="queryProvince" resultType="java.util.Map">
-            select id,name from zgk_county;
+            select id,name from zgk_province;
         </select>
     <select id="queryProvinceById" resultType="java.lang.String">
-            select name from zgk_county WHERE id = #{id};
+            select name from zgk_province WHERE id = #{id};
         </select>
     <select id="likeProvinceById" resultType="java.util.Map">
-        select id,left(id,2) as simpleCode,name from zgk_county WHERE id like #{id};
+        select id,left(id,2) as simpleCode,name from zgk_province WHERE id like #{id};
     </select>
     <select id="likeCountyById" resultType="java.util.Map">
         select id,right(id,2) as simpleCode,name from zgk_county WHERE id like #{id};

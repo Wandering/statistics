@@ -14,7 +14,7 @@ public interface IBaseExService {
     public BizData4Page queryPageByDataPerm(Map<String, Object> condition, int page, int rows, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
     public BizData4Page queryPageByDataPerm(BizData4Page bizData4Page, String orderBy, SqlOrderEnum sqlOrderEnum, Map<String, Object> selector);
 
-    public ICardExDAO getDao();
+
 
     public  List<Map<String,Object>> queryPage(Map<String, Object> condition, int offset,
                                                int rows, String orderBy, String sortBy);
