@@ -2,6 +2,7 @@ package cn.thinkjoy.agents.service.ex.common;
 
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
@@ -363,12 +364,12 @@ public class AgentsInfoUtils {
             switch (getAgentsType()) {
                 case 2:
                     //市列
-                    map.put("cityId", addZeroForNum(userArea + map.get("area"), 6));
+                    map.put("cityId", AreaCacheUtils.getAreaCache("city",addZeroForNum(userArea + map.get("area"), 6)));
                     break;
                 case 3:
                 case 4:
                     //区县列
-                    map.put("countyId", addZeroForNum(userArea + map.get("area"), 6));
+                    map.put("countyId", AreaCacheUtils.getAreaCache("county",addZeroForNum(userArea + map.get("area"), 6)));
                     break;
                 case 5:
                 case 6:
@@ -376,7 +377,7 @@ public class AgentsInfoUtils {
                     break;
                 default:
                     //默认省列
-                    map.put("provinceId", addZeroForNum(userArea + map.get("area"), 6));
+                    map.put("provinceId", AreaCacheUtils.getAreaCache("province",addZeroForNum(userArea + map.get("area"), 6)));
                     break;
             }
         }
@@ -441,17 +442,27 @@ public class AgentsInfoUtils {
         return str;
     }
 
+    /**
+     * 追加0到字符串后面
+     * @param str
+     * @param strLength
+     * @return
+     */
     public static String addZeroForNum(String str, int strLength) {
         return addStrForNum(str, strLength, "0");
     }
 
     private static IAreaExDAO areaExDAO;
 
+    private IAreaExDAO autoAreaExDao;
+
     public static IAreaExDAO getAreaExDAO() {
         return areaExDAO;
     }
 
-    public static void setAreaExDAO(IAreaExDAO areaExDAO) {
-        AgentsInfoUtils.areaExDAO = areaExDAO;
+    @PostConstruct
+    public void setAreaExDAO() {
+        AgentsInfoUtils.areaExDAO = autoAreaExDao;
     }
+
 }
