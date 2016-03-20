@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/admin")
-public class AgentsController extends BaseCommonController {
+public class AgentsController extends BaseCommonController <ICardExService>{
 
     @Autowired
     private ICardService cardService;
@@ -66,7 +66,7 @@ public class AgentsController extends BaseCommonController {
     }
 
     @Override
-    protected IBaseExService getService() {
+    protected ICardExService getService() {
         return cardExService;
     }
 

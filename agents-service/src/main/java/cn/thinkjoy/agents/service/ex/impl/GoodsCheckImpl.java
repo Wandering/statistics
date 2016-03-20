@@ -55,6 +55,6 @@ public class GoodsCheckImpl implements IGoodsCheck {
         }
 
 
-        System.out.println("test");
+//        System.out.println("test");
     }
 }
