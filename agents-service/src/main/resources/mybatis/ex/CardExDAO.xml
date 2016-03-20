@@ -169,9 +169,35 @@
             <if test="idlist != null">
                 and id in (#{idlist})
             </if>
+            <if test="cardNumber != null">
+                and cardNumber = #{cardNumber}
+            </if>
         </where>
         <if test="rows!=null">
             limit ${rows}
         </if>
     </update>
+
+    <!-- 更新 -->
+    <update id="active" parameterType="java.util.Map">
+        UPDATE zgk_card
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="activeDate!=null">
+                activeDate = CONCAT('',#{activeDate}),
+            </if>
+            <if test="errorStatus!=null">
+                errorStatus = #{errorStatus},
+            </if>
+        </trim>
+        <where>
+                cardNumber = #{cardNumber}
+        </where>
+    </update>
+
+    <select id="selectByUid" resultType="java.util.Map">
+        SELECT t.provinceId,t.cityId,t.countyId FROM zgk_user_info t WHERE t.id=#{uid}
+    </select>
+    <select id="selectCardByUid" resultType="java.lang.String">
+        SELECT t.goodsNumber as goodsNumber FROM zgk_card t WHERE t.cardNumber=#{cardNumber}
+    </select>
 </mapper>

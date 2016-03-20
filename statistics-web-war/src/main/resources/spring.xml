@@ -19,6 +19,8 @@
     <import resource="classpath:dubbo/statistics-dubbo-consumer.xml" />
     <import resource="classpath:dubbo/statistics-dubbo-provider.xml"/>
 
+    <import resource="classpath:dubbo/agents-dubbo-provider.xml"/>
+
     <bean id="freemarkerConfig"
           class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
         <property name="templateLoaderPath" value="/WEB-INF/view/" />
