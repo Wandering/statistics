@@ -22,7 +22,7 @@ public class AreaCacheUtils {
 
     @Autowired
     private IAreaExDAO autoAreaExDAO;
-    private static AreaCacheUtils areaCacheUtils;
+
     private static IAreaExDAO areaExDAO;
 
     private static LoadingCache<String,Map<String,Object>> areaCache
@@ -83,9 +83,6 @@ public class AreaCacheUtils {
                     }
             );
 
-    public static IAreaExDAO getAreaExDAO() {
-        return areaExDAO;
-    }
     @PostConstruct
     public void initAreaExDAO() {
         AreaCacheUtils.areaExDAO = autoAreaExDAO;

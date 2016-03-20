@@ -5,6 +5,7 @@ import cn.thinkjoy.agents.dao.ex.ICardExDAO;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.AreaCacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Map;
  * Created by admin on 2016/3/19.
  */
 @Service("GoodsCheckImpl")
+@Scope("prototype")
 public class GoodsCheckImpl implements IGoodsCheck {
     @Autowired
     private ICardExDAO cardExDAO;
