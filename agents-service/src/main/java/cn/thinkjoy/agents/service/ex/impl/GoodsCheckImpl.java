@@ -3,7 +3,6 @@ package cn.thinkjoy.agents.service.ex.impl;
 import cn.thinkjoy.agents.IGoodsCheck;
 import cn.thinkjoy.agents.dao.ex.ICardExDAO;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
-import cn.thinkjoy.agents.service.ex.common.AreaCacheUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;

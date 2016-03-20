@@ -21,17 +21,8 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class AgentsController extends BaseCommonController <ICardExService>{
-
-    @Autowired
-    private ICardService cardService;
     @Autowired
     private ICardExService cardExService;
-
-//    @ResponseBody
-//    @RequestMapping(value = "/agentlist")
-//    public Object test(){
-//        return cardExService.queryPageByDataPerm(new HashMap<String, Object>(),1,10,"id", SqlOrderEnum.DESC,null);
-//    }
 
     /**
      *  获取当前用户货物信息

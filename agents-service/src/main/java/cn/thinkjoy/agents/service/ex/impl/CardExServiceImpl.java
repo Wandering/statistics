@@ -6,7 +6,6 @@
  */
 package cn.thinkjoy.agents.service.ex.impl;
 
-import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
 import cn.thinkjoy.agents.dao.ex.ICardExDAO;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsConstant;
