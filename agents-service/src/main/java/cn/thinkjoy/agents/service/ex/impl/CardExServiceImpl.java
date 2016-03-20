@@ -79,9 +79,8 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
 
     @Override
     protected void mainDataHandler(List list) {
-        List<Map<String,Object>> listMap=(List<Map<String,Object>>)list;
-        AgentsInfoUtils.setGoodsStatusAndStorageDate(listMap);
-        AgentsInfoUtils.setFlow(listMap);
+        AgentsInfoUtils.setGoodsStatusAndStorageDate(list);
+        AgentsInfoUtils.setFlow(list);
     }
 
     @Override

@@ -53,8 +53,5 @@ public class GoodsCheckImpl implements IGoodsCheck {
             condition.put("cardNumber",cardNumber);
             cardExDAO.active(condition);
         }
-
-
-//        System.out.println("test");
     }
 }

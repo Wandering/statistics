@@ -33,5 +33,4 @@ public class AreaExServiceImpl implements IAreaExService {
         return AgentsInfoUtils.getFlowNextArea();
     }
 
-
 }

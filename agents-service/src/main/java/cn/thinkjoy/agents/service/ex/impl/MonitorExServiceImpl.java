@@ -35,10 +35,6 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
     @Autowired
     IMonitorExDAO monitorExDAO;
 
-    @Autowired
-    private IAreaExDAO areaExDAO;
-
-
     @Override
     public IMonitorExDAO getDao() {
         return monitorExDAO ;
