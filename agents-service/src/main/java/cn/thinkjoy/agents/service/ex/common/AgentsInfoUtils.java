@@ -302,12 +302,12 @@ public class AgentsInfoUtils {
         switch (getAgentsType()) {
             case 2:
                 //市表中查
-                areaNames = getAreaExDAO().likeCityById(addStrForNum(userArea, 6, "_"));
+                areaNames = areaExDAO.likeCityById(addStrForNum(userArea, 6, "_"));
                 break;
             case 3:
             case 4:
                 //区县表中查
-                areaNames = getAreaExDAO().likeCountyById(addStrForNum(userArea, 6, "_"));
+                areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
             case 5:
             case 6:
@@ -424,12 +424,11 @@ public class AgentsInfoUtils {
 
     private IAreaExDAO autoAreaExDao;
 
-    public static IAreaExDAO getAreaExDAO() {
-        return areaExDAO;
-    }
-
+    /**
+     * 自动给工具类的AreaExDao赋值，Spring调用
+     */
     @PostConstruct
-    public void setAreaExDAO() {
+    public void initAreaExDAO() {
         AgentsInfoUtils.areaExDAO = autoAreaExDao;
     }
 

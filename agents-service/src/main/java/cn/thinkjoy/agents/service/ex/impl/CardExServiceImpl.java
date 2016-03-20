@@ -25,8 +25,6 @@ import java.util.Map;
 public class CardExServiceImpl extends BaseExService implements ICardExService {
     @Autowired
     private ICardExDAO cardExDAO;
-    @Autowired
-    private IAreaExDAO areaExDAO;
     @Override
     public ICardExDAO getDao() {
         return cardExDAO;
