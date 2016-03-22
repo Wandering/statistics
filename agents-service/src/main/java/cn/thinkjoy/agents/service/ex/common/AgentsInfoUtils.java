@@ -2,6 +2,7 @@ package cn.thinkjoy.agents.service.ex.common;
 
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +111,10 @@ public class AgentsInfoUtils {
         return mockAgents.getUserArea();
     }
 
+
+    public static String getAgentsUserAreaId(){
+        return mockAgents.getAreaId();
+    }
     /**
      * 判定代理商所在区域
      * String["区域级别"，"区域代码"]
@@ -124,58 +129,22 @@ public class AgentsInfoUtils {
         }else{
             switch (userArea.length()){
                 case 2:
-                    areaRank="1";
+                    areaRank=AgentsConstant.AREAONE;
                     break;
                 case 4:
-                    areaRank="2";
+                    areaRank=AgentsConstant.AREATWO;
                     break;
                 case 6:
-                    areaRank="4";
+                    areaRank=AgentsConstant.AREATHREE;
                     break;
                 default:
-                    areaRank="-1";
+                    areaRank=AgentsConstant.AREAERROR;
                     break;
             }
         }
-        return new String[]{areaRank, mockAgents.getAreaId()};
+        return new String[]{areaRank,getAgentsUserAreaId()};
     }
 
-    /**
-     * 组合代理商虚拟货号
-     * 第1级代理商+省级取前两位1+1=2
-     * 第1级代理商+市级取中两位1+2=3
-     * 第1级代理商+区县级取后两位1+4=5
-     * 第2级代理商+市级取中两位2+2=4
-     * 第2级代理商+区县级取后两位2+4=6
-     * 第3级代理商+区县级取后两位4+4=8
-     *
-     * @return
-     */
-    public static String getAgentsVirtualItem() {
-        String VirtualNumber = "110000";
-        String[] area = getAgentsAreaCode();
-        switch (getAgentsType()) {
-            //取前两位
-            case 2:
-                VirtualNumber = area[1].substring(0, 2) + "____";
-                break;
-
-            //取中两位
-            case 3:
-            case 4:
-                VirtualNumber = "__" + area[1].substring(2, 4) + "__";
-                break;
-            //取后两位
-            case 5:
-            case 6:
-            case 8:
-                VirtualNumber = "____" + area[1].substring(4, 6);
-                break;
-            default:
-                break;
-        }
-        return VirtualNumber;
-    }
 
     /**
      * 获取代理商类型
@@ -300,13 +269,13 @@ public class AgentsInfoUtils {
                     //判断当前位数，不够6位的后面补0
                     area = addZeroForNum(goosNumber, 6);
                     //市表中查
-                    areaName = getAreaExDAO().queryCityById(area);
+                    areaName = AreaCacheUtils.getAreaCache("city",area);
                     break;
                 case 3:
                 case 4:
                     area = addZeroForNum(goosNumber, 6);
                     //区县表中查
-                    areaName = getAreaExDAO().queryCountyById(area);
+                    areaName = AreaCacheUtils.getAreaCache("county", area);
                     break;
                 case 5:
                 case 6:
@@ -314,7 +283,7 @@ public class AgentsInfoUtils {
                     break;
                 default:
                     //默认走省份表
-                    areaName = getAreaExDAO().queryProvinceById(area);
+                    areaName = AreaCacheUtils.getAreaCache("province", area);
                     break;
             }
             map.put("flow", areaName);
@@ -333,12 +302,12 @@ public class AgentsInfoUtils {
         switch (getAgentsType()) {
             case 2:
                 //市表中查
-                areaNames = getAreaExDAO().likeCityById(addStrForNum(userArea, 6, "_"));
+                areaNames = areaExDAO.likeCityById(addStrForNum(userArea, 6, "_"));
                 break;
             case 3:
             case 4:
                 //区县表中查
-                areaNames = getAreaExDAO().likeCountyById(addStrForNum(userArea, 6, "_"));
+                areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
             case 5:
             case 6:
@@ -351,7 +320,37 @@ public class AgentsInfoUtils {
         }
         return areaNames;
     }
-
+    /**
+     * 获取用户当前所在区域的下一级列表
+     *
+     * @return
+     */
+    public static List<Map<String, Object>> getVIPUserAreaLine(Map<String,Object> map) {
+        List<Map<String, Object>> areaNames = null;
+        String userArea = getAgentsUserArea();
+        if(map.containsKey("area")) {//一切建立在area！=null
+            switch (getAgentsType()) {
+                case 2:
+                    //市列
+                    map.put("cityId", AreaCacheUtils.getAreaCache("city",addZeroForNum(userArea + map.get("area"), 6)));
+                    break;
+                case 3:
+                case 4:
+                    //区县列
+                    map.put("countyId", AreaCacheUtils.getAreaCache("county",addZeroForNum(userArea + map.get("area"), 6)));
+                    break;
+                case 5:
+                case 6:
+                case 8:
+                    break;
+                default:
+                    //默认省列
+                    map.put("provinceId", AreaCacheUtils.getAreaCache("province",addZeroForNum(userArea + map.get("area"), 6)));
+                    break;
+            }
+        }
+        return areaNames;
+    }
     /**
      * 批量模式
      *
@@ -411,17 +410,26 @@ public class AgentsInfoUtils {
         return str;
     }
 
+    /**
+     * 追加0到字符串后面
+     * @param str
+     * @param strLength
+     * @return
+     */
     public static String addZeroForNum(String str, int strLength) {
         return addStrForNum(str, strLength, "0");
     }
 
     private static IAreaExDAO areaExDAO;
 
-    public static IAreaExDAO getAreaExDAO() {
-        return areaExDAO;
+    private IAreaExDAO autoAreaExDao;
+
+    /**
+     * 自动给工具类的AreaExDao赋值，Spring调用
+     */
+    @PostConstruct
+    public void initAreaExDAO() {
+        AgentsInfoUtils.areaExDAO = autoAreaExDao;
     }
 
-    public static void setAreaExDAO(IAreaExDAO areaExDAO) {
-        AgentsInfoUtils.areaExDAO = areaExDAO;
-    }
 }

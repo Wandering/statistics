@@ -6,30 +6,18 @@
  */
 package cn.thinkjoy.agents.dao.ex;
 
+import cn.thinkjoy.agents.dao.ex.common.BaseCommonExDAO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
 
 
-public interface ICardExDAO{
-        /**
-         * 增加排序支持
-         * @param condition
-         * @param offset
-         * @param rows
-         * @param orderBy
-         * @param sortBy
-         * @return
-         */
-        public List<Map<String,Object>> queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
-                                                  @Param("orderBy") String orderBy, @Param("sortBy") String sortBy);
+public interface ICardExDAO extends BaseCommonExDAO{
 
-
-        public List<Map<String,Object>>  queryPage(@Param("condition") Map<String, Object> condition, @Param("offset") int offset, @Param("rows") int rows,
-                                                   @Param("orderBy") String orderBy, @Param("sortBy") String sortBy, @Param("selector") Map<String, Object> selector);
-
-        public int count(Map<String, Object> condition);
 
         public int output(Map<String, Object> condition);
+        public int active(Map<String, Object> condition);
+        public Map<String,Object> selectByUid(String uid);
+        public String selectCardByUid(String cardNumber);
 }

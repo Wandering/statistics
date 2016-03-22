@@ -45,5 +45,4 @@
     <import resource="classpath:spring-datasource.xml"/>
     <!--默认的redis配置，启动时会建立连接-->
     <import resource="classpath*:spring-redis.xml"/>
-
 </beans>

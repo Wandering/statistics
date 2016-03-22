@@ -6,11 +6,12 @@
  */
 package cn.thinkjoy.agents.service.ex.impl;
 
-import cn.thinkjoy.agents.dao.ex.ICardExDAO;
-import cn.thinkjoy.agents.service.ex.ICardExService;
-import cn.thinkjoy.agents.service.ex.common.AgentsConstant;
+import cn.thinkjoy.agents.dao.ex.IMonitorExDAO;
+import cn.thinkjoy.agents.service.ex.IMonitorExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
+import cn.thinkjoy.agents.service.ex.common.AreaCacheUtils;
 import cn.thinkjoy.agents.service.ex.common.impl.BaseExService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -19,14 +20,15 @@ import java.util.List;
 import java.util.Map;
 
 
-@Service("CardExServiceImpl")
+@Service("MonitorExServiceImpl")
 @Scope("prototype")
-public class CardExServiceImpl extends BaseExService implements ICardExService {
+public class MonitorExServiceImpl extends BaseExService implements IMonitorExService {
     @Autowired
-    private ICardExDAO cardExDAO;
+    IMonitorExDAO monitorExDAO;
+
     @Override
-    public ICardExDAO getDao() {
-        return cardExDAO;
+    public IMonitorExDAO getDao() {
+        return monitorExDAO ;
     }
 
     @Override
@@ -44,48 +46,44 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
         return getDao().count(condition);
     }
 
-
-    /**
-     * 出库操作
-     * @return
-     */
-    @Override
-    public boolean goodsOutput(Map<String, Object> condition) {
-        switch (AgentsInfoUtils.getAgentsRank()){
-            case AgentsConstant.RANKONE:
-                condition.put("outputDate1",System.currentTimeMillis());
-                break;
-            case AgentsConstant.RANKTWO:
-                condition.put("outputDate2",System.currentTimeMillis());
-                break;
-            case AgentsConstant.RANKTHREE:
-                condition.put("outputDate3",System.currentTimeMillis());
-                break;
-            case AgentsConstant.RANKERROR:
-                break;
-            default:
-                break;
-        }
-        conditionHandler(condition);
-        return getDao().output(condition)>0;
-    }
-
-
-
-
-
-    @Override
-    protected void mainDataHandler(List list) {
-        AgentsInfoUtils.setGoodsStatusAndStorageDate(list);
-        AgentsInfoUtils.setFlow(list);
-    }
-
     @Override
     protected void conditionHandler(Map<String, Object> condition) {
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
         condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
     }
 
+    @Override
+    protected void mainDataHandler(List list) {
+        if(list==null)return;
+        List<Map<String,Object>> maps=list;
+
+        for(Map<String,Object> map:maps){
+            String province=null;
+            String city=null;
+            String county=null;
+            if(map.containsKey("provinceId")){
+                province=AreaCacheUtils.getAreaCache("province",map.get("provinceId").toString());
+            }
+            if(map.containsKey("cityId")){
+                city=AreaCacheUtils.getAreaCache("city",map.get("cityId").toString());
+            }
+            if(map.containsKey("countyId")){
+                county=AreaCacheUtils.getAreaCache("county",map.get("countyId").toString());
+            }
+            StringBuilder stringBuilder=new StringBuilder();
+            if(StringUtils.isNotEmpty(province)){
+                stringBuilder.append(province);
+            }
+            if(StringUtils.isNotEmpty(city)){
+                stringBuilder.append(city);
+            }
+            if(StringUtils.isNotEmpty(county)){
+                stringBuilder.append(county);
+            }
+            map.put("area",stringBuilder.toString());
+        }
+
+    }
 
 
     //    @Override

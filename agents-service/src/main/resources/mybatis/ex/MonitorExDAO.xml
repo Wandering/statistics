@@ -1,15 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="cn.thinkjoy.agents.dao.ex.MonitorExDAO">
+<mapper namespace="cn.thinkjoy.agents.dao.ex.IMonitorExDAO">
+
     <select id="queryPage" resultType="java.util.Map">
         SELECT
-        card.id,goodsNumber,cardNumber,userId,errorStatus,activeDate,account,provinceId,cityId,countyId
+        card.id as id,goodsNumber,cardNumber,userId,errorStatus,activeDate,account,provinceId,cityId,countyId
         FROM  zgk_card card
         left join zgk_user_account account on card.userId=account.id
-        left join zgk_user_info info on card.id=info.id
+        left join zgk_user_info info on card.userId=info.id
         <where>
-
+            <!--标记当前用户查询范围-->
+            <if test="condition.whereSql != null">
+                and card.id in (${condition.whereSql})
+            </if>
+            <if test="condition.queryParam!=null">
+                AND (account.account=#{condition.queryParam} OR  card.cardNumber=#{condition.queryParam})
+            </if>
+            <if test="condition.provinceId!=null">
+                AND (info.provinceId=#{condition.provinceId}
+            </if>
+            <if test="condition.cityId!=null">
+                AND (info.cityId=#{condition.cityId}
+            </if>
+            <if test="condition.countyId!=null">
+                AND (info.countyId=#{condition.countyId}
+            </if>
+            <if test="condition.activeDateStart!=null and activeDateEnd!=null">
+                AND (card.activeDate &gt; #{condition.activeDateStart} AND card.activeDate &lt;  #{condition.activeDateEnd})
+            </if>
+            <if test="condition.errorStatus!=null">
+                AND card.errorStatus=#{condition.errorStatus}
+            </if>
         </where>
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
@@ -18,4 +40,35 @@
             limit ${offset}, ${rows}
         </if>
      </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT
+        count(card.id)
+        FROM  zgk_card card
+        left join zgk_user_account account on card.userId=account.id
+        left join zgk_user_info info on card.id=info.id
+        <where>
+            <if test="whereSql != null">
+                and card.id in (${whereSql})
+            </if>
+            <if test="queryParam!=null">
+                AND (account.account=#{queryParam} OR  card.cardNumber=#{queryParam})
+            </if>
+            <if test="provinceId!=null">
+                AND (info.provinceId=#{provinceId}
+            </if>
+            <if test="cityId!=null">
+                AND (info.cityId=#{cityId}
+            </if>
+            <if test="countyId!=null">
+                AND (info.countyId=#{countyId}
+            </if>
+            <if test="activeDateStart!=null and activeDateEnd!=null">
+                AND (card.activeDate &gt; #{activeDateStart} AND card.activeDate &lt;  #{activeDateEnd})
+            </if>
+            <if test="errorStatus!=null">
+                AND card.errorStatus=#{errorStatus}
+            </if>
+        </where>
+    </select>
 </mapper>
