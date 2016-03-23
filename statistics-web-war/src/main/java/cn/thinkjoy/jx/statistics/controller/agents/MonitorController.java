@@ -1,20 +1,19 @@
 package cn.thinkjoy.jx.statistics.controller.agents;
 
-import cn.thinkjoy.agents.service.ex.IAreaExService;
 import cn.thinkjoy.agents.service.ex.IMonitorExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
-import cn.thinkjoy.agents.service.ex.common.IBaseExService;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
 import org.apache.commons.lang.StringUtils;
-import org.apache.tools.ant.util.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,8 +57,11 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                 throw new BizException("error","截止时间不能为空");
             }
             try {
-                condition.put("activeDateStart", DateUtils.parseDateFromHeader(startDate).getTime());
-                condition.put("activeDateEnd", DateUtils.parseDateFromHeader(startDate).getTime());
+//                condition.put("activeDateStart", DateUtils.parseDateFromHeader(startDate).getTime());
+//                condition.put("activeDateEnd", DateUtils.parseDateFromHeader(endDate).getTime());
+                DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
+                condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
+                condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
             } catch (ParseException e) {
                 throw new BizException("error","不是标准的时间格式");
             }

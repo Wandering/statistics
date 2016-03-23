@@ -28,7 +28,7 @@ public class HttpTest extends TestCase {
     public void testAgents() {
         String cardNumber=null;
         String area=null;
-        String isOutput="true";
+        String isOutput="false";
         String page=null;
         String rows=null;
         String url = host + agents_url + "?cardNumber="+RequestUtils.paramCheckToEmpty(cardNumber)+"&area="+RequestUtils.paramCheckToEmpty(area)+"&isOutput="+RequestUtils.paramCheckToEmpty(isOutput)+"&page="+RequestUtils.paramCheckToEmpty(page)+"&rows="+RequestUtils.paramCheckToEmpty(rows)+"&debug=true";
@@ -48,7 +48,7 @@ public class HttpTest extends TestCase {
     }
 
     public void testGetCurrUserNextArea() {
-        String url = host + getCurrUserNextArea_url;
+        String url = host + getCurrUserNextArea_url+"?debug=true";
         String result = RequestUtils.requestPost(url);
         //校验返回码是不是正常代码
         assertTrue(result.contains("\"rtnCode\":\"0000000\""));
@@ -58,8 +58,8 @@ public class HttpTest extends TestCase {
         String queryParam=null;
         String area=null;
         String status=null;
-        String startDate=null;
-        String endDate=null;
+        String startDate="2016-01-01";
+        String endDate="2016-03-23";
         String page=null;
         String rows=null;
         String url = host + monitors_url

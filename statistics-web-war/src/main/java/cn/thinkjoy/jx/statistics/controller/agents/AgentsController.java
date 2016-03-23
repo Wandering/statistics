@@ -4,6 +4,7 @@ import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.IBaseExService;
+import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,11 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         }else {
             condition.put("notoutput",isOutput);
         }
-
-        return doPage(page,rows,condition);
+        BizData4Page bizData4Page=doPage(page,rows,condition);
+        if(isOutput){
+            AgentsInfoUtils.setFlow(bizData4Page.getConditions());
+        }
+        return bizData4Page;
     }
 
     @Override

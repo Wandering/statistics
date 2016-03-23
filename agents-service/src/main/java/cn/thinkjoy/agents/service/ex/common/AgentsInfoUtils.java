@@ -1,6 +1,8 @@
 package cn.thinkjoy.agents.service.ex.common;
 
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 /**
  * Created by admin on 2016/3/16.
  */
+@Component
 public class AgentsInfoUtils {
 
     //代理商基本信息获取=====================================start==================================================
@@ -74,7 +77,7 @@ public class AgentsInfoUtils {
         }
     }
 
-    private static MockAgents mockAgents=new MockAgents(1,"6101","610100","SELECT id FROM zgk_card WHERE goodsNumber LIKE '61%'");
+    private static MockAgents mockAgents=new MockAgents(1,"61","610000","SELECT id FROM zgk_card WHERE goodsNumber LIKE '61%'");
     /**
      * 通过用户上下文做代理商等级判定
      * 1第一级代理商多为省级
@@ -422,6 +425,7 @@ public class AgentsInfoUtils {
 
     private static IAreaExDAO areaExDAO;
 
+    @Autowired
     private IAreaExDAO autoAreaExDao;
 
     /**
@@ -432,4 +436,7 @@ public class AgentsInfoUtils {
         AgentsInfoUtils.areaExDAO = autoAreaExDao;
     }
 
+    public static void initAreaExDAO(IAreaExDAO autoAreaExDao) {
+        AgentsInfoUtils.areaExDAO = autoAreaExDao;
+    }
 }
