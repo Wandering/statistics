@@ -28,7 +28,7 @@ public class HttpTest extends TestCase {
     public void testAgents() {
         String cardNumber=null;
         String area=null;
-        String isOutput="true";
+        String isOutput="false";
         String page=null;
         String rows=null;
         String url = host + agents_url + "?cardNumber="+RequestUtils.paramCheckToEmpty(cardNumber)+"&area="+RequestUtils.paramCheckToEmpty(area)+"&isOutput="+RequestUtils.paramCheckToEmpty(isOutput)+"&page="+RequestUtils.paramCheckToEmpty(page)+"&rows="+RequestUtils.paramCheckToEmpty(rows)+"&debug=true";

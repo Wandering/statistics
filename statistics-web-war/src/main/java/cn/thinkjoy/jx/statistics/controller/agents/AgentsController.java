@@ -91,4 +91,16 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         return cardExService.goodsOutput(condition);
     }
 
+    @Override
+    protected Map<String, Object> getSelector() {
+        Map<String,Object> selector=new HashMap<>();
+        selector.put("goodsNumber","goodsNumber");
+        selector.put("id","id");
+        selector.put("cardNumber","cardNumber");
+        selector.put("createDate","createDate");
+        selector.put("outputDate1","outputDate1");
+        selector.put("outputDate2","outputDate2");
+        selector.put("outputDate3","outputDate3");
+        return selector;
+    }
 }

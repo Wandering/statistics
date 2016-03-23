@@ -122,11 +122,11 @@
                 and id in (${whereSql})
             </if>
             <!--未出库查询-->
-            <if test="output!=null">
+            <if test="notoutput!=null">
                 and goodsNumber=#{userArea}
             </if>
             <!--已出库查询-->
-            <if test="notoutput!=null">
+            <if test="output!=null">
                 and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
