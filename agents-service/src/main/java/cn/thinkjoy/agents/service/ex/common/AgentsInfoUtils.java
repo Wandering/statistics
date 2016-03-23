@@ -186,7 +186,7 @@ public class AgentsInfoUtils {
                     map.put("inputDate", map.get("createDate"));
                 }
                 if (map.containsKey("outputDate1")) {
-                    map.put("onputDate", map.get("outputDate1"));
+                    map.put("outputDate", map.get("outputDate1"));
                 }
                 break;
             case AgentsConstant.RANKTWO:
@@ -194,7 +194,7 @@ public class AgentsInfoUtils {
                     map.put("inputDate", map.get("outputDate1"));
                 }
                 if (map.containsKey("outputDate2")) {
-                    map.put("onputDate", map.get("outputDate2"));
+                    map.put("outputDate", map.get("outputDate2"));
                 }
                 break;
             case AgentsConstant.RANKTHREE:
@@ -202,7 +202,7 @@ public class AgentsInfoUtils {
                     map.put("inputDate", map.get("outputDate2"));
                 }
                 if (map.containsKey("outputDate3")) {
-                    map.put("onputDate", map.get("outputDate3"));
+                    map.put("outputDate", map.get("outputDate3"));
                 }
                 break;
         }
@@ -267,28 +267,29 @@ public class AgentsInfoUtils {
             String goosNumber = (String) map.get("goodsNumber");
             String areaName = null;
             String area = null;
-            switch (getAgentsType()) {
+            switch (goosNumber.length()) {
                 case 2:
                     //判断当前位数，不够6位的后面补0
                     area = addZeroForNum(goosNumber, 6);
-                    //市表中查
-                    areaName = AreaCacheUtils.getAreaCache("city",area);
-                    break;
-                case 3:
-                case 4:
-                    area = addZeroForNum(goosNumber, 6);
-                    //区县表中查
-                    areaName = AreaCacheUtils.getAreaCache("county", area);
-                    break;
-                case 5:
-                case 6:
-                case 8:
-                    break;
-                default:
                     //默认走省份表
                     areaName = AreaCacheUtils.getAreaCache("province", area);
                     break;
+                case 4:
+                    //判断当前位数，不够6位的后面补0
+                    area = addZeroForNum(goosNumber, 6);
+                    //市表中查
+                    areaName = AreaCacheUtils.getAreaCache("city", area);
+
+                    break;
+                case 6:
+                    area = addZeroForNum(goosNumber, 6);
+                    //区县表中查
+                    areaName = AreaCacheUtils.getAreaCache("county", area);
+                case 8:
+                    break;
+                default:
             }
+
             map.put("flow", areaName);
         }
     }

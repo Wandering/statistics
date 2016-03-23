@@ -55,7 +55,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         }
         BizData4Page bizData4Page=doPage(page,rows,condition);
         if(isOutput){
-            AgentsInfoUtils.setFlow(bizData4Page.getConditions());
+            AgentsInfoUtils.setFlow(bizData4Page.getRows());
         }
         return bizData4Page;
     }
