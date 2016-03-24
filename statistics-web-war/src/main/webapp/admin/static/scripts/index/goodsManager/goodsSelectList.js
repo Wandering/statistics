@@ -85,7 +85,7 @@ define(function (require, exports, module) {
             "render": function (data, type, row) {
                 var str = '';
                 if (data == '0' || data == null) {
-                    str = '未出库';
+                    str = '已激活';
                 } else {
                     str = timeFomate(data);
                 }
