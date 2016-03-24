@@ -30,7 +30,9 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          * 货物管理模块
          */
         getGoodsMangeOut: '/admin/agents?token=' + token+'&isOutput=true', //已出库
-        getGoodsMange: '/admin/agents?token=' + token+'&isOutput=false' //未出库
+        //getGoodsMangeOutSearch: '/admin/agents?token=' + token+'&isOutput=true', //已出库搜索
+        getGoodsMange: '/admin/agents?token=' + token+'&isOutput=false', //未出库
+        //getGoodsMangeSearch: '/admin/agents?token=' + token+'&isOutput=false' //未出库搜索
 
     };
     module.exports = UrlConfig;

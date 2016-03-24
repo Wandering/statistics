@@ -333,25 +333,26 @@
 <script type="text/html" id="goodsSelect">
     <section class="tile transparent grid">
         <div class="tile-body transparent rounded-corners">
-            <div class="form-inline" id="form_search">
+            <div id="form_search">
                 <div class="control-group">
                     <div class="controls">
-                        <input class="form-control form-w200" type="text" id="vip-card" placeholder="vip卡号查询">
-                        <div class="btn btn-primary">查询</div>
+                        <input class="form-control input-sm form-w180" data-type="1" type="text" id="vip-card" placeholder="未出库vip卡号查询">
+                        <div class="btn btn-sm btn-primary" data-type="1" id="search-btn">查询</div>
                     </div>
                     <p class="form-error"></p>
                 </div>
             </div>
             <div class="form-button" id="form_button">
+            </div>
+            <div id="tab-btn">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#">未出库</a></li>
-                    <li role="presentation"><a href="#">已出库</a></li>
+                    <li role="presentation" class="active"><a href="#" class="tab-sm">未出库</a></li>
+                    <li role="presentation"><a href="#" class="tab-sm">已出库</a></li>
                 </ul>
             </div>
-            <div class="table-responsive" id="table_content">
-            </div>
-            <div class="table-responsive" id="table_content2">
-
+            <div id="tab">
+                <div class="table-responsive" id="table_content"></div>
+                <div class="table-responsive dn" id="table_content2"></div>
             </div>
         </div>
     </section>

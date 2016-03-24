@@ -3475,6 +3475,10 @@ input:focus{
 .form-w200{
 	width: 300px;
 }
+.form-w180{
+	display: inline-block;
+	width: 180px;
+}
 .form-horizontal label{
 	font-weight: 100;
 }
@@ -3768,4 +3772,18 @@ body #content .menu-list-content{
 	margin-left: 5%;
 	color: #fff;
 	line-height: 30px;
+}
+
+
+
+/*
+货物管理
+*/
+.tab-sm{
+	padding:4px 8px!important;
+	color: #333!important;
+	font-size: 12px!important;
+}
+.dn{
+	display: none;
 }
