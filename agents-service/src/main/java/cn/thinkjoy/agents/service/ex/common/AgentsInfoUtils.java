@@ -99,7 +99,7 @@ public class AgentsInfoUtils {
     }
 
     public static String getUserWhereSql(){
-        return mockAgents.getUserData();
+        return "SELECT id FROM zgk_card WHERE goodsNumber LIKE '"+getAgentsUserArea()+"%'";
     }
 
     /**
