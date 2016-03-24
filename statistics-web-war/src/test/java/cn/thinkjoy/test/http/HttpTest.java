@@ -29,9 +29,14 @@ public class HttpTest extends TestCase {
         String cardNumber=null;
         String area=null;
         String isOutput="false";
-        String page=null;
-        String rows=null;
-        String url = host + agents_url + "?cardNumber="+RequestUtils.paramCheckToEmpty(cardNumber)+"&area="+RequestUtils.paramCheckToEmpty(area)+"&isOutput="+RequestUtils.paramCheckToEmpty(isOutput)+"&page="+RequestUtils.paramCheckToEmpty(page)+"&rows="+RequestUtils.paramCheckToEmpty(rows)+"&debug=true";
+        String page="1";
+        String rows="1";
+        String url = host + agents_url +
+                "?cardNumber="+RequestUtils.paramCheckToEmpty(cardNumber)+
+                "&area="+RequestUtils.paramCheckToEmpty(area)+
+                "&isOutput="+RequestUtils.paramCheckToEmpty(isOutput)+
+                "&currentPageNo="+RequestUtils.paramCheckToEmpty(page)+
+                "&pageSize="+RequestUtils.paramCheckToEmpty(rows)+"&debug=true";
         String result = RequestUtils.requestPost(url);
         //校验返回码是不是正常代码
         assertTrue(result.contains("\"rtnCode\":\"0000000\""));

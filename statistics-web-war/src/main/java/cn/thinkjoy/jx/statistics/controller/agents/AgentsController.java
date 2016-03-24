@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,8 +40,8 @@ public class AgentsController extends BaseCommonController <ICardExService>{
     public Object queryPage(@RequestParam(required = false)String cardNumber,
                             @RequestParam(required = false)String area,
                             @RequestParam(required =false,defaultValue = "false")Boolean isOutput,
-                            @RequestParam(required=false,defaultValue = "1") Integer page,
-                            @RequestParam(required=false,defaultValue = "10") Integer rows){
+                            @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
+                            @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
         if(StringUtils.isNotEmpty(cardNumber)){
             condition.put("cardNumber",cardNumber);
@@ -53,11 +54,13 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         }else {
             condition.put("notoutput",isOutput);
         }
-        BizData4Page bizData4Page=doPage(page,rows,condition);
+        Map<String,Object> dataMap=doPage(page,rows,condition);
         if(isOutput){
-            AgentsInfoUtils.setFlow(bizData4Page.getRows());
+            if(dataMap.containsKey("list") && dataMap.get("list")!=null) {
+                AgentsInfoUtils.setFlow((List<Map<String,Object>>)dataMap.get("list"));
+            }
         }
-        return bizData4Page;
+        return dataMap;
     }
 
     @Override

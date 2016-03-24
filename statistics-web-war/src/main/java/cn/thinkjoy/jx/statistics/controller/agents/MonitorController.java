@@ -37,8 +37,8 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                             @RequestParam(required =false)Integer status,
                             @RequestParam(required =false)String startDate,
                             @RequestParam(required =false)String endDate,
-                            @RequestParam(required=false,defaultValue = "1") Integer page,
-                            @RequestParam(required=false,defaultValue = "10") Integer rows){
+                            @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
+                            @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
         if(StringUtils.isNotEmpty(queryParam)){
             condition.put("queryParam",queryParam);
