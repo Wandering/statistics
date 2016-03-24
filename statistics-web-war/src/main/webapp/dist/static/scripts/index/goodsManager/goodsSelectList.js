@@ -1,16 +1,16 @@
 /**
  * Created by pdeng on 16/3/23.
  */
-define(function (require, exports, module) {
+define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
-        require('bootstrap');
-        require('cookie');
-        require('dialog');
-        var timeFomate = require('../common/timeFomate.js');
-        var message = require('../message.js');
-        var Table = require('../datatable.js');
-        var UrlConfig = require('../common/urlConfig');
+        require('sea-modules/bootstrap/bootstrap');
+        require('sea-modules/jquery/cookie/jquery.cookie');
+        require('sea-modules/jquery/dialog/jquery.dialog');
+        var timeFomate = require('static/scripts/index/common/timeFomate');
+        var message = require('static/scripts/index/message');
+        var Table = require('static/scripts/index/datatable');
+        var UrlConfig = require('static/scripts/index/common/urlConfig');
         //未出库table
         var col = [{
             data: 'id',
