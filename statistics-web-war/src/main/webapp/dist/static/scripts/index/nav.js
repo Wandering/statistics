@@ -135,12 +135,18 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
             },
             /**
              * ==================================
-             * 货物管理 - goodsManager (goodsSelect)
+             * 货物管理 - (goodsSelect)
              * ==================================
              */
             goodsSelect: function () {
                 $('#page_0').html('');
-                require.async(['static/scripts/index/goodsManager/goodsSelect']);
+                Nav.changeSection('goodsSelect');
+                try {
+                    require.async(['static/scripts/index/goodsManager/goodsSelectList'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
             },
             /**
              * 实时统计
