@@ -107,12 +107,36 @@ define(function(require, exports, module) {
 				"data": newData,
 				"success": function(resp) {
 					var data = resp;
+					//var data = {
+					//	"bizData": {
+					//		"conditions": {},
+					//		"page": 1,
+					//		"pagesize": 10,
+					//		"records": 5,
+					//		"list": [
+					//			{
+					//				"id": 49197,
+					//				"inputDate": 0,
+					//				"goodsNumber": "61",
+					//				"goodsStatus": "未出库",
+					//				"createDate": 0,
+					//				"cardNumber": "GK60349295"
+					//			},
+					//			{
+					//				"id": 49196,
+					//				"inputDate": 0,
+					//				"goodsNumber": "61",
+					//				"goodsStatus": "未出库",
+					//				"createDate": 0,
+					//				"cardNumber": "GK60349294"
+					//			}
+					//		],
+					//		"total": 1
+					//	},
+					//	"rtnCode": "0000000",
+					//	"ts": 1458720546578
+					//};
 					if ('0000000' === data.rtnCode) {
-						if(data.bizData.templateId1 && data.bizData.templateId2){
-							var export_excel = $('#export_excel');
-							export_excel.attr('href',export_excel.attr('href')+'&templateId1='+data.bizData.templateId1+'&templateId2='+data.bizData.templateId2).show();
-							export_excel.attr('templateId1',data.bizData.templateId1).attr('templateId2',data.bizData.templateId2);
-						}
 
 						var finallyData = {
 							sEcho: newData.sEcho,

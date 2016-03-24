@@ -124,8 +124,7 @@
         <!-- Page content -->
         <div id="content" class="col-md-12">
             <!-- content main container -->
-            <section class="main" id="page_0">
-            </section>
+            <section class="main" id="page_0"></section>
             <!-- /content container -->
         </div>
         <!-- Page content end -->
@@ -152,6 +151,7 @@
 				</div>
 			</div>
 
+
 </script>
 <!--列表结构模板-->
 <script type="text/x-jquery-tmpl" id="tmpl_1">
@@ -166,6 +166,7 @@
 				</div>
 			</section>
 
+
 </script>
 
 <script type="text/x-dot-tmpl" id="more_table">
@@ -175,6 +176,7 @@
 					</div>
 				</div>
             </section>
+
 
 </script>
 
@@ -190,6 +192,7 @@
 				<input size="16" type="text" readonly class="form_date" id="end_date">
 				<span id="date_error_tip" style="margin-left:10px;color:#f00"></span>
 			</div>
+
 
 </script>
 
@@ -217,6 +220,7 @@
 				<div class="chart" id="myChart"></div>
 			</div>
 
+
 </script>
 
 <script type="text/x-jquery-tmpl" id="tmpl_4">
@@ -236,6 +240,7 @@
 					</div>
 				</div>
 			</div>
+
 
 </script>
 
@@ -257,9 +262,10 @@
 				</div>
 			</div>
 
+
 </script>
 
-<script type="text/x-jquery-tmpl" id="tmpl_2">
+<script type="text/html" id="tmpl_2">
 			<div id="change_pwd_form" class="form-horizontal">
 				<div class="control-group">
 					<label class="control-label" for="login_user_name">登录账号:</label>
@@ -323,8 +329,21 @@
 					</div>
 				</div>
 			</div>
-
 </script>
+<!--货物查询模板-->
+<script type="text/html" id="goodsSelect">
+    <section class="tile transparent grid">
+        <div class="tile-body transparent rounded-corners">
+            <div class="form-inline" id="form_search">
+            </div>
+            <div class="form-button" id="form_button">
+            </div>
+            <div class="table-responsive" id="table_content">
+            </div>
+        </div>
+    </section>
+</script>
+
 
 <script type="text/javascript" src="../static/sea.js"></script>
 <script type="text/javascript" src="../lib/echarts/echarts-all.min.js"></script>
