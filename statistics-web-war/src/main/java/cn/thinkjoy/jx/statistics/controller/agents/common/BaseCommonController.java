@@ -11,7 +11,7 @@ import java.util.Map;
  */
 public class BaseCommonController<T extends IBaseExService>{
     private static String DEFAULTORDERBY="id";
-    public BizData4Page doPage(Integer page,Integer rows,Map<String,Object> condition){
+    public Map<String,Object> doPage(Integer page,Integer rows,Map<String,Object> condition){
         enhanceCondition(condition);
         return getService().queryPageByDataPerm(condition,page,rows,getDefaultOrderBy(), getSqlOrder(),getSelector());
     }

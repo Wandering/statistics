@@ -1,6 +1,8 @@
 package cn.thinkjoy.agents.service.ex.common;
 
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -9,6 +11,7 @@ import java.util.Map;
 /**
  * Created by admin on 2016/3/16.
  */
+@Component
 public class AgentsInfoUtils {
 
     //代理商基本信息获取=====================================start==================================================
@@ -74,7 +77,7 @@ public class AgentsInfoUtils {
         }
     }
 
-    private static MockAgents mockAgents=new MockAgents(1,"6101","610100","SELECT id FROM zgk_card WHERE goodsNumber LIKE '61%'");
+    private static MockAgents mockAgents=new MockAgents(1,"61","610000","SELECT id FROM zgk_card WHERE goodsNumber LIKE '61%'");
     /**
      * 通过用户上下文做代理商等级判定
      * 1第一级代理商多为省级
@@ -183,7 +186,7 @@ public class AgentsInfoUtils {
                     map.put("inputDate", map.get("createDate"));
                 }
                 if (map.containsKey("outputDate1")) {
-                    map.put("onputDate", map.get("outputDate1"));
+                    map.put("outputDate", map.get("outputDate1"));
                 }
                 break;
             case AgentsConstant.RANKTWO:
@@ -191,7 +194,7 @@ public class AgentsInfoUtils {
                     map.put("inputDate", map.get("outputDate1"));
                 }
                 if (map.containsKey("outputDate2")) {
-                    map.put("onputDate", map.get("outputDate2"));
+                    map.put("outputDate", map.get("outputDate2"));
                 }
                 break;
             case AgentsConstant.RANKTHREE:
@@ -199,7 +202,7 @@ public class AgentsInfoUtils {
                     map.put("inputDate", map.get("outputDate2"));
                 }
                 if (map.containsKey("outputDate3")) {
-                    map.put("onputDate", map.get("outputDate3"));
+                    map.put("outputDate", map.get("outputDate3"));
                 }
                 break;
         }
@@ -264,28 +267,29 @@ public class AgentsInfoUtils {
             String goosNumber = (String) map.get("goodsNumber");
             String areaName = null;
             String area = null;
-            switch (getAgentsType()) {
+            switch (goosNumber.length()) {
                 case 2:
                     //判断当前位数，不够6位的后面补0
                     area = addZeroForNum(goosNumber, 6);
-                    //市表中查
-                    areaName = AreaCacheUtils.getAreaCache("city",area);
-                    break;
-                case 3:
-                case 4:
-                    area = addZeroForNum(goosNumber, 6);
-                    //区县表中查
-                    areaName = AreaCacheUtils.getAreaCache("county", area);
-                    break;
-                case 5:
-                case 6:
-                case 8:
-                    break;
-                default:
                     //默认走省份表
                     areaName = AreaCacheUtils.getAreaCache("province", area);
                     break;
+                case 4:
+                    //判断当前位数，不够6位的后面补0
+                    area = addZeroForNum(goosNumber, 6);
+                    //市表中查
+                    areaName = AreaCacheUtils.getAreaCache("city", area);
+
+                    break;
+                case 6:
+                    area = addZeroForNum(goosNumber, 6);
+                    //区县表中查
+                    areaName = AreaCacheUtils.getAreaCache("county", area);
+                case 8:
+                    break;
+                default:
             }
+
             map.put("flow", areaName);
         }
     }
@@ -422,6 +426,7 @@ public class AgentsInfoUtils {
 
     private static IAreaExDAO areaExDAO;
 
+    @Autowired
     private IAreaExDAO autoAreaExDao;
 
     /**
@@ -432,4 +437,7 @@ public class AgentsInfoUtils {
         AgentsInfoUtils.areaExDAO = autoAreaExDao;
     }
 
+    public static void initAreaExDAO(IAreaExDAO autoAreaExDao) {
+        AgentsInfoUtils.areaExDAO = autoAreaExDao;
+    }
 }
