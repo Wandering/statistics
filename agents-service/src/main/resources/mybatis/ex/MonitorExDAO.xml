@@ -26,7 +26,7 @@
             <if test="condition.countyId!=null">
                 AND (info.countyId=#{condition.countyId}
             </if>
-            <if test="condition.activeDateStart!=null and activeDateEnd!=null">
+            <if test="condition.activeDateStart!=null and condition.activeDateEnd!=null">
                 AND (card.activeDate &gt; #{condition.activeDateStart} AND card.activeDate &lt;  #{condition.activeDateEnd})
             </if>
             <if test="condition.errorStatus!=null">

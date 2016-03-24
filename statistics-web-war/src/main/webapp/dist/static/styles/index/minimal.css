@@ -200,10 +200,10 @@ body .navbar .navbar-header .navbar-brand {
 	font-family: "Roboto Condensed", sans-serif;
 	color: white;
 	padding: 0;
-	padding-left: 20px;
+	/*padding-left: 20px;*/
 	height: 45px;
 	line-height: 45px;
-	background: url(/dist/static/images/minimal-logo.png) no-repeat 0 16px;
+	/*background: url(../../images/minimal-logo.png) no-repeat 0 16px;*/
 }
 body .navbar .navbar-header .navbar-brand img {
 	vertical-align: top;
@@ -2155,7 +2155,7 @@ body #content .tile table > thead > tr th.actions a:hover,
 body #content .tile table > tbody > tr td.actions a:hover,
 body #content .tile table > tbody > tr th.actions a:hover,
 body #content .tile table > tfoot > tr td.actions a:hover,
-body #content .tile table > tfoot > tr th.actions a:hover, {
+body #content .tile table > tfoot > tr th.actions a:hover {
 	text-decoration: none;
 }
 body #content .tile table > thead > tr td.actions a.delete:hover,

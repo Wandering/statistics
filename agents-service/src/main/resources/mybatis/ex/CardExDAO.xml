@@ -87,7 +87,7 @@
         <where>
             <!--标记当前用户查询范围-->
             <if test="condition.whereSql != null">
-                and id in (#{condition.whereSql})
+                and id in (${condition.whereSql})
             </if>
             <!--未出库查询-->
             <if test="condition.notoutput!=null">
@@ -119,14 +119,14 @@
         <where>
             <!--标记当前用户查询范围-->
             <if test="whereSql != null">
-                and id in (#{whereSql})
+                and id in (${whereSql})
             </if>
             <!--未出库查询-->
-            <if test="output!=null">
+            <if test="notoutput!=null">
                 and goodsNumber=#{userArea}
             </if>
             <!--已出库查询-->
-            <if test="notoutput!=null">
+            <if test="output!=null">
                 and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
             </if>
             <!--流向地查询-->

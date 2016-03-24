@@ -4,6 +4,7 @@ import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.IBaseExService;
+import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,8 +40,8 @@ public class AgentsController extends BaseCommonController <ICardExService>{
     public Object queryPage(@RequestParam(required = false)String cardNumber,
                             @RequestParam(required = false)String area,
                             @RequestParam(required =false,defaultValue = "false")Boolean isOutput,
-                            @RequestParam(required=false,defaultValue = "1") Integer page,
-                            @RequestParam(required=false,defaultValue = "10") Integer rows){
+                            @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
+                            @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
         if(StringUtils.isNotEmpty(cardNumber)){
             condition.put("cardNumber",cardNumber);
@@ -52,8 +54,13 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         }else {
             condition.put("notoutput",isOutput);
         }
-
-        return doPage(page,rows,condition);
+        Map<String,Object> dataMap=doPage(page,rows,condition);
+        if(isOutput){
+            if(dataMap.containsKey("list") && dataMap.get("list")!=null) {
+                AgentsInfoUtils.setFlow((List<Map<String,Object>>)dataMap.get("list"));
+            }
+        }
+        return dataMap;
     }
 
     @Override
@@ -87,4 +94,16 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         return cardExService.goodsOutput(condition);
     }
 
+    @Override
+    protected Map<String, Object> getSelector() {
+        Map<String,Object> selector=new HashMap<>();
+        selector.put("goodsNumber","goodsNumber");
+        selector.put("id","id");
+        selector.put("cardNumber","cardNumber");
+        selector.put("createDate","createDate");
+        selector.put("outputDate1","outputDate1");
+        selector.put("outputDate2","outputDate2");
+        selector.put("outputDate3","outputDate3");
+        return selector;
+    }
 }

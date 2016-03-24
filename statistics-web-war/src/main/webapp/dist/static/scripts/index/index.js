@@ -12,7 +12,9 @@ define('static/scripts/index/index', ['sea-modules/bootstrap/bootstrap', 'sea-mo
 	}
 
 	var token = GetQueryString('token');
+	var systemCode = GetQueryString('systemCode');
 	$.cookie('bizData', token, {expires: 7,path:'/'});
+	$.cookie('systemCode', systemCode, {expires: 7,path:'/'});
 	var token = $.cookie('bizData');
 	var UrlConfig = require('static/scripts/index/common/urlConfig');
 	if (!token) {
@@ -25,6 +27,7 @@ define('static/scripts/index/index', ['sea-modules/bootstrap/bootstrap', 'sea-mo
 		var userInfo = null, userPojoJson = null;
 
 		$.get(UrlConfig.checkLogin, function(data) {
+			console.info('用户信息:',JSON.parse(data));
 			userInfo = JSON.parse(data);
 			$('#login_real_name').html(userInfo.userName);
 			userPojoJson = {
@@ -51,7 +54,7 @@ define('static/scripts/index/index', ['sea-modules/bootstrap/bootstrap', 'sea-mo
 			e.stopPropagation();
 			return;
 		});
-		
+
 		//change background
 		$("#color-schemes li a").click(function() {
 			var d = $(this).attr("class");
@@ -113,7 +116,7 @@ define('static/scripts/index/index', ['sea-modules/bootstrap/bootstrap', 'sea-mo
 				}
 			});
 		};
-		
+
 		//modal of change password
 		$('#change_pwd').on('click', function() {
 			if (!userInfo) {

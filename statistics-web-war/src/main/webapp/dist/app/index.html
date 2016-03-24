@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html>
 
-	<head>
-		<title>教育人人通数据统计分析平台</title>
-		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
-		<meta content="
+<head>
+    <title>智高考-代理商后台</title>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta content="
 			width=device-width,
 			initial-scale=1.0,
 			minimum-scale=1.0,
 			maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport">
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta http-equiv="Pragma" content="no-cache" />
-		<meta name="format-detection" content="telephone=no">
-		<meta name="renderer" content="webkit">
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta http-equiv="Pragma" content="no-cache"/>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
 
-		<link rel="icon" type="image/ico" href="/dist/static/images/chimer.ico" />
-		<!--<link rel="stylesheet" href="../static/styles/common/TableTools.css">-->
+    <link rel="icon" type="image/ico" href="/dist/static/images/chimer.ico"/>
+    <!--<link rel="stylesheet" href="../static/styles/common/TableTools.css">-->
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="/dist/lib/html5/html5shiv.js"></script>
+    <script src="/dist/lib/html5/respond.min.js"></script>
+    <![endif]-->
 
-		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-		<!--[if lt IE 9]>
-		<script src="/dist/lib/html5/html5shiv.js"></script>
-		<script src="/dist/lib/html5/respond.min.js"></script>
-		<![endif]-->
-	
     <link rel="stylesheet" href="/dist/static/styles/common/font-awesome.css" />
     <link rel="stylesheet" href="/dist/static/styles/common/bootstrap3.min.css" />
     <link rel="stylesheet" href="/dist/static/styles/common/jquery.dataTables.css" />
@@ -34,105 +33,107 @@
     <link rel="stylesheet" href="/dist/static/styles/index/minimal.css" />
 </head>
 
-	<body class="bg-1">
+<body class="bg-1">
 
-		<!-- Preloader -->
-		<div class="mask" style="display: none">
-			<div id="loader"></div>
-		</div>
-		<!--/Preloader -->
+<!-- Preloader -->
+<div class="mask" style="display: none">
+    <div id="loader"></div>
+</div>
+<!--/Preloader -->
 
-		<!-- Wrap all page content here -->
-		<div id="wrap">
-			<!-- Make page fluid -->
-			<div class="row">
-				<!-- Fixed navbar -->
-				<div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top" role="navigation" id="navbar">
-					<!-- Branding -->
-					<div class="navbar-header col-md-2">
-						<a class="navbar-brand" href="index.html">
-							数据统计分析平台
-						</a>
-						<div class="sidebar-collapse">
-							<a href="#">
-								<i class="fa fa-bars"></i>
-							</a>
-						</div>
-					</div>
-					<!-- Branding end -->
+<!-- Wrap all page content here -->
+<div id="wrap">
+    <!-- Make page fluid -->
+    <div class="row">
+        <!-- Fixed navbar -->
+        <div class="navbar navbar-default navbar-fixed-top navbar-transparent-black mm-fixed-top" role="navigation"
+             id="navbar">
+            <!-- Branding -->
+            <div class="navbar-header col-md-2">
+                <a class="navbar-brand" href="index.html">
+                    智高考-代理商管理系统
+                </a>
+                <div class="sidebar-collapse">
+                    <a href="#">
+                        <i class="fa fa-bars"></i>
+                    </a>
+                </div>
+            </div>
+            <!-- Branding end -->
 
-					<!-- .nav-collapse -->
-					<div class="navbar-collapse">
+            <!-- .nav-collapse -->
+            <div class="navbar-collapse">
 
-						<!-- Page refresh -->
-						<ul class="nav navbar-nav refresh">
-							<!--<li class="divided">-->
-								<!--<a href="index.html" class="page-refresh"><i class="fa fa-refresh"></i></a>-->
-							<!--</li>-->
-							<li class="divided">
-								<a href="http://setting.jx.xy189.cn/dist/app/choose_system.html" class="page-refresh"><i class="fa fa-home"></i></a>
-							</li>
-						</ul>
-						<!-- /Page refresh -->
+                <!-- Page refresh -->
+                <ul class="nav navbar-nav refresh">
+                    <!--<li class="divided">-->
+                    <!--<a href="index.html" class="page-refresh"><i class="fa fa-refresh"></i></a>-->
+                    <!--</li>-->
+                    <li class="divided">
+                        <a href="http://setting.jx.xy189.cn/dist/app/choose_system.html" class="page-refresh"><i
+                                class="fa fa-home"></i></a>
+                    </li>
+                </ul>
+                <!-- /Page refresh -->
 
-						<!-- Quick Actions -->
-						<ul class="nav navbar-nav quick-actions">
+                <!-- Quick Actions -->
+                <ul class="nav navbar-nav quick-actions">
 
-							<li class="dropdown divided user" id="current-user">
-								<a class="dropdown-toggle options" data-toggle="dropdown" href="#">
-									<span id="login_real_name"></span><i class="fa fa-caret-down"></i>
-								</a>
-								<ul class="dropdown-menu arrow settings">
-									<li>
-										<h3>换肤:</h3>
-										<ul id="color-schemes">
-											<li><a href="#" class="bg-1"></a></li>
-											<li><a href="#" class="bg-2"></a></li>
-											<li><a href="#" class="bg-3"></a></li>
-											<li><a href="#" class="bg-4"></a></li>
-											<li><a href="#" class="bg-5"></a></li>
-											<li><a href="#" class="bg-6"></a></li>
-										</ul>
-									</li>
+                    <li class="dropdown divided user" id="current-user">
+                        <a class="dropdown-toggle options" data-toggle="dropdown" href="#">
+                            <span id="login_real_name"></span><i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu arrow settings">
+                            <li>
+                                <h3>换肤:</h3>
+                                <ul id="color-schemes">
+                                    <li><a href="#" class="bg-1"></a></li>
+                                    <li><a href="#" class="bg-2"></a></li>
+                                    <li><a href="#" class="bg-3"></a></li>
+                                    <li><a href="#" class="bg-4"></a></li>
+                                    <li><a href="#" class="bg-5"></a></li>
+                                    <li><a href="#" class="bg-6"></a></li>
+                                </ul>
+                            </li>
 
-									<li class="divider"></li>
-									<li><a href="javascript:void(0)" id="change_pwd"><i class="fa fa-user"></i>&nbsp;账户设置</a></li>
-									<li class="divider"></li>
+                            <li class="divider"></li>
+                            <li><a href="javascript:void(0)" id="change_pwd"><i class="fa fa-user"></i>&nbsp;账户设置</a>
+                            </li>
+                            <li class="divider"></li>
 
-									<li>
-										<a href="#" id="logout"><i class="fa fa-power-off"></i> 登出</a>
-									</li>
-								</ul>
-							</li>
-						</ul>
-						<!-- /Quick Actions -->
+                            <li>
+                                <a href="#" id="logout"><i class="fa fa-power-off"></i> 登出</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- /Quick Actions -->
 
-						<!-- Sidebar -->
-						<ul class="nav navbar-nav side-nav" id="sidebar">
-							<li class="navigation" id="navigation">
-							</li>
-						</ul>
-						<!-- Sidebar end -->
-					</div>
-					<!--/.nav-collapse -->
-				</div>
-				<!-- Fixed navbar end -->
+                <!-- Sidebar -->
+                <ul class="nav navbar-nav side-nav" id="sidebar">
+                    <li class="navigation" id="navigation">
+                    </li>
+                </ul>
+                <!-- Sidebar end -->
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+        <!-- Fixed navbar end -->
 
-				<!-- Page content -->
-				<div id="content" class="col-md-12">
-					<!-- content main container -->
-					<section class="main" id="page_0">
-					</section>
-					<!-- /content container -->
-				</div>
-				<!-- Page content end -->
+        <!-- Page content -->
+        <div id="content" class="col-md-12">
+            <!-- content main container -->
+            <section class="main" id="page_0"></section>
+            <!-- /content container -->
+        </div>
+        <!-- Page content end -->
 
-			</div>
-			<!-- Make page fluid-->
-		</div>
-		<!-- Wrap all page content end -->
-		<!--树和列表结构模板-->
-		<script type="text/x-jquery-tmpl" id="tmpl_0">
+    </div>
+    <!-- Make page fluid-->
+</div>
+<!-- Wrap all page content end -->
+<!--树和列表结构模板-->
+<script type="text/x-jquery-tmpl" id="tmpl_0">
 			<div class="form-tree">
 				<ul id="tree_menu" class="ztree"></ul>
 			</div>
@@ -148,9 +149,11 @@
 					</div>
 				</div>
 			</div>
-		</script>
-		<!--列表结构模板-->
-		<script type="text/x-jquery-tmpl" id="tmpl_1">
+
+
+</script>
+<!--列表结构模板-->
+<script type="text/x-jquery-tmpl" id="tmpl_1">
 			<section class="tile transparent grid">
 				<div class="tile-body transparent rounded-corners">
 					<div class="form-inline" id="form_search">
@@ -161,18 +164,22 @@
 					</div>
 				</div>
 			</section>
-		</script>
 
-		<script type="text/x-dot-tmpl" id="more_table">
+
+</script>
+
+<script type="text/x-dot-tmpl" id="more_table">
 			<section class="tile transparent grid-{{=it.type}}">
 				<div class="tile-body transparent rounded-corners">
 					<div class="table-responsive" id="{{=it.gridId}}">
 					</div>
 				</div>
             </section>
-		</script>
 
-		<script type="text/x-html-tmpl" id="time_tmpl">
+
+</script>
+
+<script type="text/x-html-tmpl" id="time_tmpl">
 			<div class="control-group date-condition">
 				<label class="control-label">时间</label>
 				<button type="button" class="btn btn-default btn-primary" id="recently_7">最近7日</button>
@@ -184,9 +191,11 @@
 				<input size="16" type="text" readonly class="form_date" id="end_date">
 				<span id="date_error_tip" style="margin-left:10px;color:#f00"></span>
 			</div>
-		</script>
 
-		<script type="text/x-jquery-tmpl" id="tmpl_3">
+
+</script>
+
+<script type="text/x-jquery-tmpl" id="tmpl_3">
 			<div class="form-inline" id="form_search">
 				<div class="control-group date-condition">
 					<div class="col-xs-12">
@@ -209,9 +218,11 @@
 			<div class="chart-content">
 				<div class="chart" id="myChart"></div>
 			</div>
-		</script>
 
-		<script type="text/x-jquery-tmpl" id="tmpl_4">
+
+</script>
+
+<script type="text/x-jquery-tmpl" id="tmpl_4">
 			<div class="form-inline" id="form_search">
 				<div class="control-group date-condition">
 					<div class="col-xs-12">
@@ -228,9 +239,11 @@
 					</div>
 				</div>
 			</div>
-		</script>
 
-		<script type="text/x-jquery-tmpl" id="tmpl_5">
+
+</script>
+
+<script type="text/x-jquery-tmpl" id="tmpl_5">
 			<div class="form-inline" id="form_search">
 				<div class="control-group date-condition">
 					<div class="col-xs-12">
@@ -247,9 +260,11 @@
 					<a id="export_excel" href="javascript:void(0)" style="display:none;">导出excel</a>
 				</div>
 			</div>
-		</script>
 
-		<script type="text/x-jquery-tmpl" id="tmpl_2">
+
+</script>
+
+<script type="text/html" id="tmpl_2">
 			<div id="change_pwd_form" class="form-horizontal">
 				<div class="control-group">
 					<label class="control-label" for="login_user_name">登录账号:</label>
@@ -313,15 +328,42 @@
 					</div>
 				</div>
 			</div>
-		</script>
-	
+</script>
+<!--货物查询模板-->
+<script type="text/html" id="goodsSelect">
+    <section class="tile transparent grid">
+        <div class="tile-body transparent rounded-corners">
+            <div class="form-inline" id="form_search">
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="form-control form-w200" type="text" id="vip-card" placeholder="vip卡号查询">
+                        <div class="btn btn-primary">查询</div>
+                    </div>
+                    <p class="form-error"></p>
+                </div>
+            </div>
+            <div class="form-button" id="form_button">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active"><a href="#">未出库</a></li>
+                    <li role="presentation"><a href="#">已出库</a></li>
+                </ul>
+            </div>
+            <div class="table-responsive" id="table_content">
+            </div>
+            <div class="table-responsive" id="table_content2">
+
+            </div>
+        </div>
+    </section>
+</script>
+
 <script type="text/javascript" src="/dist/static/sea.js"></script>
 <script type="text/javascript" src="/dist/pkg/app/index.html_map.js"></script>
 <script type="text/javascript" src="/dist/lib/echarts/echarts-all.min.js"></script>
 <script type="text/javascript" src="/dist/lib/jquery/jquery.2.1.4.js"></script>
 <script type="text/javascript" src="/dist/lib/uploadify/jquery.upload.js"></script>
 <script type="text/javascript">
-			seajs.use('static/scripts/index/index');
-		</script>
+    seajs.use('static/scripts/index/index');
+</script>
 </body>
 </html>

@@ -163,7 +163,7 @@ public class UserInfoController {
             UserAccount account = new UserAccount();
             account.setPassword(userPojo.getPassword());
             account.setId(userPojo.getAccountId());
-            userAccountApiService.updateOrSave(account, account.getId());
+            userAccountApiService.updateOrSave(account, Long.valueOf(account.getId().toString()));
         }
         return "ok";
     }
