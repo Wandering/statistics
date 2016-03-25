@@ -22,6 +22,7 @@ seajs.config({alias:{
   "static/scripts/index/role/role": "/dist/static/scripts/index/role/role",
   "static/scripts/index/common/timeFomate": "/dist/static/scripts/index/common/timeFomate",
   "static/scripts/index/goodsManager/goodsSelectList": "/dist/static/scripts/index/goodsManager/goodsSelectList",
+  "static/scripts/index/dataMonitored/dataMonitoredList": "/dist/static/scripts/index/dataMonitored/dataMonitoredList",
   "sea-modules/dot/doT.min": "/dist/sea-modules/dot/doT.min",
   "static/scripts/index/common/businessTable": "/dist/static/scripts/index/common/businessTable",
   "static/scripts/index/realTimeDebt/realTimeDebt": "/dist/static/scripts/index/realTimeDebt/realTimeDebt",

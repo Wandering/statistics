@@ -29,8 +29,13 @@ define(function (require, exports, module) {
         /**
          * 货物管理模块
          */
-        getGoodsMangeOut: '/admin/agents?token=' + token+'&isOutput=true', //已出库
-        getGoodsMange: '/admin/agents?token=' + token+'&isOutput=false' //未出库
+        getGoodsMangeOut: '/admin/agents?token=' + token + '&isOutput=true', //已出库
+        getGoodsMange: '/admin/agents?token=' + token + '&isOutput=false', //未出库
+
+        /**
+         * 异常模块
+         */
+        getMonitorsList: '/admin/monitors?token=' + token
 
     };
     module.exports = UrlConfig;
