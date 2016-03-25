@@ -1,9 +1,11 @@
 package cn.thinkjoy.jx.statistics.controller.agents;
 
 import cn.thinkjoy.agents.service.ex.IAreaExService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.HashMap;
@@ -26,8 +28,12 @@ public class AreaController{
      */
     @ResponseBody
     @RequestMapping(value = "/getCurrUserNextArea")
-    public List<Map<String,Object>> getCurrUserNextArea(){
-        return areaExService.getFlowNextArea();
+    public List<Map<String,Object>> getCurrUserNextArea(String nextArea){
+        if(StringUtils.isEmpty(nextArea)) {
+            return areaExService.getFlowNextArea();
+        }else {
+            return areaExService.getFlowNextArea(nextArea);
+        }
     }
 
 }

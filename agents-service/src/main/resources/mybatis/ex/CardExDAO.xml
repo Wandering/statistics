@@ -105,6 +105,10 @@
             <if test="condition.cardNumber!=null">
                 and cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
             </if>
+            <!--激活查询-->
+            <if test="condition.status!=null">
+                and status = #{condition.status}
+            </if>
         </where>
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
@@ -190,7 +194,7 @@
             </if>
         </trim>
         <where>
-                cardNumber = #{cardNumber}
+            cardNumber = #{cardNumber}
         </where>
     </update>
 
@@ -199,5 +203,18 @@
     </select>
     <select id="selectCardByUid" resultType="java.lang.String">
         SELECT t.goodsNumber as goodsNumber FROM zgk_card t WHERE t.cardNumber=#{cardNumber}
+    </select>
+
+    <select id="test1" resultType="java.util.Map">
+        SELECT count(1) as errorNum,
+		FROM_UNIXTIME(left(activeDate,10), '%Y.%m.%d') as activeDate
+		FROM
+			zgk_card
+		WHERE
+		goodsNumber LIKE '61%'
+		and
+		errorStatus = 1
+        GROUP BY
+	    activeDate;
     </select>
 </mapper>

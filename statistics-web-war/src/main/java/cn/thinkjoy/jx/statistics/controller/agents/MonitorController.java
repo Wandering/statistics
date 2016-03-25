@@ -37,6 +37,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                             @RequestParam(required =false)Integer status,
                             @RequestParam(required =false)String startDate,
                             @RequestParam(required =false)String endDate,
+                            @RequestParam(required =false,defaultValue = "0")Integer activityStatus,
                             @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
                             @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
@@ -66,6 +67,9 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                 throw new BizException("error","不是标准的时间格式");
             }
 
+        }
+        if(activityStatus==0){
+            condition.put("status",0);
         }
         return doPage(page,rows,condition);
     }

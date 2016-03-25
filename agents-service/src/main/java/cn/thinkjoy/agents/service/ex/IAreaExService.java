@@ -8,4 +8,5 @@ import java.util.Map;
 public interface IAreaExService{
     IAreaExDAO getDao();
     List<Map<String,Object>> getFlowNextArea();
+    List<Map<String, Object>> getFlowNextArea(String nextArea);
 }

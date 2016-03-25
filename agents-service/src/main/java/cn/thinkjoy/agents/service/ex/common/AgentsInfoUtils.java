@@ -303,19 +303,39 @@ public class AgentsInfoUtils {
     public static List<Map<String, Object>> getFlowNextArea() {
         List<Map<String, Object>> areaNames = null;
         String userArea = getAgentsUserArea();
-        switch (getAgentsType()) {
+        switch (userArea.length()) {
             case 2:
                 //市表中查
                 areaNames = areaExDAO.likeCityById(addStrForNum(userArea, 6, "_"));
                 break;
-            case 3:
             case 4:
                 //区县表中查
                 areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
-            case 5:
-            case 6:
-            case 8:
+            default:
+                //默认省份表中查询
+                areaNames = areaExDAO.queryProvince();
+                break;
+        }
+        return areaNames;
+    }
+
+    /**
+     * 获取用户当前所在区域的下一级列表
+     *
+     * @return
+     */
+    public static List<Map<String, Object>> getFlowNextArea(String nextArea) {
+        List<Map<String, Object>> areaNames = null;
+        String userArea = getAgentsUserArea();
+        switch (nextArea.length()) {
+            case 2:
+                //市表中查
+                areaNames = areaExDAO.likeCityById(addStrForNum(userArea, 6, "_"));
+                break;
+            case 4:
+                //区县表中查
+                areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
             default:
                 //默认省份表中查询
