@@ -101,6 +101,9 @@ public class AgentsInfoUtils {
     }
 
     public static String getUserWhereSql(){
+        if(getAgentsUserArea()==null){
+            return null;
+        }
         return "SELECT id FROM zgk_card WHERE goodsNumber LIKE '"+getAgentsUserArea()+"%'";
     }
 
@@ -115,7 +118,7 @@ public class AgentsInfoUtils {
     public static String getAgentsUserArea() {
         Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
         String areaCode=(String)userinfo.get("areaCode");
-        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+        if(StringUtils.isNotEmpty(areaCode) && (!"00".equals(areaCode))){
             return areaCode;
         }
         return "";
@@ -125,7 +128,7 @@ public class AgentsInfoUtils {
     public static String getAgentsUserAreaId(){
         Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
         String areaCode=(String)userinfo.get("areaCode");
-        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+        if(StringUtils.isNotEmpty(areaCode) && (!"00".equals(areaCode))){
             return addZeroForNum(areaCode,6);
         }
         return "";
@@ -215,6 +218,14 @@ public class AgentsInfoUtils {
                 }
                 if (map.containsKey("outputDate3")) {
                     map.put("outputDate", map.get("outputDate3"));
+                }
+                break;
+            default:
+                if (map.containsKey("createDate")) {
+                    map.put("inputDate", map.get("createDate"));
+                }
+                if (map.containsKey("outputDate1")) {
+                    map.put("outputDate", map.get("outputDate1"));
                 }
                 break;
         }

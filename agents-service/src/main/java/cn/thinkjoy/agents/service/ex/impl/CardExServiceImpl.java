@@ -85,8 +85,10 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
 
     @Override
     protected void conditionHandler(Map<String, Object> condition) {
+        if(AgentsInfoUtils.getUserWhereSql()==null) {
+            condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
+        }
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
-        condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
         condition.put("orderBy", "cardNumber");
         condition.put("sortBy", "asc");
     }
