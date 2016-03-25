@@ -37,7 +37,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                             @RequestParam(required =false)Integer status,
                             @RequestParam(required =false)String startDate,
                             @RequestParam(required =false)String endDate,
-                            @RequestParam(required =false,defaultValue = "0")Integer activityStatus,
+                            @RequestParam(required =false)String activityStatus,
                             @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
                             @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
@@ -68,8 +68,18 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
             }
 
         }
-        if(activityStatus==0){
-            condition.put("status",0);
+        if(StringUtils.isNotEmpty(activityStatus)){
+            Integer activityStatusInt=Integer.parseInt(activityStatus);
+           switch (activityStatusInt){
+               case 0:
+                   condition.put("status", 0);
+                   break;
+               case 1:
+                   condition.put("status", 1);
+                   break;
+               default:
+                   break;
+           }
         }
         return doPage(page,rows,condition);
     }

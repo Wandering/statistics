@@ -105,10 +105,6 @@
             <if test="condition.cardNumber!=null">
                 and cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
             </if>
-            <!--激活查询-->
-            <if test="condition.status!=null">
-                and status = #{condition.status}
-            </if>
         </where>
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
