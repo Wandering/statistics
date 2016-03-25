@@ -101,6 +101,9 @@ public class AgentsInfoUtils {
     }
 
     public static String getUserWhereSql(){
+        if(getAgentsUserArea()==null){
+            return null;
+        }
         return "SELECT id FROM zgk_card WHERE goodsNumber LIKE '"+getAgentsUserArea()+"%'";
     }
 
@@ -115,7 +118,7 @@ public class AgentsInfoUtils {
     public static String getAgentsUserArea() {
         Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
         String areaCode=(String)userinfo.get("areaCode");
-        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+        if(StringUtils.isNotEmpty(areaCode) && (!"00".equals(areaCode))){
             return areaCode;
         }
         return "";

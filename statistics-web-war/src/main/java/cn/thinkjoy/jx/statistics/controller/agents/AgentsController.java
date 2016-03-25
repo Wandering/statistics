@@ -114,10 +114,11 @@ public class AgentsController extends BaseCommonController <ICardExService>{
             start=maps.get(0).get("cardNumber").toString();
         }
         if(maps.size()>1){
-            end=maps.get(0).get("cardNumber").toString();
+            end=maps.get(maps.size()-1).get("cardNumber").toString();
         }
         resultMap.put("start",start);
         resultMap.put("end",end);
+        resultMap.put("count",maps.size());
         return resultMap;
     }
 
