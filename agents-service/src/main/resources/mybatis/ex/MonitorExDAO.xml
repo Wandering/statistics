@@ -18,19 +18,23 @@
                 AND (account.account=#{condition.queryParam} OR  card.cardNumber=#{condition.queryParam})
             </if>
             <if test="condition.provinceId!=null">
-                AND (info.provinceId=#{condition.provinceId}
+                AND info.provinceId=#{condition.provinceId}
             </if>
             <if test="condition.cityId!=null">
-                AND (info.cityId=#{condition.cityId}
+                AND info.cityId=#{condition.cityId}
             </if>
             <if test="condition.countyId!=null">
-                AND (info.countyId=#{condition.countyId}
+                AND info.countyId=#{condition.countyId}
             </if>
             <if test="condition.activeDateStart!=null and condition.activeDateEnd!=null">
                 AND (card.activeDate &gt; #{condition.activeDateStart} AND card.activeDate &lt;  #{condition.activeDateEnd})
             </if>
             <if test="condition.errorStatus!=null">
                 AND card.errorStatus=#{condition.errorStatus}
+            </if>
+            <!--激活查询-->
+            <if test="condition.status!=null">
+                and card.status = #{condition.status}
             </if>
         </where>
         <if test="orderBy!=null">
@@ -68,6 +72,10 @@
             </if>
             <if test="errorStatus!=null">
                 AND card.errorStatus=#{errorStatus}
+            </if>
+            <!--激活查询-->
+            <if test="status!=null">
+                and card.status = #{status}
             </if>
         </where>
     </select>

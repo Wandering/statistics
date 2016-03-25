@@ -26,9 +26,9 @@ public class HttpTest extends TestCase {
 
 
     public void testAgents() {
-        String cardNumber=null;
+        String cardNumber="GK60349298";
         String area=null;
-        String isOutput="false";
+        String isOutput="true";
         String page="1";
         String rows="1";
         String url = host + agents_url +
@@ -57,6 +57,11 @@ public class HttpTest extends TestCase {
         String result = RequestUtils.requestPost(url);
         //校验返回码是不是正常代码
         assertTrue(result.contains("\"rtnCode\":\"0000000\""));
+
+        url = host + getCurrUserNextArea_url+"?nextArea=6101&debug=true";
+        result = RequestUtils.requestPost(url);
+        //校验返回码是不是正常代码
+        assertTrue(result.contains("\"rtnCode\":\"0000000\""));
     }
 
     public void testMonitors() {
@@ -65,6 +70,7 @@ public class HttpTest extends TestCase {
         String status=null;
         String startDate="2016-01-01";
         String endDate="2016-03-23";
+        String activityStatus="1";
         String page=null;
         String rows=null;
         String url = host + monitors_url
@@ -75,6 +81,7 @@ public class HttpTest extends TestCase {
                 +"&endDate="+RequestUtils.paramCheckToEmpty(endDate)
                 +"&page="+RequestUtils.paramCheckToEmpty(page)
                 +"&rows="+RequestUtils.paramCheckToEmpty(rows)
+                +"&activityStatus="+RequestUtils.paramCheckToEmpty(activityStatus)
                 ;
         String result = RequestUtils.requestPost(url);
         //校验返回码是不是正常代码

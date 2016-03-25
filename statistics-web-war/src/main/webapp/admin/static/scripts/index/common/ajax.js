@@ -1,14 +1,14 @@
 /**
  * Created by kepeng on 15/9/21.
  */
-define(function(require, exports, module) {
+define(function (require, exports, module) {
 
     var ErrorDialog = require('../message');
     require('cookie');
     var token = $.cookie('bizData');
 
     var AjaxController = {
-        get: function(url, callback) {
+        get: function (url, callback) {
             var that = this;
             if (url.indexOf('?') > -1) {
                 url = url + '&token=' + token;
@@ -16,7 +16,7 @@ define(function(require, exports, module) {
                 url = url + '?token=' + token;
             }
 
-            $.get(url, function(data) {
+            $.get(url, function (data) {
                 if ('0000000' === data.rtnCode || '0100010' === data.rtnCode) {
                     typeof callback === 'function' && callback(data);
                 } else {
@@ -24,7 +24,7 @@ define(function(require, exports, module) {
                 }
             });
         },
-        post: function(url, data, callback) {
+        post: function (url, data, callback) {
             url = url + '?token=' + token;
             $.ajax({
                 type: 'post',
@@ -32,7 +32,7 @@ define(function(require, exports, module) {
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: data,
                 dataType: 'json',
-                success: function(data) {
+                success: function (data) {
                     if ('0000000' === data.rtnCode) {
                         typeof callback === 'function' && callback(data);
                     } else {
@@ -41,15 +41,15 @@ define(function(require, exports, module) {
                 }
             });
         },
-        error: function(data) {
+        error: function (data) {
             if ('0100015' === data.rtnCode) {
                 ErrorDialog({
-                    msg:data.msg
+                    msg: data.msg
                 });
-            } else if('0100008' === data.rtnCode) {
+            } else if ('0100008' === data.rtnCode) {
                 ErrorDialog({
-                    msg:data.msg,
-                    clickHandle: function() {
+                    msg: data.msg,
+                    clickHandle: function () {
                         window.location.href = 'http://setting.jx.xy189.cn/dist/app/login.html';
                     }
                 });
