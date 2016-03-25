@@ -6,7 +6,6 @@ define(function (require, exports, module) {
         //获取所需组件依赖
         require('bootstrap');
         require('cookie');
-        require('dialog');
         var timeFomate = require('../common/timeFomate.js');
         var message = require('../message.js');
         var Table = require('../datatable.js');
@@ -14,12 +13,24 @@ define(function (require, exports, module) {
         var token = $.cookie('bizData');
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
+
+            if($(this).attr('roleType')==1){
+                //未出库table
+                willOutput(UrlConfig.getGoodsMange);
+                $('.tables-t .h4-st').text('未出库货物');
+
+            }else{
+                $('.tables-t .h4-st').text('已出库货物');
+                //已出库table
+                alreadyOutput(UrlConfig.getGoodsMangeOut);
+            }
             var n = $(this).index();
-            $('.table-responsive').hide().eq(n).fadeIn(100);
+            //$('.table-responsive').hide().eq(n).fadeIn(100);
             var placeTip = ['未出库vip卡号查询', '已出库vip卡号查询'];
             $('#vip-card').attr({'data-type': n, 'placeholder': placeTip[n]});
             $('#search-btn').attr('data-type', n);
         });
+        $('#tab-btn li:eq(0)').click();
         $(document).on('click', '#search-btn', function () {
             var cardNumber = $.trim($('#vip-card').val());
             if (cardNumber.length > 10) {
@@ -29,10 +40,7 @@ define(function (require, exports, module) {
             var foo = $(this).attr('data-type');
             foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
         });
-        //未出库table
-        willOutput(UrlConfig.getGoodsMange);
-        //已出库table
-        alreadyOutput(UrlConfig.getGoodsMangeOut);
+
         function willOutput(url) {
             var col = [{
                 data: 'id',
@@ -54,7 +62,7 @@ define(function (require, exports, module) {
                 "sClass": "center",
                 "sWidth": "30px",
                 "render": function (data, type, row) {
-                    return '<input class="" type="checkbox"  data-id="' + data + '"  />';
+                    return '<input class="selNoOutbound" type="checkbox"  data-id="' + data + '"  />';
                 },
                 "aTargets": [0]
             }, {
@@ -124,13 +132,213 @@ define(function (require, exports, module) {
             }];
             var TableInstance = Table({
                 columns: col,
-                tableContentId: 'table_content2',
+                tableContentId: 'table_content',
                 tableId: (+new Date()) + '_table_body',
                 sAjaxSource: url,
                 columnDefs: columnDefs
             });
             TableInstance.init();
-        }
+        };
+
+
+
+        var productionDepartment = function(formArry, succCallback, id) {
+            var departmentJson = {
+                area: formArry[0] || ''
+            };
+            var selNoOutboundArr = [];
+            $('.selNoOutbound[type="checkbox"]:checked').each(function(i){
+                selNoOutboundArr.push($(this).attr('data-id'));
+            });
+            departmentJson.outputList = selNoOutboundArr.join(",");
+            $.ajax({
+                type: 'post',
+                url: '/admin/output?token=' + token,
+                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                data: {
+                    departmentJson: JSON.stringify(departmentJson)
+                },
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data)
+                    succCallback(data);
+
+                },
+                beforeSend: function(xhr) {},
+                error: function(data) {
+
+                }
+            });
+        };
+
+
+
+
+
+
+
+
+
+
+        var ButtonEvent = {
+            production: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+                                $.getJSON('/admin/getCurrUserNextArea?token=' + token,function(res){
+                                    console.log(res.bizData[0].name)
+                                    for(var i=0;i<res.bizData.length;i++){
+                                        $('#dep_provinces').append('<option simpleCode="'+ res.bizData[i].simpleCode  +'" value="'+ res.bizData[i].id +'">'+ res.bizData[i].name +'</option>')
+                                    }
+                                });
+                            },
+                            buttons: [{
+                                text: "出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    var vali = require('./outbound_from.js');
+                                    vali.validate(function(formArry) {
+                                        productionDepartment(formArry, function(ret) {
+                                            //console.log(ret)
+                                            if ('0000000' === ret.rtnCode) {
+                                                tableObj.fnDraw();
+                                                var node = {
+                                                    id: ret.bizData.departmentCode,
+                                                    name: formArry[0]
+                                                };
+                                                //treeCallback({
+                                                //    type: 'add',
+                                                //    obj: node
+                                                //});
+
+                                                $("#add_dep").dialog("destroy");
+                                            } else {
+                                                $("#add_dep").dialog("destroy");
+                                                message({
+                                                    title: '温馨提示',
+                                                    msg: ret.msg,
+                                                    type: 'alert',
+                                                    clickHandle: function() {
+                                                        window.location.href = 'login.html';
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    });
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            },
+
+            batchOutbound: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    if (!tableObj) {
+                        return;
+                    }
+
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "批量出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+
+
+                            },
+                            buttons: [{
+                                text: "批量出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            },
+
+
+            batchOutbound: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    if (!tableObj) {
+                        return;
+                    }
+
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "批量出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+
+
+                            },
+                            buttons: [{
+                                text: "批量出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            }
+        };
+
+        require.async('../renderResource', function(resource) {
+            resource(ButtonEvent, token);
+        });
+
+
+
+
+
+
+
+
     }
 
 
