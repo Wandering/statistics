@@ -43,8 +43,8 @@ public class HttpTest extends TestCase {
     }
 
     public void testOutput() {
-        String area=null;
-        String outputList=null;
+        String area="01";
+        String outputList="1";
         String rows=null;
         String url = host + output_url + "?outputList="+RequestUtils.paramCheckToEmpty(outputList)+"&area="+RequestUtils.paramCheckToEmpty(area)+"+&rows="+RequestUtils.paramCheckToEmpty(rows)+"&debug=true";
         String result = RequestUtils.requestPost(url);
@@ -68,9 +68,9 @@ public class HttpTest extends TestCase {
         String queryParam=null;
         String area=null;
         String status=null;
-        String startDate="2016-01-01";
-        String endDate="2016-03-23";
-        String activityStatus="1";
+        String startDate="";
+        String endDate="";
+        String activityStatus="0";
         String page=null;
         String rows=null;
         String url = host + monitors_url

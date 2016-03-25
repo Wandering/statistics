@@ -23,7 +23,28 @@
         activeDate as activeDate
     </sql>
 
+    <select id="outPutCardNumber" resultType="java.util.Map">
+        SELECT
+        cardNumber
+        FROM zgk_card
+        <if test="condition.rows != null">
+        <where>
+            <!--标记当前用户查询范围-->
+            <if test="condition.whereSql != null">
+                and id in (${condition.whereSql})
+            </if>
+            <!--未出库查询-->
+                and goodsNumber=#{condition.userArea}
+        </where>
+        <if test="condition.orderBy!=null">
+            ORDER BY ${condition.orderBy} ${condition.sortBy}
+        </if>
+            limit  ${condition.rows}
+        </if>
+    </select>
+
     <select id="queryPage" resultType="java.util.Map">
+
         SELECT
         <if test="selector!=null">
             <trim prefixOverrides=",">
@@ -98,8 +119,11 @@
                 and goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
-            <if test="condition.flow!=null">
-                and goodsNumber LIKE CONCAT(#{condition.userArea} , #{condition.flow}, '%')
+            <if test="condition.flowlist!=null">
+                and
+                <foreach collection="condition.flowlist" item="areaStr" index="index" separator="or">
+                    goodsNumber LIKE CONCAT(#{condition.userArea} , #{areaStr}, '%')
+                </foreach>
             </if>
             <!--卡号查询-->
             <if test="condition.cardNumber!=null">
@@ -112,6 +136,7 @@
         <if test="offset != null">
             limit ${offset}, ${rows}
         </if>
+
     </select>
 
     <select id="count" resultType="java.lang.Integer">

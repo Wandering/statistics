@@ -70,7 +70,10 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
         return getDao().output(condition)>0;
     }
 
-
+    public List<Map<String, Object>> outPutCardNumber(Map<String, Object> condition){
+        conditionHandler(condition);
+        return getDao().outPutCardNumber(condition);
+    }
 
 
 
@@ -84,6 +87,8 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
     protected void conditionHandler(Map<String, Object> condition) {
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
         condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
+        condition.put("orderBy", "cardNumber");
+        condition.put("sortBy", "asc");
     }
 
 

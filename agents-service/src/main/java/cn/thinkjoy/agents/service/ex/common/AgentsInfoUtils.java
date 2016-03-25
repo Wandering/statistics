@@ -1,6 +1,7 @@
 package cn.thinkjoy.agents.service.ex.common;
 
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -87,10 +88,11 @@ public class AgentsInfoUtils {
      * @return
      */
     public static int getAgentsRank() {
-        switch (mockAgents.getAgenstsRank()){
-            case 1:
-                return AgentsConstant.RANKONE;
+        Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
+        switch (Integer.valueOf(userinfo.get("roleType").toString())){
             case 2:
+                return AgentsConstant.RANKONE;
+            case 3:
                 return AgentsConstant.RANKTWO;
             case 4:
                 return AgentsConstant.RANKTHREE;
@@ -111,12 +113,22 @@ public class AgentsInfoUtils {
      * @return
      */
     public static String getAgentsUserArea() {
-        return mockAgents.getUserArea();
+        Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
+        String areaCode=(String)userinfo.get("areaCode");
+        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+            return areaCode;
+        }
+        return "";
     }
 
 
     public static String getAgentsUserAreaId(){
-        return mockAgents.getAreaId();
+        Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
+        String areaCode=(String)userinfo.get("areaCode");
+        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+            return addZeroForNum(areaCode,6);
+        }
+        return "";
     }
     /**
      * 判定代理商所在区域
@@ -353,19 +365,14 @@ public class AgentsInfoUtils {
         List<Map<String, Object>> areaNames = null;
         String userArea = getAgentsUserArea();
         if(map.containsKey("area")) {//一切建立在area！=null
-            switch (getAgentsType()) {
+            switch (getAgentsUserArea().length()) {
                 case 2:
                     //市列
                     map.put("cityId", AreaCacheUtils.getAreaCache("city",addZeroForNum(userArea + map.get("area"), 6)));
                     break;
-                case 3:
                 case 4:
                     //区县列
                     map.put("countyId", AreaCacheUtils.getAreaCache("county",addZeroForNum(userArea + map.get("area"), 6)));
-                    break;
-                case 5:
-                case 6:
-                case 8:
                     break;
                 default:
                     //默认省列
