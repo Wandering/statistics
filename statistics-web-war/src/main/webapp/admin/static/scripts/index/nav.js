@@ -149,6 +149,21 @@ define(function (require, exports, module) {
                 }
             },
             /**
+             * ==================================
+             * 数据监控 - (behaviorStatistics)
+             * ==================================
+             */
+            behaviorStatistics: function () {
+                $('#page_0').html('');
+                Nav.changeSection('dataMonitored');
+                try {
+                    require.async('./dataMonitored/dataMonitoredList', function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+            /**
              * 实时统计
              */
             realTimeStatistics: function () {

@@ -149,6 +149,21 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
                 }
             },
             /**
+             * ==================================
+             * 数据监控 - (behaviorStatistics)
+             * ==================================
+             */
+            behaviorStatistics: function () {
+                $('#page_0').html('');
+                Nav.changeSection('dataMonitored');
+                try {
+                    require.async(['static/scripts/index/dataMonitored/dataMonitoredList'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+            /**
              * 实时统计
              */
             realTimeStatistics: function () {

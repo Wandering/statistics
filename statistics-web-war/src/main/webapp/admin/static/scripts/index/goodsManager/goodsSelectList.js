@@ -12,24 +12,22 @@ define(function (require, exports, module) {
         var Table = require('../datatable.js');
         var UrlConfig = require('../common/urlConfig');
         var token = $.cookie('bizData');
-        console.info(token);
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var n = $(this).index();
-            $('.table-responsive').hide().eq(n).fadeIn(500);
+            $('.table-responsive').hide().eq(n).fadeIn(100);
             var placeTip = ['未出库vip卡号查询', '已出库vip卡号查询'];
             $('#vip-card').attr({'data-type': n, 'placeholder': placeTip[n]});
             $('#search-btn').attr('data-type', n);
         });
         $(document).on('click', '#search-btn', function () {
             var cardNumber = $.trim($('#vip-card').val());
-            if (cardNumber == '') {
-                $('.form-error').text('请输入卡号').fadeIn(300).fadeOut(300);
+            if (cardNumber.length > 10) {
+                $('.form-error').text('您输入的卡号不正确').fadeIn(1000).fadeOut(1000);
                 return false
             }
-            console.info(cardNumber);
             var foo = $(this).attr('data-type');
-            foo == '0' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber);
+            foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
         });
         //未出库table
         willOutput(UrlConfig.getGoodsMange);

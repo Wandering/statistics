@@ -152,6 +152,13 @@
 			</div>
 
 
+
+
+
+
+
+
+
 </script>
 <!--列表结构模板-->
 <script type="text/x-jquery-tmpl" id="tmpl_1">
@@ -167,6 +174,13 @@
 			</section>
 
 
+
+
+
+
+
+
+
 </script>
 
 <script type="text/x-dot-tmpl" id="more_table">
@@ -176,6 +190,13 @@
 					</div>
 				</div>
             </section>
+
+
+
+
+
+
+
 
 
 </script>
@@ -192,6 +213,13 @@
 				<input size="16" type="text" readonly class="form_date" id="end_date">
 				<span id="date_error_tip" style="margin-left:10px;color:#f00"></span>
 			</div>
+
+
+
+
+
+
+
 
 
 </script>
@@ -221,6 +249,13 @@
 			</div>
 
 
+
+
+
+
+
+
+
 </script>
 
 <script type="text/x-jquery-tmpl" id="tmpl_4">
@@ -240,6 +275,13 @@
 					</div>
 				</div>
 			</div>
+
+
+
+
+
+
+
 
 
 </script>
@@ -263,82 +305,92 @@
 			</div>
 
 
+
+
+
+
+
+
+
 </script>
 
 <script type="text/html" id="tmpl_2">
-			<div id="change_pwd_form" class="form-horizontal">
-				<div class="control-group">
-					<label class="control-label" for="login_user_name">登录账号:</label>
-					<div class="controls">
-						<span class="account-span login-user-name"></span>
-						<a class="change" data-class="change_pwd" data-title="修改密码">修改密码</a>
-						<i class="fa fa-arrow-left" style="display:none"></i>
-					</div>
-					<p class="form-error"></p>
-				</div>
-				<div style="display:none" id="change_basic_info">
-					<div class="control-group">
-						<label class="control-label" for="userName">用户姓名:</label>
-						<div class="controls">
-							<span class="account-span user-name"></span>
-							<input style="display:none" class="form-control form-w200" type="text" id="userName" />
-							<a class="change" data-method="isName" data-title="修改姓名">修改姓名</a>
-						</div>
-						<p class="form-error"></p>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="phone">电话:</label>
-						<div class="controls">
-							<span class="account-span user-phone"></span>
-							<input style="display:none" class="form-control form-w200" type="text" id="phone" />
-							<a class="change" data-method="isMobile" data-title="修改电话">修改电话</a>
-						</div>
-						<p class="form-error"></p>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="email">邮箱:</label>
-						<div class="controls">
-							<span class="account-span user-eamil"></span>
-							<input style="display:none" class="form-control form-w200" type="text" id="email" />
-							<a class="change" data-method="isEmail" data-title="修改邮箱">修改邮箱</a>
-						</div>
-						<p class="form-error"></p>
-					</div>
-				</div>
-				<div style="display:none" id="change_basic_pwd">
-					<div class="control-group">
-						<label class="control-label" for="old_password">原密码:</label>
-						<div class="controls">
-							<input data-flag="0" class="form-control form-w200" type="password" id="old_password" placeholder="请输入原密码" />
-						</div>
-						<p class="form-error"></p>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="new_password">新密码:</label>
-						<div class="controls">
-							<input class="form-control form-w200" type="password" id="new_password" placeholder="请输入新密码" />
-						</div>
-						<p class="form-error"></p>
-					</div>
-					<div class="control-group">
-						<label class="control-label" for="confirm_new_password">确认新密码:</label>
-						<div class="controls">
-							<input class="form-control form-w200" type="password" id="confirm_new_password" placeholder="确认新密码" />
-						</div>
-						<p class="form-error"></p>
-					</div>
-				</div>
-			</div>
+    <div id="change_pwd_form" class="form-horizontal">
+        <div class="control-group">
+            <label class="control-label" for="login_user_name">登录账号:</label>
+            <div class="controls">
+                <span class="account-span login-user-name"></span>
+                <a class="change" data-class="change_pwd" data-title="修改密码">修改密码</a>
+                <i class="fa fa-arrow-left" style="display:none"></i>
+            </div>
+            <p class="form-error"></p>
+        </div>
+        <div style="display:none" id="change_basic_info">
+            <div class="control-group">
+                <label class="control-label" for="userName">用户姓名:</label>
+                <div class="controls">
+                    <span class="account-span user-name"></span>
+                    <input style="display:none" class="form-control form-w200" type="text" id="userName"/>
+                    <a class="change" data-method="isName" data-title="修改姓名">修改姓名</a>
+                </div>
+                <p class="form-error"></p>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="phone">电话:</label>
+                <div class="controls">
+                    <span class="account-span user-phone"></span>
+                    <input style="display:none" class="form-control form-w200" type="text" id="phone"/>
+                    <a class="change" data-method="isMobile" data-title="修改电话">修改电话</a>
+                </div>
+                <p class="form-error"></p>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="email">邮箱:</label>
+                <div class="controls">
+                    <span class="account-span user-eamil"></span>
+                    <input style="display:none" class="form-control form-w200" type="text" id="email"/>
+                    <a class="change" data-method="isEmail" data-title="修改邮箱">修改邮箱</a>
+                </div>
+                <p class="form-error"></p>
+            </div>
+        </div>
+        <div style="display:none" id="change_basic_pwd">
+            <div class="control-group">
+                <label class="control-label" for="old_password">原密码:</label>
+                <div class="controls">
+                    <input data-flag="0" class="form-control form-w200" type="password" id="old_password"
+                           placeholder="请输入原密码"/>
+                </div>
+                <p class="form-error"></p>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="new_password">新密码:</label>
+                <div class="controls">
+                    <input class="form-control form-w200" type="password" id="new_password" placeholder="请输入新密码"/>
+                </div>
+                <p class="form-error"></p>
+            </div>
+            <div class="control-group">
+                <label class="control-label" for="confirm_new_password">确认新密码:</label>
+                <div class="controls">
+                    <input class="form-control form-w200" type="password" id="confirm_new_password"
+                           placeholder="确认新密码"/>
+                </div>
+                <p class="form-error"></p>
+            </div>
+        </div>
+    </div>
 </script>
 <!--货物查询模板-->
 <script type="text/html" id="goodsSelect">
     <section class="tile transparent grid">
-        <div class="tile-body transparent rounded-corners">
+        <div class="tile-body transparent rounded-corners pd30">
             <div id="form_search">
                 <div class="control-group">
                     <div class="controls">
-                        <input class="form-control input-sm form-w180" data-type="1" type="text" id="vip-card" placeholder="未出库vip卡号查询">
-                        <div class="btn btn-sm btn-primary" data-type="1" id="search-btn">查询</div>
+                        <input class="form-control input-sm form-w180" data-type="0" type="text" id="vip-card"
+                               placeholder="未出库vip卡号查询">
+                        <div class="btn btn-sm btn-primary" data-type="0" id="search-btn">查询</div>
                     </div>
                     <p class="form-error"></p>
                 </div>
@@ -357,6 +409,48 @@
             </div>
         </div>
     </section>
+</script>
+
+<!--data-monitored数据监控-->
+<script type="text/html" id="dataMonitored">
+    <div class="tile-body transparent rounded-corners">
+        <section class="tile transparent grid pd30">
+            <form class="form-inline">
+                <p class="color-white">用户数据明细：</p>
+                <div class="form-group">
+                    <input type="email" class="form-control input-sm form-w180" id="phoneOrVipNumber"
+                           placeholder="输入用户VIP卡号／手机号">
+                </div>
+                <div class="form-group">
+                    <select name="" class="form-control input-sm form-w180">
+                        <option value="">所在地</option>
+                        <option value="">省</option>
+                        <option value="">市</option>
+                        <option value="">区</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="" class="form-control input-sm form-w180">
+                        <option value="">状态</option>
+                        <option value="">正常</option>
+                        <option value="">异常</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select name="" class="form-control input-sm form-w180">
+                        <option value="">激活时间</option>
+                        <option value="">已激活</option>
+                        <option value="">未激活</option>
+                    </select>
+                </div>
+            </form>
+            <div class="table-responsive" id="dataMonitoredContent">
+
+            </div>
+        </section>
+
+    </div>
+
 </script>
 
 
