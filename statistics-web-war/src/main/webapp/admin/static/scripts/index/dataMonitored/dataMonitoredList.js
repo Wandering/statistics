@@ -33,7 +33,7 @@ define(function (require, exports, module) {
                 data: 'area',
                 title: '所在地'
             }, {
-                data: 'inputDate',
+                data: 'activeDate',
                 title: '激活日期'
             }];
             var columnDefs = [{
@@ -61,7 +61,7 @@ define(function (require, exports, module) {
                 "sClass": "center",
                 "render": function (data, type, row) {
                     var str = '';
-                    if (data == '0') {
+                    if (data == null || data == undefined || data == '') {
                         str = '未激活'
                     } else {
                         str = timeFomate(data);
@@ -81,7 +81,8 @@ define(function (require, exports, module) {
         }
 
         /**
-         *
+         * 状态：正常（0）|  异常 （1）
+         * 激活日期：已激活（1）|  未激活（0）
          */
         ajaxFun.get(UrlConfig.getProvinceList, function (res) {
             var optionList = '<option value="">所在地</option>';
@@ -90,15 +91,12 @@ define(function (require, exports, module) {
             });
             $('#selectArea').html(optionList);
         });
-        //$(document).on('change', '#monitoredProvinceSelect', function () {
-        //    var selectArea = $(this).val();
-        //});
         $(document).on('click', '#monitoredSearch', function () {
             var numberOrCard = $('#phoneOrVipNumber').val();
             var selectArea = $('#selectArea').val();
             var statusType = $('#statusType').val();
             var activityStatus = $('#activityStatusSelect').val();
-            var link = '/admin/monitors?token='+token+'&queryParam='+numberOrCard+'&area='+selectArea+'&status='+statusType+'&activityStatus='+activityStatus;
+            var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
             getMonitoredList(link);
         })
     }
