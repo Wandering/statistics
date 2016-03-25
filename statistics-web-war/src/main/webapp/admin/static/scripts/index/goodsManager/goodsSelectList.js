@@ -6,7 +6,6 @@ define(function (require, exports, module) {
         //获取所需组件依赖
         require('bootstrap');
         require('cookie');
-        require('dialog');
         var timeFomate = require('../common/timeFomate.js');
         var message = require('../message.js');
         var Table = require('../datatable.js');
@@ -15,6 +14,7 @@ define(function (require, exports, module) {
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var n = $(this).index();
+            console.log($('.table-responsive').html())
             $('.table-responsive').hide().eq(n).fadeIn(100);
             var placeTip = ['未出库vip卡号查询', '已出库vip卡号查询'];
             $('#vip-card').attr({'data-type': n, 'placeholder': placeTip[n]});
@@ -130,7 +130,98 @@ define(function (require, exports, module) {
                 columnDefs: columnDefs
             });
             TableInstance.init();
-        }
+        };
+        var ButtonEvent = {
+            production: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+                                $.getJSON('/admin/getCurrUserNextArea?token=' + token,function(res){
+                                    for(var i=0;i<res.bizData.length;i++){
+                                        $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].name +'</option>')
+                                    }
+                                });
+
+                            },
+                            buttons: [{
+                                text: "出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            },
+
+            batchOutbound: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    if (!tableObj) {
+                        return;
+                    }
+
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "批量出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+
+
+                            },
+                            buttons: [{
+                                text: "批量出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            }
+        };
+        require.async('../renderResource', function(resource) {
+            resource(ButtonEvent, token);
+        });
+
+
+
+
+
+
+
+
+
     }
 
 

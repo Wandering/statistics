@@ -1,12 +1,11 @@
 /**
  * Created by pdeng on 16/3/23.
  */
-define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
+define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/jquery/dialog/jquery.dialog'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
-        require('sea-modules/jquery/dialog/jquery.dialog');
         var timeFomate = require('static/scripts/index/common/timeFomate');
         var message = require('static/scripts/index/message');
         var Table = require('static/scripts/index/datatable');
@@ -15,6 +14,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var n = $(this).index();
+            console.log($('.table-responsive').html())
             $('.table-responsive').hide().eq(n).fadeIn(100);
             var placeTip = ['未出库vip卡号查询', '已出库vip卡号查询'];
             $('#vip-card').attr({'data-type': n, 'placeholder': placeTip[n]});
@@ -130,7 +130,98 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 columnDefs: columnDefs
             });
             TableInstance.init();
-        }
+        };
+        var ButtonEvent = {
+            production: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('sea-modules/jquery/dialog/jquery.dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+                                $.getJSON('/admin/getCurrUserNextArea?token=' + token,function(res){
+                                    for(var i=0;i<res.bizData.length;i++){
+                                        $('#dep_provinces').append('<option value="'+ res.bizData[i].id +'">'+ res.bizData[i].name +'</option>')
+                                    }
+                                });
+
+                            },
+                            buttons: [{
+                                text: "出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            },
+
+            batchOutbound: function(elementId) {
+                $('#' + elementId).off('click');
+                $('#' + elementId).on('click', function(e) {
+                    if (!tableObj) {
+                        return;
+                    }
+
+                    $.get('../tmpl/outbound/outbound.html', function(tmpl) {
+                        require('sea-modules/jquery/dialog/jquery.dialog');
+                        $("#outbound_dialog").dialog({
+                            title: "批量出库",
+                            tmpl: tmpl,
+                            onClose: function() {
+                                $("#outbound_dialog").dialog("destroy");
+                            },
+                            render: function() {
+
+
+                            },
+                            buttons: [{
+                                text: "批量出库",
+                                'class': "btn btn-primary",
+                                click: function() {
+
+
+
+                                }
+                            }, {
+                                text: "取消",
+                                'class': "btn btn-primary",
+                                click: function() {
+                                    $("#outbound_dialog").dialog("destroy");
+                                }
+                            }]
+                        });
+                    })
+                });
+            }
+        };
+        require.async(['static/scripts/index/renderResource'], function(resource) {
+            resource(ButtonEvent, token);
+        });
+
+
+
+
+
+
+
+
+
     }
 
 
