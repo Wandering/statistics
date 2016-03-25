@@ -337,7 +337,7 @@ public class AgentsInfoUtils {
                 break;
             default:
                 //默认省份表中查询
-                areaNames = areaExDAO.queryProvince();
+                areaNames = areaExDAO.likeProvince();
                 break;
         }
         return areaNames;
@@ -362,7 +362,7 @@ public class AgentsInfoUtils {
                 break;
             default:
                 //默认省份表中查询
-                areaNames = areaExDAO.queryProvince();
+                areaNames = areaExDAO.likeProvince();
                 break;
         }
         return areaNames;
