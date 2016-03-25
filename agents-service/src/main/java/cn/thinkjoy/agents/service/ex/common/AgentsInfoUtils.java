@@ -128,7 +128,7 @@ public class AgentsInfoUtils {
     public static String getAgentsUserAreaId(){
         Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
         String areaCode=(String)userinfo.get("areaCode");
-        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+        if(StringUtils.isNotEmpty(areaCode) && (!"00".equals(areaCode))){
             return addZeroForNum(areaCode,6);
         }
         return "";
