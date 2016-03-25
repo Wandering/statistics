@@ -135,12 +135,33 @@ define(function (require, exports, module) {
             },
             /**
              * ==================================
-             * 货物管理 - goodsManager (goodsSelect)
+             * 货物管理 - (goodsSelect)
              * ==================================
              */
             goodsSelect: function () {
                 $('#page_0').html('');
-                require.async('./goodsManager/goodsSelect');
+                Nav.changeSection('goodsSelect');
+                try {
+                    require.async('./goodsManager/goodsSelectList', function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+            /**
+             * ==================================
+             * 数据监控 - (behaviorStatistics)
+             * ==================================
+             */
+            behaviorStatistics: function () {
+                $('#page_0').html('');
+                Nav.changeSection('dataMonitored');
+                try {
+                    require.async('./dataMonitored/dataMonitoredList', function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
             },
             /**
              * 实时统计

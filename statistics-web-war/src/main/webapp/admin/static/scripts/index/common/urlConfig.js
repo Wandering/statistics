@@ -7,8 +7,7 @@ define(function (require, exports, module) {
     var token = $.cookie('bizData');
     var baseUrl = '/statistics';
     //var testUrl = 'http://setting.jx.xy189.cn';
-    //var testUrl = "10.136.13.245:8080/";
-    var testUrl = "172.16.170.127:8080/"; //yyp
+    var testUrl = "10.136.13.245:8080/";
     var UrlConfig = {
         /**
          * 统一登录入口
@@ -30,7 +29,13 @@ define(function (require, exports, module) {
         /**
          * 货物管理模块
          */
-        getGoodsMange: '/admin/agents?token=' + token
+        getGoodsMangeOut: '/admin/agents?token=' + token + '&isOutput=true', //已出库
+        getGoodsMange: '/admin/agents?token=' + token + '&isOutput=false', //未出库
+
+        /**
+         * 异常模块
+         */
+        getMonitorsList: '/admin/monitors?token=' + token
 
     };
     module.exports = UrlConfig;
