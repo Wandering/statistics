@@ -220,6 +220,14 @@ public class AgentsInfoUtils {
                     map.put("outputDate", map.get("outputDate3"));
                 }
                 break;
+            default:
+                if (map.containsKey("createDate")) {
+                    map.put("inputDate", map.get("createDate"));
+                }
+                if (map.containsKey("outputDate1")) {
+                    map.put("outputDate", map.get("outputDate1"));
+                }
+                break;
         }
     }
 
