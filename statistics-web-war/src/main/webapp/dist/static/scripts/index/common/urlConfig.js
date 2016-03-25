@@ -35,7 +35,13 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
         /**
          * 异常模块
          */
-        getMonitorsList: '/admin/monitors?token=' + token
+        getMonitorsList: '/admin/monitors?token=' + token,
+
+
+        /**
+         * 省份数据权限拉取
+         */
+        getProvinceList:'/admin/getCurrUserNextArea'// 获取用户下一级区域
 
     };
     module.exports = UrlConfig;
