@@ -202,6 +202,7 @@
         <if test="rows!=null">
             limit ${rows}
         </if>
+        </if>
     </update>
 
     <!-- 更新 -->
