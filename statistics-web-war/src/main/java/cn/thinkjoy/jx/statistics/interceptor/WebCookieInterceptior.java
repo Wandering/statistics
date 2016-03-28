@@ -50,7 +50,7 @@ public class WebCookieInterceptior implements HandlerInterceptor {
             UserInfoContext.setCurrentUserInfo(userInfo);
         }catch (Exception e){
             logger.info("用户信息获取异常");
-            throw new BizException(ERRORCODE.NO_SESSION.getCode(),ERRORCODE.NO_SESSION.getMessage());
+            throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
         }
         return true;
     }
