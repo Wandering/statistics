@@ -19,7 +19,7 @@ define(function(require, exports, module) {
 
     function validateForm(callback) {
 
-        if($.trim($('#outbound_batch_num').val())==''){
+        if($.trim($('#outbound_batch_num').val())=='' || $.trim($('#outbound_batch_num').val())=='0'){
             tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
             return;
         }

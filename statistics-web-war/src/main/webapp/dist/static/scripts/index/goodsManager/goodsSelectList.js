@@ -38,8 +38,10 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             $('#search-btn').attr('data-type', n);
         });
 
-        $('#flowarea').hide();
+
         $('#tab-btn li:eq(0)').click();
+        //$('#flowarea').hide();
+
 
         $(document).on('click', '#search-btn', function () {
             var cardNumber = $.trim($('#vip-card').val());
@@ -48,7 +50,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 return false
             }
             var foo = $(this).attr('data-type');
-            foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
+            //foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
         });
         function willOutput(url) {
             var col = [{
@@ -196,6 +198,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
 
                 }
             });
+
         };
         var flowAreaDepartment = function (formArry, succCallback, id) {
             var flowAreaArr = [];
@@ -206,7 +209,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             console.log(flowAreaArr)
             $.ajax({
                 type: 'post',
-                url: '/admin/output?token=' + token,
+                url: '/admin/agents?token=' + token,
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     isOutput: true,
@@ -222,6 +225,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 error: function (data) {
 
                 }
+
             });
         };
 
@@ -261,7 +265,12 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 $('#' + elementId).off('click');
                 $('#' + elementId).on('click', function (e) {
                     if ($('.selNoOutbound[type="checkbox"]:checked').length == 0) {
-                        alert('请至少选择一个出库货物!')
+                        //alert('请至少选择一个出库货物!')
+                        message({
+                            title: '温馨提示',
+                            msg: '请至少选择一个出库货物',
+                            type: 'alert'
+                        });
                         return false;
                     }
                     $.get('../tmpl/outbound/outbound.html', function (tmpl) {
@@ -318,6 +327,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             },
 
             batchOutbound: function (elementId) {
+
                 $('#' + elementId).off('click');
                 $('#' + elementId).on('click', function (e) {
                     $.get('../tmpl/outbound/outbound_batch.html', function (tmpl) {
@@ -336,9 +346,22 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                     }
                                 });
                                 $('body').on('click','#card-area-btn',function(){
-
-                                    $.getJSON('/admin/outPutCardNumber?rows='+'10',function(res){
+                                    var  outboundBatchNum = $.trim($('#outbound_batch_num').val());
+                                    if(outboundBatchNum=='' || outboundBatchNum=='0'){
+                                        tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
+                                        return;
+                                    }
+                                    $.getJSON('/admin/outPutCardNumber?rows='+outboundBatchNum,function(res){
                                         console.log(res)
+
+
+                                        if(res.rtnCode=="0000000"){
+                                           var cardStart = res.bizData.start,
+                                               cardEnd = res.bizData.end;
+                                            $('#card-start').text(cardStart);
+                                            $('#card-end').text(cardEnd);
+                                        }
+
                                     })
 
 
@@ -382,7 +405,9 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                     })
                 });
             },
+
             flowarea: function (elementId) {
+                $('#' + elementId).hide();
                 $('#' + elementId).off('click');
                 $('#' + elementId).on('click', function (e) {
                     $.get('../tmpl/outbound/flow_area.html', function (tmpl) {
@@ -410,7 +435,13 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                         flowAreaDepartment(formArry, function (ret) {
                                             console.log(ret)
                                             if ('0000000' === ret.rtnCode) {
-                                                alreadyOutput(UrlConfig.getGoodsMangeOut);
+                                                var flowAreaArr = [];
+                                                console.log($('#flow-area-list [type="checkbox"]:checked').parent().attr('simpleCode'))
+                                                $('#flow-area-list [type="checkbox"]:checked').each(function () {
+                                                    flowAreaArr.push($(this).parent().attr('simpleCode'));
+                                                });
+                                                console.log(flowAreaArr)
+                                                alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&area='+flowAreaArr.join(','));
                                                 $("#flow_area_dialog").dialog("destroy");
                                             } else {
                                                 $("#flow_area_dialog").dialog("destroy");
@@ -426,6 +457,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                         });
                                     });
                                 }
+
                             }, {
                                 text: "取消",
                                 'class': "btn btn-primary",
@@ -450,6 +482,15 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
 
 
 
+
+        function tip(ele, str) {
+            var errorLable = ele.find('p');
+            errorLable.html(str);
+            errorLable.show(500);
+            setTimeout(function() {
+                errorLable.hide(500);
+            }, 2000)
+        }
 
 
 
