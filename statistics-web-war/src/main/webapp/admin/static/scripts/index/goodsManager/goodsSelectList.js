@@ -199,8 +199,9 @@ define(function (require, exports, module) {
         };
         var flowAreaDepartment = function (formArry, succCallback, id) {
             var flowAreaArr = [];
+            console.log($('#flow-area-list [type="checkbox"]:checked').parent().attr('simpleCode'))
             $('#flow-area-list [type="checkbox"]:checked').each(function () {
-                flowAreaArr.push($(this).attr('simpleCode'));
+                flowAreaArr.push($(this).parent().attr('simpleCode'));
             });
             console.log(flowAreaArr)
             $.ajax({
@@ -334,6 +335,14 @@ define(function (require, exports, module) {
                                         $('#dep_provinces_batch').append('<option simpleCode="' + res.bizData[i].simpleCode + '" value="' + res.bizData[i].id + '">' + res.bizData[i].name + '</option>')
                                     }
                                 });
+                                $('body').on('click','#card-area-btn',function(){
+
+                                    $.getJSON('/admin/outPutCardNumber?rows='+'10',function(res){
+                                        console.log(res)
+                                    })
+
+
+                                })
 
                             },
                             buttons: [{
@@ -376,7 +385,6 @@ define(function (require, exports, module) {
             flowarea: function (elementId) {
                 $('#' + elementId).off('click');
                 $('#' + elementId).on('click', function (e) {
-                    alert(89)
                     $.get('../tmpl/outbound/flow_area.html', function (tmpl) {
                         require('dialog');
                         $("#flow_area_dialog").dialog({
@@ -387,6 +395,7 @@ define(function (require, exports, module) {
                             },
                             render: function () {
                                 $.getJSON('/admin/getCurrUserNextArea?token=' + token, function (res) {
+                                    console.log(res)
                                     for (var i = 0; i < res.bizData.length; i++) {
                                         $('#flow-area-list').append('<li><label simpleCode="' + res.bizData[i].simpleCode + '" id="' + res.bizData[i].id + '"> <input type="checkbox" >' + res.bizData[i].name + '</label></li>')
                                     }
@@ -396,7 +405,6 @@ define(function (require, exports, module) {
                                 text: "确定",
                                 'class': "btn btn-primary",
                                 click: function () {
-                                    alert(873)
                                     var vali = require('./outbound_flow_area.js');
                                     vali.validate(function (formArry) {
                                         flowAreaDepartment(formArry, function (ret) {
@@ -438,6 +446,12 @@ define(function (require, exports, module) {
         require.async('../renderResource', function (resource) {
             resource(ButtonEvent, token);
         });
+
+
+
+
+
+
 
 
     }

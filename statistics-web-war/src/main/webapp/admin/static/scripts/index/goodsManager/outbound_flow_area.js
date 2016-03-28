@@ -19,7 +19,6 @@ define(function(require, exports, module) {
 
     function validateForm(callback) {
 
-        alert(88)
 
         var flowAreaListLen =  $('#flow-area-list [type="checkbox"]:checked').length;
         if(flowAreaListLen=='0'){

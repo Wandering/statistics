@@ -19,7 +19,6 @@ define('static/scripts/index/goodsManager/outbound_flow_area', [], function(requ
 
     function validateForm(callback) {
 
-        alert(88)
 
         var flowAreaListLen =  $('#flow-area-list [type="checkbox"]:checked').length;
         if(flowAreaListLen=='0'){
