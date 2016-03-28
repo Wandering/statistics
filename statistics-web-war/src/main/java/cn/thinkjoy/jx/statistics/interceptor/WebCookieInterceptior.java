@@ -41,11 +41,13 @@ public class WebCookieInterceptior implements HandlerInterceptor {
                     break;
                 }
             }
-            //尝试从redis上面获取用户信息，并写cookie，如果写入失败抛出用户信息过期
+            userInfo=null;
             if(userInfo==null){
                 String token=request.getParameter("token");
                 userInfoStr=redisCacheService.getValue(token);
                 Cookie cookie=new Cookie("userInfo",userInfoStr);
+                cookie.setPath("/");
+
                 userInfo=JSON.parseObject(userInfoStr);
                 if(userInfo==null){
                     throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
