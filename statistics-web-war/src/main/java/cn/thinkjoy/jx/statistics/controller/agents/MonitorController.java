@@ -44,9 +44,9 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         if(StringUtils.isNotEmpty(queryParam)){
             condition.put("queryParam",queryParam);
         }
-        if(StringUtils.isNotEmpty(area)){
+        if(StringUtils.isNotEmpty(area) && (!"00".equals(area))){
                 //用户地址处理逻辑
-            condition.put("area",queryParam);
+            condition.put("area",area);
             AgentsInfoUtils.getVIPUserAreaLine(condition);
         }
         if(status!=null) {
@@ -82,6 +82,15 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
            }
         }
         return doPage(page,rows,condition);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/errorChart")
+    public Object errorChart(String strtDate,String endDate){
+        Map<String,Object> map = new HashMap<>();
+        map.put("format","%Y%m%d");
+        List<Map<String,Object>> resultMap=monitorExService.errorChart(map);
+        return resultMap;
     }
 
     @Override

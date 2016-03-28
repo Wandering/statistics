@@ -31,6 +31,7 @@ public class WebCookieInterceptior implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         UserInfoContext.removeCurrentUser();
         try {
+            //尝试从cookie上面获取用户信息
             String userInfoStr = null;
             Map<String, Object> userInfo = null;
             Cookie[] cookies = request.getCookies();
@@ -40,17 +41,21 @@ public class WebCookieInterceptior implements HandlerInterceptor {
                     break;
                 }
             }
+            //尝试从redis上面获取用户信息，并写cookie，如果写入失败抛出用户信息过期
             if(userInfo==null){
                 String token=request.getParameter("token");
                 userInfoStr=redisCacheService.getValue(token);
                 Cookie cookie=new Cookie("userInfo",userInfoStr);
                 userInfo=JSON.parseObject(userInfoStr);
+                if(userInfo==null){
+                    throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+                }
                 response.addCookie(cookie);
             }
             UserInfoContext.setCurrentUserInfo(userInfo);
         }catch (Exception e){
             logger.info("用户信息获取异常");
-            throw new BizException(ERRORCODE.NO_SESSION.getCode(),ERRORCODE.NO_SESSION.getMessage());
+            throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
         }
         return true;
     }
