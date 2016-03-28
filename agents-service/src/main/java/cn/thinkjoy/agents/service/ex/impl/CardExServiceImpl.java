@@ -51,17 +51,17 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
      */
     @Override
     public boolean goodsOutput(Map<String, Object> condition) {
-        switch (AgentsInfoUtils.getAgentsRank()){
-            case AgentsConstant.RANKONE:
+        switch (AgentsInfoUtils.getAgentsUserArea().length()){
+            case 0:
                 condition.put("outputDate1",System.currentTimeMillis());
                 break;
-            case AgentsConstant.RANKTWO:
+            case 2:
                 condition.put("outputDate2",System.currentTimeMillis());
                 break;
-            case AgentsConstant.RANKTHREE:
+            case 4:
                 condition.put("outputDate3",System.currentTimeMillis());
                 break;
-            case AgentsConstant.RANKERROR:
+            case 6:
                 break;
             default:
                 break;
