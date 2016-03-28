@@ -30,13 +30,11 @@ public class AreaExServiceImpl implements IAreaExService {
 
     @Override
     public List<Map<String, Object>> getFlowNextArea() {
-        AgentsInfoUtils.initAreaExDAO(areaExDAO);
         return AgentsInfoUtils.getFlowNextArea();
     }
 
     @Override
     public List<Map<String, Object>> getFlowNextArea(String nextArea) {
-        AgentsInfoUtils.initAreaExDAO(areaExDAO);
         return AgentsInfoUtils.getFlowNextArea(nextArea);
     }
 }

@@ -31,7 +31,7 @@ public class AreaCacheUtils {
             //设置并发级别为8，并发级别是指可以同时写缓存的线程数
             .concurrencyLevel(8)
                     //设置写缓存后一周过期
-            .expireAfterWrite(7, TimeUnit.DAYS)
+            .expireAfterWrite(7, TimeUnit.SECONDS)
                     //设置缓存容器的初始容量为10
             .initialCapacity(10)
                     //设置缓存最大容量为100，超过100之后就会按照LRU最近虽少使用算法来移除缓存项
@@ -62,16 +62,16 @@ public class AreaCacheUtils {
                                 List<Map<String, Object>> cityList = areaExDAO.queryCity();
                                 Map<String, Object> map = new HashMap<>();
                                 for (Map<String, Object> city : cityList) {
-                                    String provinceKey = city.get("id").toString();
-                                    map.put(provinceKey, city.get("name"));
+                                    String cityKey = city.get("id").toString();
+                                    map.put(cityKey, city.get("name"));
                                 }
                                 return map;
                             }else if(COUNTY.equals(key)){
                                 List<Map<String, Object>> countyList = areaExDAO.queryCounty();
                                 Map<String, Object> map = new HashMap<>();
                                 for (Map<String, Object> county : countyList) {
-                                    String provinceKey = county.get("id").toString();
-                                    map.put(provinceKey, county.get("name"));
+                                    String countyKey = county.get("id").toString();
+                                    map.put(countyKey, county.get("name"));
                                 }
                                 return map;
                             }
