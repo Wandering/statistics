@@ -1,11 +1,14 @@
 package cn.thinkjoy.jx.statistics.interceptor;
 
+import cn.thinkjoy.agents.service.ex.common.CacheService;
 import cn.thinkjoy.agents.service.ex.common.UserInfoContext;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import com.alibaba.druid.support.logging.Log;
 import com.alibaba.druid.support.logging.LogFactory;
 import com.alibaba.fastjson.JSON;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +21,11 @@ import java.util.Map;
 /**
  * Created by yhwang on 15-6-23.
  */
+@Component
 public class WebCookieInterceptior implements HandlerInterceptor {
+    @Autowired
+    private CacheService redisCacheService;
+
     private  static Log logger=LogFactory.getLog(WebCookieInterceptior.class);
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -32,6 +39,13 @@ public class WebCookieInterceptior implements HandlerInterceptor {
                     userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(),"UTF-8"));
                     break;
                 }
+            }
+            if(userInfo==null){
+                String token=request.getParameter("token");
+                userInfoStr=redisCacheService.getValue(token);
+                Cookie cookie=new Cookie("userInfo",userInfoStr);
+                userInfo=JSON.parseObject(userInfoStr);
+                response.addCookie(cookie);
             }
             UserInfoContext.setCurrentUserInfo(userInfo);
         }catch (Exception e){
