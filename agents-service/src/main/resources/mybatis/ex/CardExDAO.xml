@@ -155,8 +155,11 @@
                 and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
-            <if test="flow!=null">
-                and goodsNumber LIKE CONCAT(#{userArea} , #{flow}, '%')
+            <if test="flowlist!=null">
+                and
+                <foreach collection="flowlist" item="areaStr" index="index" separator="or">
+                    goodsNumber LIKE CONCAT(#{userArea} , #{areaStr}, '%')
+                </foreach>
             </if>
             <!--卡号查询-->
             <if test="cardNumber!=null">
