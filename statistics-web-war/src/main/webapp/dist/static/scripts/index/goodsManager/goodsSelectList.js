@@ -184,7 +184,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     area: formArry[0] || '',
-                    rows:outboundBatchNum
+                    rows: outboundBatchNum
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -213,7 +213,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     isOutput: true,
-                    area:flowAreaArr.join(",")
+                    area: flowAreaArr.join(",")
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -259,13 +259,11 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         //});
 
 
-
         var ButtonEvent = {
             production: function (elementId) {
                 $('#' + elementId).off('click');
                 $('#' + elementId).on('click', function (e) {
                     if ($('.selNoOutbound[type="checkbox"]:checked').length == 0) {
-                        //alert('请至少选择一个出库货物!')
                         message({
                             title: '温馨提示',
                             msg: '请至少选择一个出库货物',
@@ -345,19 +343,20 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                         $('#dep_provinces_batch').append('<option simpleCode="' + res.bizData[i].simpleCode + '" value="' + res.bizData[i].id + '">' + res.bizData[i].name + '</option>')
                                     }
                                 });
-                                $('body').on('click','#card-area-btn',function(){
-                                    var  outboundBatchNum = $.trim($('#outbound_batch_num').val());
-                                    if(outboundBatchNum=='' || outboundBatchNum=='0'){
+                                $('body').on('click', '#card-area-btn', function () {
+                                    var outboundBatchNum = $.trim($('#outbound_batch_num').val());
+                                    if (outboundBatchNum == '' || outboundBatchNum == '0') {
                                         tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
                                         return;
                                     }
-                                    $.getJSON('/admin/outPutCardNumber?rows='+outboundBatchNum,function(res){
+                                    $.getJSON('/admin/outPutCardNumber?rows=' + outboundBatchNum, function (res) {
                                         console.log(res)
 
 
-                                        if(res.rtnCode=="0000000"){
-                                           var cardStart = res.bizData.start,
-                                               cardEnd = res.bizData.end;
+                                        if (res.rtnCode == "0000000") {
+                                            $('#card-interval').show();
+                                            var cardStart = res.bizData.start,
+                                                cardEnd = res.bizData.end;
                                             $('#card-start').text(cardStart);
                                             $('#card-end').text(cardEnd);
                                         }
@@ -441,7 +440,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                                     flowAreaArr.push($(this).parent().attr('simpleCode'));
                                                 });
                                                 console.log(flowAreaArr)
-                                                alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&area='+flowAreaArr.join(','));
+                                                alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&area=' + flowAreaArr.join(','));
                                                 $("#flow_area_dialog").dialog("destroy");
                                             } else {
                                                 $("#flow_area_dialog").dialog("destroy");
@@ -471,7 +470,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             }
 
 
-
         };
 
 
@@ -480,19 +478,14 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         });
 
 
-
-
-
         function tip(ele, str) {
             var errorLable = ele.find('p');
             errorLable.html(str);
             errorLable.show(500);
-            setTimeout(function() {
+            setTimeout(function () {
                 errorLable.hide(500);
             }, 2000)
         }
-
-
 
 
     }
