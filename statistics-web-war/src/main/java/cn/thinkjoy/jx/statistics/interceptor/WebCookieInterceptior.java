@@ -35,10 +35,12 @@ public class WebCookieInterceptior implements HandlerInterceptor {
             String userInfoStr = null;
             Map<String, Object> userInfo = null;
             Cookie[] cookies = request.getCookies();
-            for (Cookie c : cookies) {
-                if (c.getName().equals("userInfo")) {
-                    userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(),"UTF-8"));
-                    break;
+            if(cookies!=null && cookies.length!=0) {
+                for (Cookie c : cookies) {
+                    if (c.getName().equals("userInfo")) {
+                        userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(), "UTF-8"));
+                        break;
+                    }
                 }
             }
             if(userInfo==null){
