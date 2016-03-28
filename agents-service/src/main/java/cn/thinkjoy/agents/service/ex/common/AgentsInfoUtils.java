@@ -376,18 +376,22 @@ public class AgentsInfoUtils {
         List<Map<String, Object>> areaNames = null;
         String userArea = getAgentsUserArea();
         if(map.containsKey("area")) {//一切建立在area！=null
-            switch (getAgentsUserArea().length()) {
+            String queryArea=map.get("area")+AgentsInfoUtils.getAgentsUserArea();
+            switch (queryArea.length()) {
                 case 2:
-                    //市列
-                    map.put("cityId", AreaCacheUtils.getAreaCache("city",addZeroForNum(userArea + map.get("area"), 6)));
+                //省列
+                    map.put("provinceId",addStrForNum(userArea + map.get("area"), 6, "_"));
                     break;
                 case 4:
-                    //区县列
-                    map.put("countyId", AreaCacheUtils.getAreaCache("county",addZeroForNum(userArea + map.get("area"), 6)));
+                    //市列
+                    map.put("cityId", addStrForNum(userArea + map.get("area"), 6, "_"));
+
                     break;
-                default:
-                    //默认省列
-                    map.put("provinceId", AreaCacheUtils.getAreaCache("province",addZeroForNum(userArea + map.get("area"), 6)));
+                case 6:
+
+                    //区县列
+                    map.put("countyId", addStrForNum(userArea + map.get("area"), 6,"_"));
+
                     break;
             }
         }

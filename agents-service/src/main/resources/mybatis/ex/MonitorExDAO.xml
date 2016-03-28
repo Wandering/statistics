@@ -18,13 +18,13 @@
                 AND (account.account=#{condition.queryParam} OR  card.cardNumber=#{condition.queryParam})
             </if>
             <if test="condition.provinceId!=null">
-                AND info.provinceId=#{condition.provinceId}
+                AND info.provinceId like #{condition.provinceId}
             </if>
             <if test="condition.cityId!=null">
-                AND info.cityId=#{condition.cityId}
+                AND info.cityId like #{condition.cityId}
             </if>
             <if test="condition.countyId!=null">
-                AND info.countyId=#{condition.countyId}
+                AND info.countyId like #{condition.countyId}
             </if>
             <if test="condition.activeDateStart!=null and condition.activeDateEnd!=null">
                 AND (card.activeDate &gt; #{condition.activeDateStart} AND card.activeDate &lt;  #{condition.activeDateEnd})
