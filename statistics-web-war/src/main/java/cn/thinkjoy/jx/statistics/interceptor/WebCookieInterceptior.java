@@ -41,7 +41,6 @@ public class WebCookieInterceptior implements HandlerInterceptor {
                     break;
                 }
             }
-            userInfo=null;
             if(userInfo==null){
                 String token=request.getParameter("token");
                 userInfoStr=redisCacheService.getValue(token);
@@ -50,7 +49,9 @@ public class WebCookieInterceptior implements HandlerInterceptor {
 
                 userInfo=JSON.parseObject(userInfoStr);
                 if(userInfo==null){
-                    throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+                    if(!"/statistics/login/checkLogin".equals(request.getRequestURI())){
+                        throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(), ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+                    }
                 }
                 response.addCookie(cookie);
             }
