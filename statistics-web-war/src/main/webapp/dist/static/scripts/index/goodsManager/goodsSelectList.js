@@ -50,7 +50,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 return false
             }
             var foo = $(this).attr('data-type');
-            //foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
+            foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
         });
         function willOutput(url) {
             var col = [{
@@ -73,7 +73,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 "sClass": "center",
                 "sWidth": "30px",
                 "render": function (data, type, row) {
-                    return '<input class="selNoOutbound" type="checkbox"  data-id="' + data + '"  />';
+                    return '<input class="selNoOutbound" onclick="clickChecked()" type="checkbox"  data-id="' + data + '"  />';
                 },
                 "aTargets": [0]
             }, {
@@ -100,6 +100,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 columnDefs: columnDefs
             });
             TableInstance.init();
+
         }
 
         function alreadyOutput(url) {
@@ -230,34 +231,24 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         };
 
 
-        /**
-         * selectall 全选 单选
-         *
-         */
-        //$('#selectall').on('click', function () {
-        //    var self = $(this);
-        //    $('.selNoOutbound[class="selNoOutbound"]').each(function () {
-        //        if ($(this).attr("checked")) {
-        //            alert(8)
-        //
-        //            $(this).attr("checked", false);
-        //        }
-        //        else {
-        //            alert(5)
-        //            $(this).attr("checked", true);
-        //        }
-        //    });
-        //});
+        // 全选
+        $('#selectall').on('click', function () {
+            var that = this;
+            $('.selNoOutbound[type="checkbox"]').each(function () {
+                this.checked = that.checked;
+            });
+        });
 
-        //$('.selNoOutbound[class="selNoOutbound"]').each(function () {
-        //    if ($(this).attr("checked")) {
-        //        $('#selectall').attr("checked", true);
-        //    }
-        //    else {
-        //        $('#selectall').attr("checked", false);
-        //    }
-        //});
-
+        // 单选
+        window.clickChecked = function () {
+            var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
+            var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
+            if (selNoOutboundLength == selNoOutboundCheckedLength) {
+                $('#selectall')[0].checked = true;
+            } else {
+                $('#selectall')[0].checked = false;
+            }
+        };
 
         var ButtonEvent = {
             production: function (elementId) {
