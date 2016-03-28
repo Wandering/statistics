@@ -79,4 +79,16 @@
             </if>
         </where>
     </select>
+    <select id="errorChart" resultType="java.util.Map">
+          SELECT
+	            count(id) as count,
+	      FROM_UNIXTIME(
+		  LEFT (activeDate, 10), #{format}) AS activeTime
+          FROM
+	      zgk_card
+          WHERE
+        	errorStatus = 1
+          GROUP BY
+        	activeTime
+    </select>
 </mapper>

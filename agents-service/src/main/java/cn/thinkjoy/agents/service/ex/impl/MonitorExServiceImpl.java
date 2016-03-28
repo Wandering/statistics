@@ -32,6 +32,12 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
     }
 
     @Override
+    public List<Map<String, Object>> errorChart(Map<String, Object> map) {
+
+        return getDao().errorChart(map);
+    }
+
+    @Override
     public List<Map<String, Object>> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, String sortBy) {
         return getDao().queryPage(condition,offset,rows,orderBy,sortBy);
     }

@@ -84,6 +84,15 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         return doPage(page,rows,condition);
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/errorChart")
+    public Object errorChart(String strtDate,String endDate){
+        Map<String,Object> map = new HashMap<>();
+        map.put("format","%Y%m%d");
+        List<Map<String,Object>> resultMap=monitorExService.errorChart(map);
+        return resultMap;
+    }
+
     @Override
     protected IMonitorExService getService() {
         return monitorExService;
