@@ -5,6 +5,7 @@ import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.IBaseExService;
 import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
 import org.apache.commons.lang.StringUtils;
@@ -88,12 +89,12 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         if(idlist!=null){
 
             condition.put("idlist",idlist);
-        }
-
-        condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
-        if(rows!=null){
+        }else if(rows!=null){
             condition.put("rows",rows);
+        }else {
+            throw new BizException("error","参数outputList和rows至少有一个不能为空");
         }
+        condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
         return cardExService.goodsOutput(condition);
     }
 

@@ -81,14 +81,23 @@
     </select>
     <select id="errorChart" resultType="java.util.Map">
           SELECT
-	            count(id) as count,
-	      FROM_UNIXTIME(
-		  LEFT (activeDate, 10), #{format}) AS activeTime
+	      count(id) as count,
+	      FROM_UNIXTIME(LEFT (activeDate, 10), #{format}) AS activeTime
           FROM
 	      zgk_card
-          WHERE
-        	errorStatus = 1
+          <where>
+        <!--标记当前用户查询范围-->
+        <if test="whereSql != null">
+            and id in (${whereSql})
+        </if>
+         <if test="activeDateStart!=null and activeDateEnd!=null">
+            AND (card.activeDate &gt; #{activeDateStart} AND card.activeDate &lt;  #{activeDateEnd})
+         </if>
+        	and errorStatus = 1
+          </where>
           GROUP BY
         	activeTime
+          ORDER BY
+            activeTime DESC
     </select>
 </mapper>

@@ -33,7 +33,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
 
     @Override
     public List<Map<String, Object>> errorChart(Map<String, Object> map) {
-
+        conditionHandler(map);
         return getDao().errorChart(map);
     }
 
