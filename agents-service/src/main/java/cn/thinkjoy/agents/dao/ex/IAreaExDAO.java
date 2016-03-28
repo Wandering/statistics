@@ -13,7 +13,7 @@ public interface IAreaExDAO {
     public String queryCountyById(String id);
     public List<Map<String,Object>> queryProvince();
     public String queryProvinceById(String id);
-    public List<Map<String,Object>> likeProvinceById(String id);
+    public List<Map<String,Object>> likeProvince();
     public List<Map<String,Object>> likeCountyById(String id);
     public List<Map<String,Object>> likeCityById(String id);
 }

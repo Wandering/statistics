@@ -168,6 +168,7 @@
 
     <!-- 更新 -->
     <update id="output" parameterType="java.util.Map">
+        <if test="rows!=null or idlist!=null">
         UPDATE zgk_card
         <trim prefix="SET" suffixOverrides=",">
             <if test="flow!=null">
@@ -200,6 +201,7 @@
         </where>
         <if test="rows!=null">
             limit ${rows}
+        </if>
         </if>
     </update>
 
