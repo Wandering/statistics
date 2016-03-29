@@ -87,8 +87,8 @@
     </select>
     <select id="errorChart" resultType="java.util.Map">
           SELECT
-	      count(id) as count,
-	      FROM_UNIXTIME(LEFT (activeDate, 10), #{format}) AS activeTime
+	      count(id) as num,
+	      FROM_UNIXTIME(LEFT (activeDate, 10), ${format}) AS dateDay
           FROM
 	      zgk_card
           <where>
@@ -102,8 +102,8 @@
         	and errorStatus = 1
           </where>
           GROUP BY
-        	activeTime
+        dateDay
           ORDER BY
-            activeTime DESC
+        dateDay DESC
     </select>
 </mapper>
