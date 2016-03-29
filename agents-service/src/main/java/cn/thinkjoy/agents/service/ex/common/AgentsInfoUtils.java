@@ -251,10 +251,10 @@ public class AgentsInfoUtils {
             }
             switch (goosNumber.length()-getAgentsUserArea().length()) {
                 case 0:
-                    map.put("goodsStatus", AgentsConstant.OUPUT);
+                    map.put("goodsStatus", AgentsConstant.NOTOUPUT);
                     break;
                 default:
-                    map.put("goodsStatus", AgentsConstant.NOTOUPUT);
+                    map.put("goodsStatus", AgentsConstant.OUPUT);
                     break;
             }
         }
