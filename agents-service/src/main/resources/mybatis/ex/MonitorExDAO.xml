@@ -18,19 +18,23 @@
                 AND (account.account=#{condition.queryParam} OR  card.cardNumber=#{condition.queryParam})
             </if>
             <if test="condition.provinceId!=null">
-                AND (info.provinceId=#{condition.provinceId}
+                AND info.provinceId like #{condition.provinceId}
             </if>
             <if test="condition.cityId!=null">
-                AND (info.cityId=#{condition.cityId}
+                AND info.cityId like #{condition.cityId}
             </if>
             <if test="condition.countyId!=null">
-                AND (info.countyId=#{condition.countyId}
+                AND info.countyId like #{condition.countyId}
             </if>
-            <if test="condition.activeDateStart!=null and activeDateEnd!=null">
+            <if test="condition.activeDateStart!=null and condition.activeDateEnd!=null">
                 AND (card.activeDate &gt; #{condition.activeDateStart} AND card.activeDate &lt;  #{condition.activeDateEnd})
             </if>
             <if test="condition.errorStatus!=null">
                 AND card.errorStatus=#{condition.errorStatus}
+            </if>
+            <!--激活查询-->
+            <if test="condition.status!=null">
+                and card.status = #{condition.status}
             </if>
         </where>
         <if test="orderBy!=null">
@@ -55,13 +59,13 @@
                 AND (account.account=#{queryParam} OR  card.cardNumber=#{queryParam})
             </if>
             <if test="provinceId!=null">
-                AND (info.provinceId=#{provinceId}
+                AND info.provinceId=#{provinceId}
             </if>
             <if test="cityId!=null">
-                AND (info.cityId=#{cityId}
+                AND info.cityId=#{cityId}
             </if>
             <if test="countyId!=null">
-                AND (info.countyId=#{countyId}
+                AND info.countyId=#{countyId}
             </if>
             <if test="activeDateStart!=null and activeDateEnd!=null">
                 AND (card.activeDate &gt; #{activeDateStart} AND card.activeDate &lt;  #{activeDateEnd})
@@ -69,6 +73,31 @@
             <if test="errorStatus!=null">
                 AND card.errorStatus=#{errorStatus}
             </if>
+            <!--激活查询-->
+            <if test="status!=null">
+                and card.status = #{status}
+            </if>
         </where>
+    </select>
+    <select id="errorChart" resultType="java.util.Map">
+          SELECT
+	      count(id) as count,
+	      FROM_UNIXTIME(LEFT (activeDate, 10), #{format}) AS activeTime
+          FROM
+	      zgk_card
+          <where>
+        <!--标记当前用户查询范围-->
+        <if test="whereSql != null">
+            and id in (${whereSql})
+        </if>
+         <if test="activeDateStart!=null and activeDateEnd!=null">
+            AND (card.activeDate &gt; #{activeDateStart} AND card.activeDate &lt;  #{activeDateEnd})
+         </if>
+        	and errorStatus = 1
+          </where>
+          GROUP BY
+        	activeTime
+          ORDER BY
+            activeTime DESC
     </select>
 </mapper>

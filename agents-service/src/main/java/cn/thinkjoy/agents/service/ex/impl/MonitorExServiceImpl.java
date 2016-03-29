@@ -32,6 +32,12 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
     }
 
     @Override
+    public List<Map<String, Object>> errorChart(Map<String, Object> map) {
+        conditionHandler(map);
+        return getDao().errorChart(map);
+    }
+
+    @Override
     public List<Map<String, Object>> queryPage(Map<String, Object> condition, int offset, int rows, String orderBy, String sortBy) {
         return getDao().queryPage(condition,offset,rows,orderBy,sortBy);
     }
@@ -48,8 +54,12 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
 
     @Override
     protected void conditionHandler(Map<String, Object> condition) {
+        if(AgentsInfoUtils.getUserWhereSql()==null) {
+            condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
+        }
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
-        condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
+        condition.put("orderBy", "cardNumber");
+        condition.put("sortBy", "asc");
     }
 
     @Override
@@ -84,7 +94,6 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
         }
 
     }
-
 
     //    @Override
 //    public void insert(BaseDomain entity) {

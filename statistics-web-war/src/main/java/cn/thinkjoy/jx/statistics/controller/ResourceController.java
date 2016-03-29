@@ -82,7 +82,7 @@ public class ResourceController {
             resourcesPojo.setMenuCode(resources1.getMenuCode());
             resourcesPojo.setResourceCode(resources1.getResourceCode());
             resourcesPojo.setResourceIcon(resources1.getResourceIcon());
-            resourcesPojo.setResourceId(resources1.getId());
+            resourcesPojo.setResourceId(Long.valueOf(resources1.getId().toString()));
             resourcesPojo.setResourceName(resources1.getResourceName());
             resourcesPojo.setResourceUrl(resources1.getResourceUrl());
             resourcesPojo.setSeqSort(resources1.getSeqSort());
@@ -166,7 +166,7 @@ public class ResourceController {
             throw new BizException(ERRORCODE.NO_MESSAGE.getCode(),ERRORCODE.NO_MESSAGE.getMessage());
         }
         ResourcesPojo resourcesPojo = new ResourcesPojo();
-        resourcesPojo.setResourceId(resources.getId());
+        resourcesPojo.setResourceId(Long.valueOf(resources.getId().toString()));
         resourcesPojo.setResourceName(resources.getResourceName());
         resourcesPojo.setResourceIcon(resources.getResourceIcon());
         resourcesPojo.setResourceCode(resources.getMenuCode());

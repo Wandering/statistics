@@ -4,6 +4,9 @@ import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.IBaseExService;
+import cn.thinkjoy.common.domain.view.BizData4Page;
+import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,8 +43,8 @@ public class AgentsController extends BaseCommonController <ICardExService>{
     public Object queryPage(@RequestParam(required = false)String cardNumber,
                             @RequestParam(required = false)String area,
                             @RequestParam(required =false,defaultValue = "false")Boolean isOutput,
-                            @RequestParam(required=false,defaultValue = "1") Integer page,
-                            @RequestParam(required=false,defaultValue = "10") Integer rows){
+                            @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
+                            @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
         if(StringUtils.isNotEmpty(cardNumber)){
             condition.put("cardNumber",cardNumber);
@@ -47,13 +52,19 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         if(isOutput){
             condition.put("output",isOutput);
             if(StringUtils.isNotEmpty(area)){
-                condition.put("flow",area);
+//                condition.put("flow",area);
+                condition.put("flowlist",areaToList(area));
             }
         }else {
             condition.put("notoutput",isOutput);
         }
-
-        return doPage(page,rows,condition);
+        Map<String,Object> dataMap=doPage(page,rows,condition);
+        if(isOutput){
+            if(dataMap.containsKey("list") && dataMap.get("list")!=null) {
+                AgentsInfoUtils.setFlow((List<Map<String,Object>>)dataMap.get("list"));
+            }
+        }
+        return dataMap;
     }
 
     @Override
@@ -78,13 +89,69 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         if(idlist!=null){
 
             condition.put("idlist",idlist);
-        }
-
-        condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
-        if(rows!=null){
+        }else if(rows!=null){
             condition.put("rows",rows);
+        }else {
+            throw new BizException("error","参数outputList和rows至少有一个不能为空");
         }
+        condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
         return cardExService.goodsOutput(condition);
     }
 
+    /**
+     * 出库操作
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/outPutCardNumber")
+    public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("rows",rows);
+        List<Map<String,Object>> maps=cardExService.outPutCardNumber(condition);
+        Map<String,Object> resultMap=new HashMap<>();
+        String start=null;
+        String end=null;
+        if(maps.size()>0){
+            start=maps.get(0).get("cardNumber").toString();
+        }
+        if(maps.size()>1){
+            end=maps.get(maps.size()-1).get("cardNumber").toString();
+        }
+        resultMap.put("start",start);
+        resultMap.put("end",end);
+        resultMap.put("count",maps.size());
+        return resultMap;
+    }
+
+    @Override
+    protected Map<String, Object> getSelector() {
+        Map<String,Object> selector=new HashMap<>();
+        selector.put("goodsNumber","goodsNumber");
+        selector.put("id","id");
+        selector.put("cardNumber","cardNumber");
+        selector.put("createDate","createDate");
+        selector.put("outputDate1","outputDate1");
+        selector.put("outputDate2","outputDate2");
+        selector.put("outputDate3","outputDate3");
+        return selector;
+    }
+
+    private List areaToList(String area){
+        String[] areas = area.split(",");
+        List<String> list=new ArrayList<>();
+        for(String str:areas){
+            list.add(str);
+        }
+        return list;
+    }
+
+    @Override
+    protected SqlOrderEnum getSqlOrder() {
+        return SqlOrderEnum.ASC;
+    }
+
+    @Override
+    protected String getDefaultOrderBy() {
+        return "cardNumber";
+    }
 }

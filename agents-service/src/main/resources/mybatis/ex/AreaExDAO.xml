@@ -23,8 +23,8 @@
     <select id="queryProvinceById" resultType="java.lang.String">
             select name from zgk_province WHERE id = #{id};
         </select>
-    <select id="likeProvinceById" resultType="java.util.Map">
-        select id,left(id,2) as simpleCode,name from zgk_province WHERE id like #{id};
+    <select id="likeProvince" resultType="java.util.Map">
+        select id,left(id,2) as simpleCode,name from zgk_province;
     </select>
     <select id="likeCountyById" resultType="java.util.Map">
         select id,right(id,2) as simpleCode,name from zgk_county WHERE id like #{id};

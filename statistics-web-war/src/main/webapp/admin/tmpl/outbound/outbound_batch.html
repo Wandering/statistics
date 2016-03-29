@@ -1,0 +1,27 @@
+<div id="outbound_batch" class="form-horizontal">
+    <div class="control-group">
+        <label class="control-label" for="outbound_batch_num">出库数量:</label>
+        <div class="controls">
+            <input class="form-control form-w200" type="text" id="outbound_batch_num" placeholder="请输入出库数量"/>
+            <button type="button" class="btn btn-primary" id="card-area-btn">显示卡号区段</button>
+            <span id="errorTips"></span>
+        </div>
+        <p class="form-error"></p>
+    </div>
+    <div class="control-group">
+        <label class="control-label">卡号号段:</label>
+        <div class="controls card-interval" id="card-interval">
+            <span id="card-start"></span>--<span id="card-end"></span>
+        </div>
+    </div>
+    <div class="control-group" id="dep_provinces_batch_from">
+        <label class="control-label" for="dep_provinces_batch">选择地区:</label>
+        <div class="controls">
+            <select class="form-control form-w200" id="dep_provinces_batch">
+                <option value="">请选择</option>
+            </select>
+        </div>
+        <p class="form-error"></p>
+    </div>
+    <div id="model_error_msg" style="display: none"></div>
+</div>

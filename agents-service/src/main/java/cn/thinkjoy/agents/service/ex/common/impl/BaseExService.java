@@ -4,6 +4,7 @@ import cn.thinkjoy.agents.service.ex.common.IBaseExService;
 import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,25 +42,17 @@ public abstract class BaseExService implements IBaseExService {
      * 条件查询包含各种查询
      * baseDAO 主要为扩展exdao
      */
-    public BizData4Page queryPageByDataPerm(Map<String,Object> condition,int page,int rows, String orderBy, SqlOrderEnum sqlOrderEnum,Map<String,Object> selector)
+    public Map<String,Object> queryPageByDataPerm(Map<String,Object> condition,int page,int rows, String orderBy, SqlOrderEnum sqlOrderEnum,Map<String,Object> selector)
     {
-        BizData4Page bizData4Page=new BizData4Page();
+        Map<String,Object> dataMap = new HashMap<>();
         int offset = (page - 1) * rows;
         conditionHandler(condition);
         List<Map<String,Object>> mainData = queryPage(condition, offset, rows, orderBy, sqlOrderEnum.getAction(), selector);
         int records =  count(condition);
         mainDataHandler(mainData);
-        bizData4Page.setRows(mainData);
-        bizData4Page.setPage(bizData4Page.getPage());
-        bizData4Page.setRecords(records);
-
-        int total = records / rows;
-        int mod = records % rows;
-        if(mod > 0){
-            total = total + 1;
-        }
-        bizData4Page.setTotal(total);
-        return bizData4Page;
+        dataMap.put("count",records);
+        dataMap.put("list",mainData);
+        return dataMap;
     }
 
     public abstract List<Map<String,Object>>  queryPage(Map<String, Object> condition,int offset,

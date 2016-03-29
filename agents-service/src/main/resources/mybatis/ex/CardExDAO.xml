@@ -23,7 +23,28 @@
         activeDate as activeDate
     </sql>
 
+    <select id="outPutCardNumber" resultType="java.util.Map">
+        SELECT
+        cardNumber
+        FROM zgk_card
+        <if test="condition.rows != null">
+        <where>
+            <!--标记当前用户查询范围-->
+            <if test="condition.whereSql != null">
+                and id in (${condition.whereSql})
+            </if>
+            <!--未出库查询-->
+                and goodsNumber=#{condition.userArea}
+        </where>
+        <if test="condition.orderBy!=null">
+            ORDER BY ${condition.orderBy} ${condition.sortBy}
+        </if>
+            limit  ${condition.rows}
+        </if>
+    </select>
+
     <select id="queryPage" resultType="java.util.Map">
+
         SELECT
         <if test="selector!=null">
             <trim prefixOverrides=",">
@@ -87,7 +108,7 @@
         <where>
             <!--标记当前用户查询范围-->
             <if test="condition.whereSql != null">
-                and id in (#{condition.whereSql})
+                and id in (${condition.whereSql})
             </if>
             <!--未出库查询-->
             <if test="condition.notoutput!=null">
@@ -98,8 +119,11 @@
                 and goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
-            <if test="condition.flow!=null">
-                and goodsNumber LIKE CONCAT(#{condition.userArea} , #{condition.flow}, '%')
+            <if test="condition.flowlist!=null">
+                and
+                <foreach collection="condition.flowlist" item="areaStr" index="index" separator="or">
+                    goodsNumber LIKE CONCAT(#{condition.userArea} , #{areaStr}, '%')
+                </foreach>
             </if>
             <!--卡号查询-->
             <if test="condition.cardNumber!=null">
@@ -112,6 +136,7 @@
         <if test="offset != null">
             limit ${offset}, ${rows}
         </if>
+
     </select>
 
     <select id="count" resultType="java.lang.Integer">
@@ -119,19 +144,22 @@
         <where>
             <!--标记当前用户查询范围-->
             <if test="whereSql != null">
-                and id in (#{whereSql})
+                and id in (${whereSql})
             </if>
             <!--未出库查询-->
-            <if test="output!=null">
+            <if test="notoutput!=null">
                 and goodsNumber=#{userArea}
             </if>
             <!--已出库查询-->
-            <if test="notoutput!=null">
+            <if test="output!=null">
                 and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
             </if>
             <!--流向地查询-->
-            <if test="flow!=null">
-                and goodsNumber LIKE CONCAT(#{userArea} , #{flow}, '%')
+            <if test="flowlist!=null">
+                and
+                <foreach collection="flowlist" item="areaStr" index="index" separator="or">
+                    goodsNumber LIKE CONCAT(#{userArea} , #{areaStr}, '%')
+                </foreach>
             </if>
             <!--卡号查询-->
             <if test="cardNumber!=null">
@@ -143,6 +171,7 @@
 
     <!-- 更新 -->
     <update id="output" parameterType="java.util.Map">
+        <if test="rows!=null or idlist!=null">
         UPDATE zgk_card
         <trim prefix="SET" suffixOverrides=",">
             <if test="flow!=null">
@@ -176,6 +205,7 @@
         <if test="rows!=null">
             limit ${rows}
         </if>
+        </if>
     </update>
 
     <!-- 更新 -->
@@ -190,7 +220,7 @@
             </if>
         </trim>
         <where>
-                cardNumber = #{cardNumber}
+            cardNumber = #{cardNumber}
         </where>
     </update>
 
@@ -199,5 +229,18 @@
     </select>
     <select id="selectCardByUid" resultType="java.lang.String">
         SELECT t.goodsNumber as goodsNumber FROM zgk_card t WHERE t.cardNumber=#{cardNumber}
+    </select>
+
+    <select id="test1" resultType="java.util.Map">
+        SELECT count(1) as errorNum,
+		FROM_UNIXTIME(left(activeDate,10), '%Y.%m.%d') as activeDate
+		FROM
+			zgk_card
+		WHERE
+		goodsNumber LIKE '61%'
+		and
+		errorStatus = 1
+        GROUP BY
+	    activeDate;
     </select>
 </mapper>
