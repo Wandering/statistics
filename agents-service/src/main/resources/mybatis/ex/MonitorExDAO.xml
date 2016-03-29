@@ -97,7 +97,7 @@
             and id in (${whereSql})
         </if>
          <if test="activeDateStart!=null and activeDateEnd!=null">
-            AND (card.activeDate &gt;= #{activeDateStart} AND card.activeDate &lt;=  #{activeDateEnd})
+            AND (activeDate &gt;= #{activeDateStart} AND activeDate &lt;=  #{activeDateEnd})
          </if>
               <if test="errorStatus != null">
                   and errorStatus = #{errorStatus}

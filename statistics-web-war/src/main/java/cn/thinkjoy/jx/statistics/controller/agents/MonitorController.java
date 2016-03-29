@@ -130,8 +130,8 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         List<String> list = new ArrayList<>();
 
         while (true){
-            String dateStr=calendar.get(Calendar.YEAR)+""+calendar.get(Calendar.MONTH)+""+calendar.get(Calendar.DATE)+"";
-            calendar.set(Calendar.DATE,+1);
+            String dateStr=calendar.get(Calendar.YEAR)+"-"+AgentsInfoUtils.addStrForNum(String.valueOf(calendar.get(Calendar.MONTH)+1),2,"0",1)+"-"+AgentsInfoUtils.addStrForNum(String.valueOf(calendar.get(Calendar.DATE)),2,"0",1)+"";
+            calendar.add(Calendar.DATE,1);
             list.add(dateStr);
             if(dateStr.equals(endDate)){
                 break;

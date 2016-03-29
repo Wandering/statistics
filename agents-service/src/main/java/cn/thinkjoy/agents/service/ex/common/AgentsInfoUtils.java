@@ -433,18 +433,23 @@ public class AgentsInfoUtils {
     }
 
     public static String addStrForNum(String str, int strLength, String appendStr) {
+        return addStrForNum(str,strLength,appendStr,0);
+    }
+    public static String addStrForNum(String str, int strLength, String appendStr,Integer status) {
         int strLen = str.length();
         StringBuffer sb = null;
         while (strLen < strLength) {
             sb = new StringBuffer();
-//            sb.append("0").append(str);// 左(前)补0
-            sb.append(str).append(appendStr);//右(后)补0
+            if(status==1) {
+                sb.append(appendStr).append(str);// 左(前)补0
+            }else {
+                sb.append(str).append(appendStr);//右(后)补0
+            }
             str = sb.toString();
             strLen = str.length();
         }
         return str;
     }
-
     /**
      * 追加0到字符串后面
      * @param str
