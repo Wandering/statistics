@@ -12,7 +12,7 @@ define(function (require, exports, module) {
         /**
          * 统一登录入口
          */
-        login: testUrl + '/dist/app/login.html',
+        login: testUrl + 'dist/app/login.html',
         /**
          * 获取用户信息
          */

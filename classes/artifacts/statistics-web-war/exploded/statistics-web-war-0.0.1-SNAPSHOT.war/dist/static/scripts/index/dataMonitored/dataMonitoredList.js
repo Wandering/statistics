@@ -27,7 +27,7 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
                 data: 'errorStatus',
                 title: '状态'
             }, {
-                data: 'inputDate',
+                data: 'account',
                 title: '手机号'
             }, {
                 data: 'area',

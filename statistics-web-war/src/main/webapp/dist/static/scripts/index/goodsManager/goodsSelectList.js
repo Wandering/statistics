@@ -11,7 +11,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         var Table = require('static/scripts/index/datatable');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
         var token = $.cookie('bizData');
-
         var cookieJson = JSON.parse($.cookie('userInfo'));
         if (cookieJson.areaCode.length == 6) {
             $('#tab-btn,.tables-t').remove();

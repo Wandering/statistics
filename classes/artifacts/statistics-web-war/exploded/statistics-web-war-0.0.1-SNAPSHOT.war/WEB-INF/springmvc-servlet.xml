@@ -65,7 +65,7 @@
         <property name="maxUploadSize" value="419430400"/>
     </bean>
 
-    <!--<mvc:interceptors >-->
+    <mvc:interceptors >
         <!--<mvc:interceptor>-->
             <!--&lt;!&ndash; 需拦截的地址 &ndash;&gt;-->
             <!--&lt;!&ndash; 一级目录 &ndash;&gt;-->
@@ -79,7 +79,8 @@
             <!--<mvc:exclude-mapping path="/*/login/*"/>-->
             <!--<mvc:exclude-mapping path="/*.css"/>-->
             <!--<mvc:exclude-mapping path="/*.ico"/>-->
-            <!--<bean class="cn.thinkjoy.jx.statistics.interceptor.WebLoginInterceptior"/>-->
+            <!--<bean class="cn.thinkjoy.jx.statistics.interceptor.WebLoginInterceptior"></bean>-->
         <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
+         <bean class="cn.thinkjoy.jx.statistics.interceptor.WebCookieInterceptior"></bean>
+    </mvc:interceptors>
 </beans>

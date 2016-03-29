@@ -43,7 +43,7 @@ define(function(require, exports, module) {
             }
         }
     };
-    module.exports = function(ButtonEvent, token) {
-        resource.resourceListModel(ButtonEvent, token);
+    module.exports = function(ButtonEvent, token,tabId) {
+        resource.resourceListModel(ButtonEvent, token,tabId);
     }
 });
