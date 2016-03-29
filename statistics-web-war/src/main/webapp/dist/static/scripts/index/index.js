@@ -99,8 +99,9 @@ define('static/scripts/index/index', ['sea-modules/bootstrap/bootstrap', 'sea-mo
 			$.cookie('userInfo', '', {
 				path: '/'
 			});
-			window.location.href = UrlConfig.login;
+			window.location.href = "http://"+UrlConfig.login;
 		});
+
 
 		var setTingInfoAjax = function(userPojoJson, action, callback) {
 			$.ajax({
