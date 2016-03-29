@@ -35,23 +35,29 @@ public class WebCookieInterceptior implements HandlerInterceptor {
             String userInfoStr = null;
             Map<String, Object> userInfo = null;
             Cookie[] cookies = request.getCookies();
-            for (Cookie c : cookies) {
-                if (c.getName().equals("userInfo")) {
-                    userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(),"UTF-8"));
-                    break;
+            if(cookies!=null && cookies.length!=0) {
+                for (Cookie c : cookies) {
+                    if (c.getName().equals("userInfo")) {
+                        userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(), "UTF-8"));
+                        break;
+                    }
                 }
             }
-            //尝试从redis上面获取用户信息，并写cookie，如果写入失败抛出用户信息过期
             if(userInfo==null){
                 String token=request.getParameter("token");
                 userInfoStr=redisCacheService.getValue(token);
                 Cookie cookie=new Cookie("userInfo",userInfoStr);
+                cookie.setPath("/");
+
                 userInfo=JSON.parseObject(userInfoStr);
                 if(userInfo==null){
-                    throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+                    if(!"/statistics/login/checkLogin".equals(request.getRequestURI())){
+                        throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(), ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+                    }
                 }
                 response.addCookie(cookie);
             }
+            logger.info("用户信息："+userInfoStr);
             UserInfoContext.setCurrentUserInfo(userInfo);
         }catch (Exception e){
             logger.info("用户信息获取异常");
