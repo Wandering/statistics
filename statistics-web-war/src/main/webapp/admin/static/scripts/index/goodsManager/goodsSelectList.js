@@ -168,7 +168,6 @@ define(function (require, exports, module) {
                 success: function (data) {
                     console.log(data)
                     succCallback(data);
-
                 },
                 beforeSend: function (xhr) {
                 },
