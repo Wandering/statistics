@@ -157,8 +157,9 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
                 $('#page_0').html('');
                 Nav.changeSection('dataMonitored');
                 try {
-                    require.async(['static/scripts/index/dataMonitored/dataMonitoredList'], function (module) {
+                    require.async(['static/scripts/index/dataMonitored/dataMonitoredChart','static/scripts/index/dataMonitored/dataMonitoredList'], function (module,monitoredList) {
                         module();
+                        monitoredList();
                     });
                 } catch (e) {
                 }
