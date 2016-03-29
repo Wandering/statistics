@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -203,12 +204,34 @@ public class RoleController {
     public Page<Roles> queryRoles(HttpServletRequest request){
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
         int pageSize =Integer.parseInt(HttpUtil.getParameter(request, "pageSize", "10"));
+        Cookie[] cookies=request.getCookies();
+        String userPojoJson = null;
+        for (Cookie cookie:cookies){
+            if(cookie.getName().equals("userInfo")){
+                userPojoJson=cookie.getValue();
+                break;
+            }
+        }
+        if(StringUtils.isBlank(userPojoJson)){
+            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.PARAM_ISNULL.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.PARAM_ISNULL.getMessage());
+        }
+        UserPojo userPojo =  null;
+        try {
+            userPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
+        }catch (Exception e){
+            LOGGER.error(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+        }
         Map<String,Object>  conditions = new HashMap<>();
         Map<String,Object> statusMap = new HashMap<>();
         statusMap.put("op","=");
         statusMap.put("data",Constants.NORMAL_STATUS);
+        Map<String,Object> creatorMap = new HashMap<>();
+        creatorMap.put("op","=");
+        creatorMap.put("data",userPojo.getAccountCode());
         conditions.put("groupOp", " AND ");
         conditions.put("status", statusMap);
+        conditions.put("creator", creatorMap);
         int count=rolesService.count(conditions);
         if(count>0){
             List<Roles> rolesList = rolesService.queryPage(conditions, (currentPageNo - 1) * pageSize, pageSize, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC);

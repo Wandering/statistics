@@ -157,8 +157,9 @@ define(function (require, exports, module) {
                 $('#page_0').html('');
                 Nav.changeSection('dataMonitored');
                 try {
-                    require.async('./dataMonitored/dataMonitoredList', function (module) {
+                    require.async(['./dataMonitored/dataMonitoredChart','./dataMonitored/dataMonitoredList'], function (module,monitoredList) {
                         module();
+                        monitoredList();
                     });
                 } catch (e) {
                 }

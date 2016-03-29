@@ -12,7 +12,7 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
         /**
          * 统一登录入口
          */
-        login: testUrl + '/dist/app/login.html',
+        login: testUrl + 'dist/app/login.html',
         /**
          * 获取用户信息
          */
@@ -41,7 +41,13 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
         /**
          * 省份数据权限拉取
          */
-        getProvinceList:'/admin/getCurrUserNextArea'// 获取用户下一级区域
+        getProvinceList:'/admin/getCurrUserNextArea',// 获取用户下一级区域
+
+
+        /**
+         * 图表
+         */
+        getErrorChart:'/admin/errorChart'//图表
 
     };
     module.exports = UrlConfig;
