@@ -168,7 +168,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 success: function (data) {
                     console.log(data)
                     succCallback(data);
-
                 },
                 beforeSend: function (xhr) {
                 },
@@ -226,7 +225,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 error: function (data) {
 
                 }
-
             });
         };
 

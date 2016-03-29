@@ -27,7 +27,7 @@ define(function (require, exports, module) {
                 data: 'errorStatus',
                 title: '状态'
             }, {
-                data: 'inputDate',
+                data: 'account',
                 title: '手机号'
             }, {
                 data: 'area',
@@ -79,7 +79,6 @@ define(function (require, exports, module) {
             });
             TableInstance.init();
         }
-
         /**
          * 状态：正常（0）|  异常 （1）
          * 激活日期：已激活（1）|  未激活（0）
@@ -91,6 +90,7 @@ define(function (require, exports, module) {
             });
             $('#selectArea').html(optionList);
         });
+
         $(document).on('click', '#monitoredSearch', function () {
             var numberOrCard = $('#phoneOrVipNumber').val();
             var selectArea = $('#selectArea').val();
