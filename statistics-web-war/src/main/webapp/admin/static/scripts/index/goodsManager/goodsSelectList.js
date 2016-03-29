@@ -11,7 +11,6 @@ define(function (require, exports, module) {
         var Table = require('../datatable.js');
         var UrlConfig = require('../common/urlConfig');
         var token = $.cookie('bizData');
-
         var cookieJson = JSON.parse($.cookie('userInfo'));
         if (cookieJson.areaCode.length == 6) {
             $('#tab-btn,.tables-t').remove();

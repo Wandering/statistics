@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yhwang on 15/9/2.
@@ -90,13 +88,46 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
 
     @ResponseBody
     @RequestMapping(value = "/errorChart")
-    public Object errorChart(String strtDate,String endDate){
+    public Object errorChart(String startDate,String endDate){
         Map<String,Object> map = new HashMap<>();
-        map.put("format","%Y%m%d");
+        Map<String,Object> condition=new HashMap<>();
+        if(StringUtils.isNotEmpty(startDate)){
+            if(StringUtils.isEmpty(endDate)){
+                throw new BizException("error","截止时间不能为空");
+            }
+            try {
+//                condition.put("activeDateStart", DateUtils.parseDateFromHeader(startDate).getTime());
+//                condition.put("activeDateEnd", DateUtils.parseDateFromHeader(endDate).getTime());
+                DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
+                condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
+                condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
+            } catch (ParseException e) {
+                throw new BizException("error","不是标准的时间格式");
+            }
+        }
+        map.put("format","'%Y-%m-%d'");
         List<Map<String,Object>> resultMap=monitorExService.errorChart(map);
         return resultMap;
+
+
     }
 
+//    private void resultHandler(List<Map<String,Object>> resultMaps,String startDate,String endDate){
+//        Calendar calendar=Calendar.getInstance();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d H:m:s");
+//        // 指定一个日期
+//        Date date=null;
+//        try {
+//            date = dateFormat.parse(startDate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        calendar.setTime(date);
+//        List<String> list = new ArrayList<>();
+//
+//
+//
+//    }
     @Override
     protected IMonitorExService getService() {
         return monitorExService;

@@ -93,14 +93,17 @@ define(function(require, exports, module) {
 
 		//退出登录
 		$('#logout').on('click', function() {
+			alert(8)
 			$.cookie('bizData', '', {
 				path: '/'
 			});
 			$.cookie('userInfo', '', {
 				path: '/'
 			});
-			window.location.href = UrlConfig.login;
+			console.log(UrlConfig.login)
+			//window.location.href = UrlConfig.login;
 		});
+
 
 		var setTingInfoAjax = function(userPojoJson, action, callback) {
 			$.ajax({
@@ -116,6 +119,7 @@ define(function(require, exports, module) {
 				}
 			});
 		};
+
 
 		//modal of change password
 		$('#change_pwd').on('click', function() {
