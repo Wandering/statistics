@@ -4476,3 +4476,29 @@ body #content .menu-list-content {
 }
 
 
+#flow-area-list{
+    width:510px;
+    overflow: auto;
+    padding:0;
+    margin: 0;
+}
+#flow-area-list li{
+    list-style: none;
+    float: left;
+    width:100px;
+    height:30px;
+    margin:0;
+}
+#flow-area-list li input{
+    position: relative;
+    top:-3px;
+}
+
+.card-interval{
+    display: none;
+    position: relative;
+    top:3px;
+}
+#card-area-btn{
+    width: 110px;
+}

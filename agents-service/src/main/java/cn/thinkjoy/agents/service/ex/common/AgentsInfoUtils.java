@@ -101,6 +101,9 @@ public class AgentsInfoUtils {
     }
 
     public static String getUserWhereSql(){
+        if(getAgentsUserArea()==null){
+            return null;
+        }
         return "SELECT id FROM zgk_card WHERE goodsNumber LIKE '"+getAgentsUserArea()+"%'";
     }
 
@@ -115,7 +118,7 @@ public class AgentsInfoUtils {
     public static String getAgentsUserArea() {
         Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
         String areaCode=(String)userinfo.get("areaCode");
-        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+        if(StringUtils.isNotEmpty(areaCode) && (!"00".equals(areaCode))){
             return areaCode;
         }
         return "";
@@ -125,7 +128,7 @@ public class AgentsInfoUtils {
     public static String getAgentsUserAreaId(){
         Map<String,Object> userinfo = UserInfoContext.getCurrentUserInfo();
         String areaCode=(String)userinfo.get("areaCode");
-        if(StringUtils.isNotEmpty(areaCode) && (!"".equals(areaCode))){
+        if(StringUtils.isNotEmpty(areaCode) && (!"00".equals(areaCode))){
             return addZeroForNum(areaCode,6);
         }
         return "";
@@ -217,6 +220,14 @@ public class AgentsInfoUtils {
                     map.put("outputDate", map.get("outputDate3"));
                 }
                 break;
+            default:
+                if (map.containsKey("createDate")) {
+                    map.put("inputDate", map.get("createDate"));
+                }
+                if (map.containsKey("outputDate1")) {
+                    map.put("outputDate", map.get("outputDate1"));
+                }
+                break;
         }
     }
 
@@ -235,32 +246,15 @@ public class AgentsInfoUtils {
         //获取当前虚拟货号
         if (map.containsKey("goodsNumber")) {
             String goosNumber = (String) map.get("goodsNumber");
-            switch (getAgentsType()) {
-                case 2:
-                    try {
-                        if (goosNumber.substring(2, 4) != null) {
-                            map.put("goodsStatus", AgentsConstant.OUPUT);
-                        }
-                    } catch (StringIndexOutOfBoundsException e) {
-                        map.put("goodsStatus", AgentsConstant.NOTOUPUT);
-                    }
-                    break;
-                case 3:
-                case 4:
-                    try {
-                        if (goosNumber.substring(4, 6) != null) {
-                            map.put("goodsStatus", AgentsConstant.OUPUT);
-                        }
-                    } catch (StringIndexOutOfBoundsException e) {
-                        map.put("goodsStatus", AgentsConstant.NOTOUPUT);
-                    }
-                    break;
-                case 5:
-                case 6:
-                case 8:
+            if(goosNumber==null){
+                goosNumber="";
+            }
+            switch (goosNumber.length()-getAgentsUserArea().length()) {
+                case 0:
                     map.put("goodsStatus", AgentsConstant.NOTOUPUT);
                     break;
                 default:
+                    map.put("goodsStatus", AgentsConstant.OUPUT);
                     break;
             }
         }
@@ -326,7 +320,7 @@ public class AgentsInfoUtils {
                 break;
             default:
                 //默认省份表中查询
-                areaNames = areaExDAO.queryProvince();
+                areaNames = areaExDAO.likeProvince();
                 break;
         }
         return areaNames;
@@ -351,7 +345,7 @@ public class AgentsInfoUtils {
                 break;
             default:
                 //默认省份表中查询
-                areaNames = areaExDAO.queryProvince();
+                areaNames = areaExDAO.likeProvince();
                 break;
         }
         return areaNames;
@@ -365,18 +359,22 @@ public class AgentsInfoUtils {
         List<Map<String, Object>> areaNames = null;
         String userArea = getAgentsUserArea();
         if(map.containsKey("area")) {//一切建立在area！=null
-            switch (getAgentsUserArea().length()) {
+            String queryArea=map.get("area")+AgentsInfoUtils.getAgentsUserArea();
+            switch (queryArea.length()) {
                 case 2:
-                    //市列
-                    map.put("cityId", AreaCacheUtils.getAreaCache("city",addZeroForNum(userArea + map.get("area"), 6)));
+                //省列
+                    map.put("provinceId",addStrForNum(userArea + map.get("area"), 6, "_"));
                     break;
                 case 4:
-                    //区县列
-                    map.put("countyId", AreaCacheUtils.getAreaCache("county",addZeroForNum(userArea + map.get("area"), 6)));
+                    //市列
+                    map.put("cityId", addStrForNum(userArea + map.get("area"), 6, "_"));
+
                     break;
-                default:
-                    //默认省列
-                    map.put("provinceId", AreaCacheUtils.getAreaCache("province",addZeroForNum(userArea + map.get("area"), 6)));
+                case 6:
+
+                    //区县列
+                    map.put("countyId", addStrForNum(userArea + map.get("area"), 6,"_"));
+
                     break;
             }
         }

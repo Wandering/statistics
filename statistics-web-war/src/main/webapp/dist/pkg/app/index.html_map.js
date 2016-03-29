@@ -22,6 +22,8 @@ seajs.config({alias:{
   "static/scripts/index/role/role": "/dist/static/scripts/index/role/role",
   "static/scripts/index/common/timeFomate": "/dist/static/scripts/index/common/timeFomate",
   "static/scripts/index/goodsManager/outbound_from": "/dist/static/scripts/index/goodsManager/outbound_from",
+  "static/scripts/index/goodsManager/outbound_batch_from": "/dist/static/scripts/index/goodsManager/outbound_batch_from",
+  "static/scripts/index/goodsManager/outbound_flow_area": "/dist/static/scripts/index/goodsManager/outbound_flow_area",
   "static/scripts/index/goodsManager/goodsSelectList": "/dist/static/scripts/index/goodsManager/goodsSelectList",
   "static/scripts/index/common/ajax": "/dist/static/scripts/index/common/ajax",
   "static/scripts/index/dataMonitored/dataMonitoredList": "/dist/static/scripts/index/dataMonitored/dataMonitoredList",

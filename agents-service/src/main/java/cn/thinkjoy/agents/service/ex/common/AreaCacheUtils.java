@@ -62,16 +62,16 @@ public class AreaCacheUtils {
                                 List<Map<String, Object>> cityList = areaExDAO.queryCity();
                                 Map<String, Object> map = new HashMap<>();
                                 for (Map<String, Object> city : cityList) {
-                                    String provinceKey = city.get("id").toString();
-                                    map.put(provinceKey, city.get("name"));
+                                    String cityKey = city.get("id").toString();
+                                    map.put(cityKey, city.get("name"));
                                 }
                                 return map;
                             }else if(COUNTY.equals(key)){
                                 List<Map<String, Object>> countyList = areaExDAO.queryCounty();
                                 Map<String, Object> map = new HashMap<>();
                                 for (Map<String, Object> county : countyList) {
-                                    String provinceKey = county.get("id").toString();
-                                    map.put(provinceKey, county.get("name"));
+                                    String countyKey = county.get("id").toString();
+                                    map.put(countyKey, county.get("name"));
                                 }
                                 return map;
                             }

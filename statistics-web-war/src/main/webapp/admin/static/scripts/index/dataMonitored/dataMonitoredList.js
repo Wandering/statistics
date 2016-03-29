@@ -27,7 +27,7 @@ define(function (require, exports, module) {
                 data: 'errorStatus',
                 title: '状态'
             }, {
-                data: 'inputDate',
+                data: 'account',
                 title: '手机号'
             }, {
                 data: 'area',
