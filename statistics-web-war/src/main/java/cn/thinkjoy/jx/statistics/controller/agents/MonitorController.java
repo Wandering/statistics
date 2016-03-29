@@ -88,8 +88,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
 
     @ResponseBody
     @RequestMapping(value = "/errorChart")
-    public Object errorChart(String startDate,String endDate){
-        Map<String,Object> map = new HashMap<>();
+    public Object errorChart(@RequestParam String startDate,@RequestParam String endDate){
         Map<String,Object> condition=new HashMap<>();
         if(StringUtils.isNotEmpty(startDate)){
             if(StringUtils.isEmpty(endDate)){
@@ -98,6 +97,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
             try {
 //                condition.put("activeDateStart", DateUtils.parseDateFromHeader(startDate).getTime());
 //                condition.put("activeDateEnd", DateUtils.parseDateFromHeader(endDate).getTime());
+                System.currentTimeMillis();
                 DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
                 condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
                 condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
@@ -105,29 +105,60 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                 throw new BizException("error","不是标准的时间格式");
             }
         }
-        map.put("format","'%Y-%m-%d'");
-        List<Map<String,Object>> resultMap=monitorExService.errorChart(map);
-        return resultMap;
+        condition.put("format","'%Y-%m-%d'");
+        condition.put("errorStatus",1);
+        List<Map<String,Object>> resultMaps=monitorExService.errorChart(condition);
+        condition.put("errorStatus",0);
+        List<Map<String,Object>> resultMapsNormal=monitorExService.errorChart(condition);
+        return resultHandler(resultMaps,resultMapsNormal,startDate,endDate);
 
 
     }
 
-//    private void resultHandler(List<Map<String,Object>> resultMaps,String startDate,String endDate){
-//        Calendar calendar=Calendar.getInstance();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-M-d H:m:s");
-//        // 指定一个日期
-//        Date date=null;
-//        try {
-//            date = dateFormat.parse(startDate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        calendar.setTime(date);
-//        List<String> list = new ArrayList<>();
-//
-//
-//
-//    }
+    private List<Map<String,Object>> resultHandler(List<Map<String,Object>> resultMaps,List<Map<String,Object>> resultMapsNormal,String startDate,String endDate){
+        List<Map<String,Object>> result=new ArrayList<>();
+        Calendar calendar=Calendar.getInstance();
+        DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
+        // 指定一个日期
+        Date date=null;
+        try {
+            date = dateFormat.parse(startDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        calendar.setTime(date);
+        List<String> list = new ArrayList<>();
+
+        while (true){
+            String dateStr=calendar.get(Calendar.YEAR)+""+calendar.get(Calendar.MONTH)+""+calendar.get(Calendar.DATE)+"";
+            calendar.set(Calendar.DATE,+1);
+            list.add(dateStr);
+            if(dateStr.equals(endDate)){
+                break;
+            }
+        }
+        for(String str:list){
+            Integer num=0;
+            Integer err=0;
+            Map<String,Object> map=new HashMap<>();
+            for(Map<String,Object> map1:resultMapsNormal){
+                if("dateDay".equals(map1.get("dateDay"))){
+                    num=(Integer)map1.get("num");
+                }
+                for(Map<String,Object> map2:resultMaps){
+                    if("dateDay".equals(map2.get("dateDay"))){
+                        err=(Integer)map2.get("num");
+                    }
+                }
+            }
+            map.put("dateDay",str);
+            map.put("err",err>0?1:0);
+            map.put("num",num);
+            map.put("errNum",err);
+            result.add(map);
+        }
+        return result;
+    }
     @Override
     protected IMonitorExService getService() {
         return monitorExService;

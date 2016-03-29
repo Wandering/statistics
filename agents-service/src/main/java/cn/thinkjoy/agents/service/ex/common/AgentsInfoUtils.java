@@ -195,8 +195,8 @@ public class AgentsInfoUtils {
         if (map == null) {
             return;
         }
-        switch (getAgentsRank()) {
-            case AgentsConstant.RANKONE:
+        switch (getAgentsUserArea().length()) {
+            case 0:
                 if (map.containsKey("createDate")) {
                     map.put("inputDate", map.get("createDate"));
                 }
@@ -204,7 +204,7 @@ public class AgentsInfoUtils {
                     map.put("outputDate", map.get("outputDate1"));
                 }
                 break;
-            case AgentsConstant.RANKTWO:
+            case 2:
                 if (map.containsKey("outputDate1")) {
                     map.put("inputDate", map.get("outputDate1"));
                 }
@@ -212,12 +212,18 @@ public class AgentsInfoUtils {
                     map.put("outputDate", map.get("outputDate2"));
                 }
                 break;
-            case AgentsConstant.RANKTHREE:
+            case 4:
                 if (map.containsKey("outputDate2")) {
                     map.put("inputDate", map.get("outputDate2"));
                 }
                 if (map.containsKey("outputDate3")) {
                     map.put("outputDate", map.get("outputDate3"));
+                }
+                break;
+            case 6:
+
+                if (map.containsKey("outputDate3")) {
+                    map.put("inputDate", map.get("outputDate3"));
                 }
                 break;
             default:
