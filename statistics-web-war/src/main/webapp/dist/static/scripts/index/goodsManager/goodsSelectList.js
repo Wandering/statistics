@@ -226,7 +226,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 error: function (data) {
 
                 }
-
             });
         };
 
