@@ -41,7 +41,13 @@ define(function (require, exports, module) {
         /**
          * 省份数据权限拉取
          */
-        getProvinceList:'/admin/getCurrUserNextArea'// 获取用户下一级区域
+        getProvinceList:'/admin/getCurrUserNextArea',// 获取用户下一级区域
+
+
+        /**
+         * 图表
+         */
+        getErrorChart:'/admin/errorChart'//图表
 
     };
     module.exports = UrlConfig;
