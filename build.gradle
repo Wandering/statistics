@@ -36,8 +36,8 @@ allprojects {
     }
 
     repositories {
-        mavenLocal()
         repositories { maven { url 'http://repo.thinkjoy.cn/content/groups/public/' } }
+        mavenLocal()
         mavenCentral()
     }
 
