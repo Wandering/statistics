@@ -394,6 +394,7 @@
         </div>
     </div>
 </script>
+
 <!--货物查询模板-->
 <script type="text/html" id="goodsSelect">
     <section class="tile transparent grid">
@@ -408,21 +409,25 @@
                     <p class="form-error"></p>
                 </div>
             </div>
-            <div class="form-button" id="form_button">
-            </div>
+            <!--<div class="form-button" id="form_button">-->
+            <!--</div>-->
             <div id="tab-btn">
                 <ul class="nav nav-tabs">
-                    <li role="presentation" class="active"><a href="#" class="tab-sm">未出库</a></li>
-                    <li role="presentation"><a href="#" class="tab-sm">已出库</a></li>
+                    <li role="presentation" class="active" roleType="1"><a href="#" class="tab-sm">未出库</a></li>
+                    <li role="presentation" roleType="2"><a href="#" class="tab-sm">已出库</a></li>
                 </ul>
             </div>
             <div id="tab">
-                <div class="table-responsive" id="table_content"></div>
-                <div class="table-responsive dn" id="table_content2"></div>
+                <div class="table-responsive">
+                    <div class="tables-t"> <h4 class="h4-st">未出库货物：</h4><div class="btns" id="form_button"></div></div>
+                    <div id="table_content"></div>
+                </div>
             </div>
         </div>
     </section>
 </script>
+
+
 
 <!--data-monitored数据监控-->
 <script type="text/html" id="dataMonitored">
