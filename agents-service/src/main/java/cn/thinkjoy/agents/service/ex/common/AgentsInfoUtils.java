@@ -246,32 +246,15 @@ public class AgentsInfoUtils {
         //获取当前虚拟货号
         if (map.containsKey("goodsNumber")) {
             String goosNumber = (String) map.get("goodsNumber");
-            switch (getAgentsType()) {
-                case 2:
-                    try {
-                        if (goosNumber.substring(2, 4) != null) {
-                            map.put("goodsStatus", AgentsConstant.OUPUT);
-                        }
-                    } catch (StringIndexOutOfBoundsException e) {
-                        map.put("goodsStatus", AgentsConstant.NOTOUPUT);
-                    }
-                    break;
-                case 3:
-                case 4:
-                    try {
-                        if (goosNumber.substring(4, 6) != null) {
-                            map.put("goodsStatus", AgentsConstant.OUPUT);
-                        }
-                    } catch (StringIndexOutOfBoundsException e) {
-                        map.put("goodsStatus", AgentsConstant.NOTOUPUT);
-                    }
-                    break;
-                case 5:
-                case 6:
-                case 8:
-                    map.put("goodsStatus", AgentsConstant.NOTOUPUT);
+            if(goosNumber==null){
+                goosNumber="";
+            }
+            switch (goosNumber.length()-getAgentsUserArea().length()) {
+                case 0:
+                    map.put("goodsStatus", AgentsConstant.OUPUT);
                     break;
                 default:
+                    map.put("goodsStatus", AgentsConstant.NOTOUPUT);
                     break;
             }
         }
