@@ -239,33 +239,35 @@ public class ResourceController {
             rolePostMap.put("status", Constants.NORMAL_STATUS);
             rolePostMap.put("postCode", userPojo.getPostCode());
             RolePost rolePost = (RolePost) rolePostService.queryOne(rolePostMap);
-            if (rolePost != null) {
-                Map<String, Object> roleMap = new HashMap<>();
-                roleMap.put("status", Constants.NORMAL_STATUS);
-                roleMap.put("roleCode", rolePost.getRoleCode());
-                Roles roles = (Roles) rolesService.queryOne(roleMap);
-                if (roles != null) {
-                    Map<String, Object> dataMap = new HashMap<>();
-                    dataMap.put("status", Constants.NORMAL_STATUS);
-                    dataMap.put("menuCode", Long.valueOf(menuCode));
-                    List<Resources> resourcesList = iResourcesService.queryList(dataMap, null, null);
-                    for (Resources r : resourcesList) {
-                        Map<String, Object> roleResourcesMap = new HashMap<>();
-                        roleResourcesMap.put("status", Constants.NORMAL_STATUS);
-                        roleResourcesMap.put("roleCode", roles.getRoleCode());
-                        roleResourcesMap.put("resourceCode", r.getResourceCode());
-                        List<RoleResources> roleResources = iRoleResourcesService.queryList(roleResourcesMap, null, null);
-                        if (roleResources != null) {
-                            for (RoleResources rr : roleResources) {
-                                Map<String, Object> reMap = new HashMap<>();
-                                reMap.put("status", Constants.NORMAL_STATUS);
-                                reMap.put("resourceCode", rr.getResourceCode());
-                                Resources resources = (Resources) iResourcesService.queryOne(reMap);
-                                resultList.add(resources);
-                            }
-                        }
-                    }
-
+            if (rolePost == null) {
+                return resultList;
+            }
+            Map<String, Object> roleMap = new HashMap<>();
+            roleMap.put("status", Constants.NORMAL_STATUS);
+            roleMap.put("roleCode", rolePost.getRoleCode());
+            Roles roles = (Roles) rolesService.queryOne(roleMap);
+            if (roles == null) {
+                return resultList;
+            }
+            Map<String, Object> dataMap = new HashMap<>();
+            dataMap.put("status", Constants.NORMAL_STATUS);
+            dataMap.put("menuCode", Long.valueOf(menuCode));
+            List<Resources> resourcesList = iResourcesService.queryList(dataMap, null, null);
+            for (Resources r : resourcesList) {
+                Map<String, Object> roleResourcesMap = new HashMap<>();
+                roleResourcesMap.put("status", Constants.NORMAL_STATUS);
+                roleResourcesMap.put("roleCode", roles.getRoleCode());
+                roleResourcesMap.put("resourceCode", r.getResourceCode());
+                List<RoleResources> roleResources = iRoleResourcesService.queryList(roleResourcesMap, null, null);
+                if (roleResources == null) {
+                    break;
+                }
+                for (RoleResources rr : roleResources) {
+                    Map<String, Object> reMap = new HashMap<>();
+                    reMap.put("status", Constants.NORMAL_STATUS);
+                    reMap.put("resourceCode", rr.getResourceCode());
+                    Resources resources = (Resources) iResourcesService.queryOne(reMap);
+                    resultList.add(resources);
                 }
             }
             return resultList;
