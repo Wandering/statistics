@@ -287,10 +287,28 @@ public class RoleController {
      */
     @ResponseBody
     @RequestMapping(value = "queryComboxRoles",method = RequestMethod.GET)
-    public Map<String,String> queryComboxRoles(){
+    public Map<String,String> queryComboxRoles(HttpServletRequest request){
+        Cookie[] cookies=request.getCookies();
+        String token = "";
+        for (Cookie cookie:cookies){
+            if("bizData".equals(cookie.getName()))
+            {
+                token = cookie.getValue();
+            }
+        }
+        String oldUserInfo = cacheService.getValue(token);
+        UserPojo userPojo;
+        try {
+            userPojo=JsonMapper.buildNormalMapper().fromJson(oldUserInfo, UserPojo.class);
+        }catch (Exception e){
+            LOGGER.error(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+        }
         Map<String,String> resultMap=new HashMap<>();
         Map<String,Object> dataMap = new HashMap<>();
         dataMap.put("status", Constants.NORMAL_STATUS);
+        dataMap.put("creator", userPojo.getAccountCode());
+
         List<Roles> rolesList = rolesService.queryList(dataMap, CodeFactoryUtil.ORDER_BY_FIELD, SqlOrderEnum.DESC.getAction());
         for(Roles r :rolesList){
             resultMap.put(r.getRoleCode() + "", r.getRoleName());

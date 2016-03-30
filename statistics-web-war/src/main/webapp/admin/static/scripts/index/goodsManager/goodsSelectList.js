@@ -111,7 +111,7 @@ define(function (require, exports, module) {
                 data: 'flow',
                 title: '流向地'
             }, {
-                data: 'inputDate',
+                data: 'activeDate',
                 title: '激活日期'
             }, {
                 data: 'outputDate',
