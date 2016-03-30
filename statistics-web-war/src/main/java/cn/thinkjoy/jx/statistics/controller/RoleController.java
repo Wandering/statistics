@@ -30,6 +30,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -201,14 +205,19 @@ public class RoleController {
      */
     @ResponseBody
     @RequestMapping(value = "queryRoles",method = RequestMethod.GET)
-    public Page<Roles> queryRoles(HttpServletRequest request){
+    public Page<Roles> queryRoles(HttpServletRequest request) {
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
         int pageSize =Integer.parseInt(HttpUtil.getParameter(request, "pageSize", "10"));
         Cookie[] cookies=request.getCookies();
         String userPojoJson = null;
+
         for (Cookie cookie:cookies){
             if(cookie.getName().equals("userInfo")){
-                userPojoJson=cookie.getValue();
+                try {
+                    userPojoJson=URLDecoder.decode(cookie.getValue(),"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 break;
             }
         }
