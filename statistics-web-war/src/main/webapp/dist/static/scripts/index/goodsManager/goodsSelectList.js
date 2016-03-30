@@ -13,9 +13,10 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         var token = $.cookie('bizData');
         var cookieJson = JSON.parse($.cookie('userInfo'));
         if (cookieJson.areaCode.length == 6) {
-            $('#tab-btn,.tables-t').remove();
+            $('#tab-btn li[roletype="2"]').remove();
             willOutput(UrlConfig.getGoodsMange);
         }
+
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             if ($(this).attr('roleType') == 1) {

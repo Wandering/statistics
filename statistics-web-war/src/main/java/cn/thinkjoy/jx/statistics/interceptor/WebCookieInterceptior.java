@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.Map;
 
 /**
@@ -46,7 +47,7 @@ public class WebCookieInterceptior implements HandlerInterceptor {
             if(userInfo==null){
                 String token=request.getParameter("token");
                 userInfoStr=redisCacheService.getValue(token);
-                Cookie cookie=new Cookie("userInfo",userInfoStr);
+                Cookie cookie=new Cookie("userInfo", URLEncoder.encode(userInfoStr,"UTF-8"));
                 cookie.setPath("/");
 
                 userInfo=JSON.parseObject(userInfoStr);
