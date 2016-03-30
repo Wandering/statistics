@@ -196,7 +196,7 @@
                 and goodsNumber = #{userArea}
             </if>
             <if test="idlist != null">
-                and id in (#{idlist})
+                and id in (${idlist})
             </if>
             <if test="cardNumber != null">
                 and cardNumber = #{cardNumber}
