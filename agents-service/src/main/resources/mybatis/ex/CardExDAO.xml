@@ -243,4 +243,8 @@
         GROUP BY
 	    activeDate;
     </select>
+
+    <select id="lastAgentsArea" resultType="java.lang.Integer">
+        SELECT COUNT(1)  FROM zgk_system.k12system_department  department WHERE department.areaCode like CONCAT(#{goodsNumber},'_%')
+    </select>
 </mapper>
