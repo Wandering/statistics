@@ -14,6 +14,7 @@ define(function (require, exports, module) {
         var cookieJson = JSON.parse($.cookie('userInfo'));
         if (cookieJson.areaCode.length == 6) {
             $('#tab-btn li[roletype="2"]').remove();
+            $('#form_button').html('');
             willOutput(UrlConfig.getGoodsMange);
         }
 
