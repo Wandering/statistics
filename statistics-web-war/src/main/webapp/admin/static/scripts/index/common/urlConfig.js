@@ -6,8 +6,8 @@ define(function (require, exports, module) {
     require('cookie');
     var token = $.cookie('bizData');
     var baseUrl = '/statistics';
-    //var testUrl = 'http://setting.jx.xy189.cn';
-    var testUrl = "10.136.13.245:8080/";
+    //var testUrl = "10.136.13.245:8080/";
+    var testUrl = "http://agent.zhigaokao.cn/";
     var UrlConfig = {
         /**
          * 统一登录入口
