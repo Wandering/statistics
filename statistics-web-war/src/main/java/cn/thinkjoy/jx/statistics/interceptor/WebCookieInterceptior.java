@@ -48,6 +48,7 @@ public class WebCookieInterceptior implements HandlerInterceptor {
                 String token=request.getParameter("token");
                 userInfoStr=redisCacheService.getValue(token);
                 Cookie cookie=new Cookie("userInfo", URLEncoder.encode(userInfoStr,"UTF-8"));
+                logger.info("userInfo="+URLEncoder.encode(userInfoStr,"UTF-8"));
                 cookie.setPath("/");
 
                 userInfo=JSON.parseObject(userInfoStr);
