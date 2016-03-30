@@ -25,6 +25,24 @@ define(function (require, exports, module) {
                 $('.tables-t .h4-st').text('未出库货物');
                 $('#production,#batchOutbound').show();
                 $('#flowarea').hide();
+                // 全选
+                $('#selectall').on('click', function () {
+                    var that = this;
+                    $('.selNoOutbound[type="checkbox"]').each(function () {
+                        this.checked = that.checked;
+                    });
+                });
+                // 单选
+                window.clickChecked = function () {
+                    var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
+                    var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
+                    if (selNoOutboundLength == selNoOutboundCheckedLength) {
+                        $('#selectall')[0].checked = true;
+                    } else {
+                        $('#selectall')[0].checked = false;
+                    }
+                };
+
             } else {
                 $('.tables-t .h4-st').text('已出库货物');
                 //已出库table
@@ -227,23 +245,7 @@ define(function (require, exports, module) {
         };
 
 
-        // 全选
-        $('#selectall').on('click', function () {
-            var that = this;
-            $('.selNoOutbound[type="checkbox"]').each(function () {
-                this.checked = that.checked;
-            });
-        });
-        // 单选
-        window.clickChecked = function () {
-            var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
-            var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
-            if (selNoOutboundLength == selNoOutboundCheckedLength) {
-                $('#selectall')[0].checked = true;
-            } else {
-                $('#selectall')[0].checked = false;
-            }
-        };
+
 
         var ButtonEvent = {
             production: function (elementId) {
