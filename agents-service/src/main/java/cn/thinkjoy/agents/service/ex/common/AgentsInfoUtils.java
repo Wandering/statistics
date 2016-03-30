@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -357,12 +358,62 @@ public class AgentsInfoUtils {
             default:
                 break;
         }
-        return areaNames;
+        return getExistArea(areaNames);
     }
 
-//    public static Map<String,Object> getExistArea(Map<String,Object> areaNames){
-//
-//    }
+    public static List<Map<String,Object>> getExistArea(List<Map<String,Object>> areaNames){
+
+        List<Map<String,Object>> areaNames2=new ArrayList<>();
+        List<String> arealist=null;
+        switch (getAgentsUserArea().length()) {
+
+            case 0:
+                //默认省份表中查询
+                arealist=areaExDAO.getAgentsAreas("__");
+                if(arealist!=null && arealist.size()!=0){
+                    for(String area:arealist){
+                        for(Map<String,Object> map:areaNames){
+                            if(area.equals(map.get("simpleCode"))){
+                                areaNames2.add(map);
+                                break;
+                            };
+                        }
+                    }
+                }
+                break;
+            case 2:
+                //市表中查
+                arealist=areaExDAO.getAgentsAreas(getAgentsUserArea()+"__");
+                if(arealist!=null && arealist.size()!=0){
+                    for(String area:arealist){
+                        for(Map<String,Object> map:areaNames){
+                            if(area.equals(getAgentsUserArea()+map.get("simpleCode"))){
+                                areaNames2.add(map);
+                                break;
+                            };
+                        }
+                    }
+                }
+                break;
+            case 4:
+                //区县表中查
+                arealist=areaExDAO.getAgentsAreas(getAgentsUserArea() + "__");
+                if(arealist!=null && arealist.size()!=0){
+                    for(String area:arealist){
+                        for(Map<String,Object> map:areaNames){
+                            if(area.equals(getAgentsUserArea()+map.get("simpleCode"))){
+                                areaNames2.add(map);
+                                break;
+                            };
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return areaNames2;
+    }
     /**
      * 获取用户当前所在区域的下一级列表
      *

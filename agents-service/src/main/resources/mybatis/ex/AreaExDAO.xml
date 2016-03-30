@@ -34,6 +34,6 @@
     </select>
 
     <select id="getAgentsAreas" resultType="java.lang.String">
-        SELECT COUNT(1)  FROM zgk_system.k12system_department  department WHERE department.areaCode like #{areaCode}
+        SELECT areaCode  FROM zgk_system.k12system_department  department WHERE department.areaCode like #{areaCode}
     </select>
 </mapper>
