@@ -166,8 +166,8 @@ define(function (require, exports, module) {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     succCallback(data);
+                    alert('出库完成');
                 },
                 beforeSend: function (xhr) {
                 },
@@ -206,7 +206,6 @@ define(function (require, exports, module) {
             $('#flow-area-list [type="checkbox"]:checked').each(function () {
                 flowAreaArr.push($(this).parent().attr('simpleCode'));
             });
-            console.log(flowAreaArr)
             $.ajax({
                 type: 'post',
                 url: '/admin/agents?token=' + token,
@@ -217,7 +216,6 @@ define(function (require, exports, module) {
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     succCallback(data);
                 },
                 beforeSend: function (xhr) {
@@ -236,7 +234,6 @@ define(function (require, exports, module) {
                 this.checked = that.checked;
             });
         });
-
         // 单选
         window.clickChecked = function () {
             var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
@@ -283,7 +280,6 @@ define(function (require, exports, module) {
                                     var vali = require('./outbound_from.js');
                                     vali.validate(function (formArry) {
                                         productionDepartment(formArry, function (ret) {
-                                            console.log(ret)
                                             if ('0000000' === ret.rtnCode) {
                                                 willOutput(UrlConfig.getGoodsMange);
                                                 $("#outbound_dialog").dialog("destroy");
