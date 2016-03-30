@@ -35,6 +35,7 @@
             </if>
             <!--未出库查询-->
                 and goodsNumber=#{condition.userArea}
+                and status=0
         </where>
         <if test="condition.orderBy!=null">
             ORDER BY ${condition.orderBy} ${condition.sortBy}
@@ -171,7 +172,6 @@
 
     <!-- 更新 -->
     <update id="output" parameterType="java.util.Map">
-        <if test="rows!=null or idlist!=null">
         UPDATE zgk_card
         <trim prefix="SET" suffixOverrides=",">
             <if test="flow!=null">
@@ -201,10 +201,13 @@
             <if test="cardNumber != null">
                 and cardNumber = #{cardNumber}
             </if>
+            and status=0
         </where>
+            <if test="orderBy!=null">
+                ORDER BY ${orderBy} ${sortBy}
+            </if>
         <if test="rows!=null">
             limit ${rows}
-        </if>
         </if>
     </update>
 

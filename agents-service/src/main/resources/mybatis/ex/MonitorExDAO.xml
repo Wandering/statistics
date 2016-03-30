@@ -33,7 +33,7 @@
                 AND card.errorStatus=#{condition.errorStatus}
             </if>
             <if test="condition.errorStatus2!=null">
-                AND card.errorStatus IS NULL
+                AND (card.errorStatus=#{condition.errorStatus2} OR card.errorStatus IS NULL)
             </if>
             <!--激活查询-->
             <if test="condition.status!=null">
@@ -47,6 +47,8 @@
             limit ${offset}, ${rows}
         </if>
      </select>
+
+
 
     <select id="count" resultType="java.lang.Integer">
         SELECT

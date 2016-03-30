@@ -355,6 +355,10 @@ public class AgentsInfoUtils {
                 //区县表中查
                 areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
+            case 6:
+                //区县表中查
+                areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
+                break;
             default:
                 break;
         }
@@ -409,6 +413,10 @@ public class AgentsInfoUtils {
                     }
                 }
                 break;
+            case 6:
+                //区县表中查
+                areaNames2=areaNames;
+                break;
             default:
                 break;
         }
@@ -431,6 +439,10 @@ public class AgentsInfoUtils {
                 //区县表中查
                 areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
+            case 6:
+                //区县表中查
+                areaNames = areaExDAO.likeCountyById(userArea);
+                break;
             default:
                 //默认省份表中查询
                 areaNames = areaExDAO.likeProvince();
@@ -449,6 +461,10 @@ public class AgentsInfoUtils {
         if(map.containsKey("area")) {//一切建立在area！=null
             String queryArea=map.get("area")+AgentsInfoUtils.getAgentsUserArea();
             switch (queryArea.length()) {
+                case 0:
+                    //省列
+                    map.put("provinceId",addStrForNum(userArea + map.get("area"), 6, "_"));
+                    break;
                 case 2:
                 //省列
                     map.put("provinceId",addStrForNum(userArea + map.get("area"), 6, "_"));
