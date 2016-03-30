@@ -111,7 +111,7 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 data: 'flow',
                 title: '流向地'
             }, {
-                data: 'inputDate',
+                data: 'activeDate',
                 title: '激活日期'
             }, {
                 data: 'outputDate',
@@ -166,8 +166,8 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     succCallback(data);
+                    alert('出库完成');
                 },
                 beforeSend: function (xhr) {
                 },
@@ -206,7 +206,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             $('#flow-area-list [type="checkbox"]:checked').each(function () {
                 flowAreaArr.push($(this).parent().attr('simpleCode'));
             });
-            console.log(flowAreaArr)
             $.ajax({
                 type: 'post',
                 url: '/admin/agents?token=' + token,
@@ -217,7 +216,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 },
                 dataType: 'json',
                 success: function (data) {
-                    console.log(data)
                     succCallback(data);
                 },
                 beforeSend: function (xhr) {
@@ -236,7 +234,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 this.checked = that.checked;
             });
         });
-
         // 单选
         window.clickChecked = function () {
             var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
@@ -283,7 +280,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                     var vali = require('static/scripts/index/goodsManager/outbound_from');
                                     vali.validate(function (formArry) {
                                         productionDepartment(formArry, function (ret) {
-                                            console.log(ret)
                                             if ('0000000' === ret.rtnCode) {
                                                 willOutput(UrlConfig.getGoodsMange);
                                                 $("#outbound_dialog").dialog("destroy");
