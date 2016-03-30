@@ -342,6 +342,10 @@ public class AgentsInfoUtils {
         List<Map<String, Object>> areaNames = null;
         String userArea = getAgentsUserArea();
         switch (userArea.length()) {
+            case 0:
+                //默认省份表中查询
+                areaNames = areaExDAO.likeProvince();
+                break;
             case 2:
                 //市表中查
                 areaNames = areaExDAO.likeCityById(addStrForNum(userArea, 6, "_"));
@@ -351,8 +355,6 @@ public class AgentsInfoUtils {
                 areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
             default:
-                //默认省份表中查询
-                areaNames = areaExDAO.likeProvince();
                 break;
         }
         return areaNames;
