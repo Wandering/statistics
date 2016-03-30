@@ -50,7 +50,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         if(status!=null) {
             //异常状态0/null正常1异常
                 condition.put("errorStatus", status);
-            if(status==1){
+            if(status==0){
                 condition.put("errorStatus2", status);
             }
         }
