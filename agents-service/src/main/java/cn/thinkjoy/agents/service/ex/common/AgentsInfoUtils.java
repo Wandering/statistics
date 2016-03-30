@@ -415,17 +415,7 @@ public class AgentsInfoUtils {
                 break;
             case 6:
                 //区县表中查
-                arealist=areaExDAO.getAgentsAreas(getAgentsUserArea());
-                if(arealist!=null && arealist.size()!=0){
-                    for(String area:arealist){
-                        for(Map<String,Object> map:areaNames){
-                            if(area.equals(getAgentsUserArea()+map.get("simpleCode"))){
-                                areaNames2.add(map);
-                                break;
-                            };
-                        }
-                    }
-                }
+                areaNames2=areaNames;
                 break;
             default:
                 break;
