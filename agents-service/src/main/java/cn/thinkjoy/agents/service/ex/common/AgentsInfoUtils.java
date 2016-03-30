@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -288,15 +289,15 @@ public class AgentsInfoUtils {
                     break;
                 case 2:
                     //判断当前位数，不够6位的后面补0
-                    area = addZeroForNum(goosNumber.substring(2,4), 6);
+                    area = addZeroForNum(goosNumber.substring(0,4), 6);
                     //默认走省份表
-                    areaName = AreaCacheUtils.getAreaCache("province", area);
+                    areaName = AreaCacheUtils.getAreaCache("city", area);
                     break;
                 case 4:
                     //判断当前位数，不够6位的后面补0
-                    area = addZeroForNum(goosNumber.substring(4,6), 6);
+                    area = addZeroForNum(goosNumber.substring(0,6), 6);
                     //市表中查
-                    areaName = AreaCacheUtils.getAreaCache("city", area);
+                    areaName = AreaCacheUtils.getAreaCache("county", area);
 
                     break;
                 default:
@@ -357,9 +358,62 @@ public class AgentsInfoUtils {
             default:
                 break;
         }
-        return areaNames;
+        return getExistArea(areaNames);
     }
 
+    public static List<Map<String,Object>> getExistArea(List<Map<String,Object>> areaNames){
+
+        List<Map<String,Object>> areaNames2=new ArrayList<>();
+        List<String> arealist=null;
+        switch (getAgentsUserArea().length()) {
+
+            case 0:
+                //默认省份表中查询
+                arealist=areaExDAO.getAgentsAreas("__");
+                if(arealist!=null && arealist.size()!=0){
+                    for(String area:arealist){
+                        for(Map<String,Object> map:areaNames){
+                            if(area.equals(map.get("simpleCode"))){
+                                areaNames2.add(map);
+                                break;
+                            };
+                        }
+                    }
+                }
+                break;
+            case 2:
+                //市表中查
+                arealist=areaExDAO.getAgentsAreas(getAgentsUserArea()+"__");
+                if(arealist!=null && arealist.size()!=0){
+                    for(String area:arealist){
+                        for(Map<String,Object> map:areaNames){
+                            if(area.equals(getAgentsUserArea()+map.get("simpleCode"))){
+                                areaNames2.add(map);
+                                break;
+                            };
+                        }
+                    }
+                }
+                break;
+            case 4:
+                //区县表中查
+                arealist=areaExDAO.getAgentsAreas(getAgentsUserArea() + "__");
+                if(arealist!=null && arealist.size()!=0){
+                    for(String area:arealist){
+                        for(Map<String,Object> map:areaNames){
+                            if(area.equals(getAgentsUserArea()+map.get("simpleCode"))){
+                                areaNames2.add(map);
+                                break;
+                            };
+                        }
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+        return areaNames2;
+    }
     /**
      * 获取用户当前所在区域的下一级列表
      *
