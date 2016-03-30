@@ -355,6 +355,10 @@ public class AgentsInfoUtils {
                 //区县表中查
                 areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
+            case 6:
+                //区县表中查
+                areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
+                break;
             default:
                 break;
         }
