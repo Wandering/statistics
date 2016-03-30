@@ -196,7 +196,7 @@
                 and goodsNumber = #{userArea}
             </if>
             <if test="idlist != null">
-                and id in (#{idlist})
+                and id in (${idlist})
             </if>
             <if test="cardNumber != null">
                 and cardNumber = #{cardNumber}
@@ -242,5 +242,9 @@
 		errorStatus = 1
         GROUP BY
 	    activeDate;
+    </select>
+
+    <select id="lastAgentsArea" resultType="java.lang.Integer">
+        SELECT COUNT(1)  FROM zgk_system.k12system_department  department WHERE department.areaCode like CONCAT(#{goodsNumber},'_%')
     </select>
 </mapper>

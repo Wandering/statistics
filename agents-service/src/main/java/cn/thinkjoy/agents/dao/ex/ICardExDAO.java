@@ -21,4 +21,5 @@ public interface ICardExDAO extends BaseCommonExDAO{
         public List<Map<String, Object>> outPutCardNumber(@Param("condition")Map<String, Object> condition);
         public Map<String,Object> selectByUid(String uid);
         public String selectCardByUid(String cardNumber);
+        public int lastAgentsArea(String goodsNumber);
 }

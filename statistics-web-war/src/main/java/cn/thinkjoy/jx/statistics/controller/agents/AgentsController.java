@@ -117,6 +117,9 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         if(maps.size()>1){
             end=maps.get(maps.size()-1).get("cardNumber").toString();
         }
+        if(start!=null && end==null){
+            end=maps.get(0).get("cardNumber").toString();
+        }
         resultMap.put("start",start);
         resultMap.put("end",end);
         resultMap.put("count",maps.size());
@@ -133,6 +136,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         selector.put("outputDate1","outputDate1");
         selector.put("outputDate2","outputDate2");
         selector.put("outputDate3","outputDate3");
+        selector.put("activeDate","activeDate");
         return selector;
     }
 

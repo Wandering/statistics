@@ -54,7 +54,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
 
     @Override
     protected void conditionHandler(Map<String, Object> condition) {
-        if(AgentsInfoUtils.getUserWhereSql()==null) {
+        if(AgentsInfoUtils.getUserWhereSql()!=null) {
             condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
         }
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
