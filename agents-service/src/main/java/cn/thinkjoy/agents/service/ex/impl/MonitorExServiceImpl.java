@@ -72,13 +72,19 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
             String city=null;
             String county=null;
             if(map.containsKey("provinceId")){
-                province=AreaCacheUtils.getAreaCache("province",map.get("provinceId").toString());
+                if(!"00".equals(map.get("countyId").toString())) {
+                    province = AreaCacheUtils.getAreaCache("province", map.get("provinceId").toString());
+                }
             }
             if(map.containsKey("cityId")){
-                city=AreaCacheUtils.getAreaCache("city",map.get("cityId").toString());
+                if(!"00".equals(map.get("cityId").toString())) {
+                    city = AreaCacheUtils.getAreaCache("city", map.get("cityId").toString());
+                }
             }
             if(map.containsKey("countyId")){
-                county=AreaCacheUtils.getAreaCache("county",map.get("countyId").toString());
+                if(!"00".equals(map.get("countyId").toString())) {
+                    county = AreaCacheUtils.getAreaCache("county", map.get("countyId").toString());
+                }
             }
             StringBuilder stringBuilder=new StringBuilder();
             if(StringUtils.isNotEmpty(province)){
