@@ -96,7 +96,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         }
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
         if(!cardExService.hasAgentsArea(AgentsInfoUtils.addZeroForNum(AgentsInfoUtils.getAgentsUserArea()+flow,6))){
-            throw new BizException("error","当前出库区域没有代理商！");
+            throw new BizException("error","出库失败，当前出库区域没有代理商！");
         }
         return cardExService.goodsOutput(condition);
     }
