@@ -7,7 +7,7 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
     var token = $.cookie('bizData');
     var baseUrl = '/statistics';
     //var testUrl = "10.136.13.245:8080/";
-    var testUrl = "http://agent.zhigaokao.cn/";
+    var testUrl = "agent.zhigaokao.cn/";
     var UrlConfig = {
         /**
          * 统一登录入口
