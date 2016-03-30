@@ -16,4 +16,5 @@ public interface IAreaExDAO {
     public List<Map<String,Object>> likeProvince();
     public List<Map<String,Object>> likeCountyById(String id);
     public List<Map<String,Object>> likeCityById(String id);
+    public List<String> getAgentsAreas(String areaCode);
 }

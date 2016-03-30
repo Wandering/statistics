@@ -288,15 +288,15 @@ public class AgentsInfoUtils {
                     break;
                 case 2:
                     //判断当前位数，不够6位的后面补0
-                    area = addZeroForNum(goosNumber.substring(2,4), 6);
+                    area = addZeroForNum(goosNumber.substring(0,4), 6);
                     //默认走省份表
-                    areaName = AreaCacheUtils.getAreaCache("province", area);
+                    areaName = AreaCacheUtils.getAreaCache("city", area);
                     break;
                 case 4:
                     //判断当前位数，不够6位的后面补0
-                    area = addZeroForNum(goosNumber.substring(4,6), 6);
+                    area = addZeroForNum(goosNumber.substring(0,6), 6);
                     //市表中查
-                    areaName = AreaCacheUtils.getAreaCache("city", area);
+                    areaName = AreaCacheUtils.getAreaCache("county", area);
 
                     break;
                 default:
@@ -360,6 +360,9 @@ public class AgentsInfoUtils {
         return areaNames;
     }
 
+//    public static Map<String,Object> getExistArea(Map<String,Object> areaNames){
+//
+//    }
     /**
      * 获取用户当前所在区域的下一级列表
      *

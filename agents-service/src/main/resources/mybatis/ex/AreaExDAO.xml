@@ -32,4 +32,8 @@
     <select id="likeCityById" resultType="java.util.Map">
         select id,substring(id,3,2) as simpleCode,name from zgk_city WHERE id LIKE #{id};
     </select>
+
+    <select id="getAgentsAreas" resultType="java.lang.String">
+        SELECT COUNT(1)  FROM zgk_system.k12system_department  department WHERE department.areaCode like #{areaCode}
+    </select>
 </mapper>
