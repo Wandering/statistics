@@ -279,28 +279,54 @@ public class AgentsInfoUtils {
             String goosNumber = (String) map.get("goodsNumber");
             String areaName = null;
             String area = null;
-            switch (goosNumber.length()) {
+            switch (getAgentsUserArea().length()) {
+                case 0:
+                    //判断当前位数，不够6位的后面补0
+                    area = addZeroForNum(goosNumber.substring(0,2), 6);
+                    //默认走省份表
+                    areaName = AreaCacheUtils.getAreaCache("province", area);
+                    break;
                 case 2:
                     //判断当前位数，不够6位的后面补0
-                    area = addZeroForNum(goosNumber, 6);
+                    area = addZeroForNum(goosNumber.substring(2,4), 6);
                     //默认走省份表
                     areaName = AreaCacheUtils.getAreaCache("province", area);
                     break;
                 case 4:
                     //判断当前位数，不够6位的后面补0
-                    area = addZeroForNum(goosNumber, 6);
+                    area = addZeroForNum(goosNumber.substring(4,6), 6);
                     //市表中查
                     areaName = AreaCacheUtils.getAreaCache("city", area);
 
                     break;
-                case 6:
-                    area = addZeroForNum(goosNumber, 6);
-                    //区县表中查
-                    areaName = AreaCacheUtils.getAreaCache("county", area);
-                case 8:
-                    break;
                 default:
+                    break;
             }
+
+
+//            switch (goosNumber.length()) {
+//                case 2:
+//                    //判断当前位数，不够6位的后面补0
+//                    area = addZeroForNum(goosNumber, 6);
+//                    //默认走省份表
+//                    areaName = AreaCacheUtils.getAreaCache("province", area);
+//
+//                    break;
+//                case 4:
+//                    //判断当前位数，不够6位的后面补0
+//                    area = addZeroForNum(goosNumber, 6);
+//                    //市表中查
+//                    areaName = AreaCacheUtils.getAreaCache("city", area);
+//
+//                    break;
+//                case 6:
+//                    area = addZeroForNum(goosNumber, 6);
+//                    //区县表中查
+//                    areaName = AreaCacheUtils.getAreaCache("county", area);
+//                case 8:
+//                    break;
+//                default:
+//            }
 
             map.put("flow", areaName);
         }
@@ -316,6 +342,10 @@ public class AgentsInfoUtils {
         List<Map<String, Object>> areaNames = null;
         String userArea = getAgentsUserArea();
         switch (userArea.length()) {
+            case 0:
+                //默认省份表中查询
+                areaNames = areaExDAO.likeProvince();
+                break;
             case 2:
                 //市表中查
                 areaNames = areaExDAO.likeCityById(addStrForNum(userArea, 6, "_"));
@@ -325,8 +355,6 @@ public class AgentsInfoUtils {
                 areaNames = areaExDAO.likeCountyById(addStrForNum(userArea, 6, "_"));
                 break;
             default:
-                //默认省份表中查询
-                areaNames = areaExDAO.likeProvince();
                 break;
         }
         return areaNames;
