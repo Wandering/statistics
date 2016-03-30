@@ -75,6 +75,10 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
         return getDao().outPutCardNumber(condition);
     }
 
+    @Override
+    public boolean hasAgentsArea(String goodsNumber) {
+        return cardExDAO.hasAgentsArea(goodsNumber)>0;
+    }
 
 
     @Override
