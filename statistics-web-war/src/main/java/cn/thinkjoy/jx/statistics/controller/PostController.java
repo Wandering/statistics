@@ -48,7 +48,8 @@ public class PostController {
             postPage =  postApiService.getManagerPost(postCode);
 
         }else {
-            postPage = postApiService.queryPostBycompanyCode(currentPageNo,pageSize,userPojo.getAccountCode()/100000);
+//            postPage = postApiService.queryPostBycompanyCode(currentPageNo,pageSize,userPojo.getAccountCode()/100000);
+            postPage = postApiService.queryPostByCreator(currentPageNo,pageSize,userPojo.getAccountCode().toString());
         }
         return postPage;
     }

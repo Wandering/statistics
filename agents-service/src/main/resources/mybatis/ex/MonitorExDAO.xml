@@ -71,7 +71,7 @@
                 AND info.countyId=#{countyId}
             </if>
             <if test="activeDateStart!=null and activeDateEnd!=null">
-                AND (card.activeDate &gt; #{activeDateStart} AND card.activeDate &lt;  #{activeDateEnd})
+                AND (card.activeDate &gt;= #{activeDateStart} AND card.activeDate &lt;=  #{activeDateEnd})
             </if>
             <if test="errorStatus!=null">
                 AND card.errorStatus=#{errorStatus}
@@ -97,13 +97,18 @@
             and id in (${whereSql})
         </if>
          <if test="activeDateStart!=null and activeDateEnd!=null">
-            AND (card.activeDate &gt; #{activeDateStart} AND card.activeDate &lt;  #{activeDateEnd})
+            AND (activeDate &gt;= #{activeDateStart} AND activeDate &lt;=  #{activeDateEnd})
          </if>
-        	and errorStatus = 1
+              <if test="errorStatus != null">
+                  and errorStatus = #{errorStatus}
+              </if>
+
+            AND status=1
           </where>
+
           GROUP BY
         dateDay
           ORDER BY
-        dateDay DESC
+        dateDay asc
     </select>
 </mapper>
