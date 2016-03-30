@@ -95,9 +95,10 @@ public class AgentsController extends BaseCommonController <ICardExService>{
             throw new BizException("error","参数outputList和rows至少有一个不能为空");
         }
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
-        if(!cardExService.hasAgentsArea(AgentsInfoUtils.addZeroForNum(AgentsInfoUtils.getAgentsUserArea()+flow,6))){
+        if(!cardExService.hasAgentsArea(AgentsInfoUtils.getAgentsUserArea()+flow)){
             throw new BizException("error","出库失败，当前出库区域没有代理商！");
         }
+
         return cardExService.goodsOutput(condition);
     }
 
