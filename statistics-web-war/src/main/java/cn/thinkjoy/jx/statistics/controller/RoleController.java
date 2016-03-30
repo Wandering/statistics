@@ -1,5 +1,6 @@
 package cn.thinkjoy.jx.statistics.controller;
 
+import cn.thinkjoy.agents.service.ex.common.CacheService;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
@@ -66,6 +67,8 @@ public class RoleController {
     private IEXResourceService iexResourceService;
     @Autowired
     private IEXMenuService iexMenuService;
+    @Autowired
+    private CacheService cacheService;
     /**
      * 新增和修改角色
      * @return String
@@ -209,24 +212,18 @@ public class RoleController {
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
         int pageSize =Integer.parseInt(HttpUtil.getParameter(request, "pageSize", "10"));
         Cookie[] cookies=request.getCookies();
-        String userPojoJson = null;
 
+        String token = "";
         for (Cookie cookie:cookies){
-            if(cookie.getName().equals("userInfo")){
-                try {
-                    userPojoJson=URLDecoder.decode(cookie.getValue(),"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                break;
+            if("bizData".equals(cookie.getName()))
+            {
+                token = cookie.getValue();
             }
         }
-        if(StringUtils.isBlank(userPojoJson)){
-            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.PARAM_ISNULL.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.PARAM_ISNULL.getMessage());
-        }
-        UserPojo userPojo =  null;
+        String oldUserInfo = cacheService.getValue(token);
+        UserPojo userPojo;
         try {
-            userPojo=JsonMapper.buildNormalMapper().fromJson(userPojoJson, UserPojo.class);
+            userPojo=JsonMapper.buildNormalMapper().fromJson(oldUserInfo, UserPojo.class);
         }catch (Exception e){
             LOGGER.error(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
             throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
