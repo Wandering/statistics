@@ -7,7 +7,6 @@ define(function (require, exports, module) {
         moduleChart({
             url: UrlConfig.getErrorChart,
             handle: function(param) {
-                alert(23)
                 var numberOrCard = $('#phoneOrVipNumber').val();
                 var selectArea = $('#selectArea').val();
                 var statusType = $('#statusType').val();
@@ -58,20 +57,24 @@ define(function (require, exports, module) {
                 data: 'index',
                 title: '编号'
             }, {
-                data: 'cardNumber',
-                title: 'VIP卡号'
+                data: 'account',
+                title: '用户手机号'
+
             }, {
                 data: 'errorStatus',
                 title: '状态'
             }, {
-                data: 'account',
-                title: '手机号'
+                data: 'cardNumber',
+                title: 'VIP卡号'
             }, {
                 data: 'area',
-                title: '所在地'
+                title: '用户注册地'
             }, {
                 data: 'activeDate',
                 title: '激活日期'
+            }, {
+                data: 'cardArea',
+                title: 'vip卡来源地'
             }];
             var columnDefs = [{
                 "sClass": "center",
@@ -90,7 +93,7 @@ define(function (require, exports, module) {
                 "aTargets": [2]
             }, {
                 "sClass": "center",
-                "aTargets": [3]
+                "aTargets": [1]
             }, {
                 "sClass": "center",
                 "aTargets": [4]
