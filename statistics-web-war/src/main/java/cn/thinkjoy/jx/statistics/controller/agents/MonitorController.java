@@ -75,7 +75,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
             Integer activityStatusInt=Integer.parseInt(activityStatus);
            switch (activityStatusInt){
                case 0:
-                   condition.put("status", 0);
+                   condition.put("status2", 0);
                    break;
                case 1:
                    condition.put("status", 1);

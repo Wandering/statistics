@@ -49,6 +49,9 @@
             <if test="condition.status!=null">
                 and card.status = #{condition.status}
             </if>
+            <if test="condition.status2!=null">
+                and (card.status IS NULL or card.status = #{condition.status2})
+            </if>
         </where>
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
