@@ -110,7 +110,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
                 //从缓存中读取区域信息
                 switch (goodsNumber.length()) {
                     case 0:
-                        province = "总公司";
+                        province = "";
                         break;
                     case 2:
                         province = AreaCacheUtils.getAreaCache("province", AgentsInfoUtils.addZeroForNum(goodsNumber, 6));
