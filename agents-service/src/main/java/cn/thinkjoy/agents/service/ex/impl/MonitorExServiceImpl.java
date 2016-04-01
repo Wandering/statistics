@@ -120,7 +120,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
                         break;
                     case 6:
                         province = AreaCacheUtils.getAreaCache("province", AgentsInfoUtils.addZeroForNum(goodsNumber.substring(0, 2), 6));
-                        city = AreaCacheUtils.getAreaCache("city", AgentsInfoUtils.addZeroForNum(goodsNumber.substring(2, 4), 6));
+                        city = AreaCacheUtils.getAreaCache("city", AgentsInfoUtils.addZeroForNum(goodsNumber.substring(0, 4), 6));
                         county = AreaCacheUtils.getAreaCache("county", goodsNumber);
                         break;
                 }

@@ -93,6 +93,9 @@ public class AreaCacheUtils {
             return areaCache.get(type).get(key).toString();
         } catch (ExecutionException e) {
             throw new BizException("error","获取缓存失败");
+        }catch (NullPointerException e){
+            System.out.println("地区不存在！");
+            return null;
         }
     }
     private static String PROVINCE="province";
