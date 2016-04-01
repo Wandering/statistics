@@ -5,14 +5,24 @@
 
     <select id="queryPage" resultType="java.util.Map">
         SELECT
-        card.id as id,goodsNumber,cardNumber,userId,errorStatus,activeDate,account,provinceId,cityId,countyId
-        FROM  zgk_card card
-        left join zgk_user_account account on card.userId=account.id
-        left join zgk_user_info info on card.userId=info.id
+        account.id AS id,
+        goodsNumber,
+        cardNumber,
+        userId,
+        errorStatus,
+        activeDate,
+        account,
+        info.provinceId,
+        cityId,
+        countyId
+        FROM
+        zgk_user_account account
+        INNER JOIN zgk_user_info info ON account.id = info.id
+        LEFT JOIN zgk_card card ON card.userId = account.id
         <where>
             <!--标记当前用户查询范围-->
             <if test="condition.whereSql != null">
-                and card.id in (${condition.whereSql})
+                and info.id in (${condition.whereSql})
             </if>
             <if test="condition.queryParam!=null">
                 AND (account.account=#{condition.queryParam} OR  card.cardNumber=#{condition.queryParam})
@@ -52,13 +62,13 @@
 
     <select id="count" resultType="java.lang.Integer">
         SELECT
-        count(card.id)
-        FROM  zgk_card card
-        left join zgk_user_account account on card.userId=account.id
-        left join zgk_user_info info on card.id=info.id
+        count(account.id)
+        zgk_user_account account
+        INNER JOIN zgk_user_info info ON account.id = info.id
+        LEFT JOIN zgk_card card ON card.userId = account.id
         <where>
             <if test="whereSql != null">
-                and card.id in (${whereSql})
+                and account.id in (${whereSql})
             </if>
             <if test="queryParam!=null">
                 AND (account.account=#{queryParam} OR  card.cardNumber=#{queryParam})

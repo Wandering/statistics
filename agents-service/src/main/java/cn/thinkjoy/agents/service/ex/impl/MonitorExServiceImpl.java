@@ -55,7 +55,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
     @Override
     protected void conditionHandler(Map<String, Object> condition) {
         if(AgentsInfoUtils.getUserWhereSql()!=null) {
-            condition.put("whereSql", AgentsInfoUtils.getUserWhereSql());
+            condition.put("whereSql", AgentsInfoUtils.getMonitorWhereSql());
         }
         condition.put("userArea", AgentsInfoUtils.getAgentsUserArea());
         condition.put("orderBy", "cardNumber");
@@ -72,7 +72,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
             String city=null;
             String county=null;
             if(map.containsKey("provinceId")){
-                if(!"00".equals(map.get("countyId").toString())) {
+                if(!"00".equals(map.get("provinceId").toString())) {
                     province = AreaCacheUtils.getAreaCache("province", map.get("provinceId").toString());
                 }
             }
@@ -96,7 +96,48 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
             if(StringUtils.isNotEmpty(county)){
                 stringBuilder.append(county);
             }
+
+
             map.put("area",stringBuilder.toString());
+        }
+
+        for(Map<String,Object> map:maps){
+            String province=null;
+            String city=null;
+            String county=null;
+            if(map.containsKey("goodsNumber")) {
+                String goodsNumber = map.get("goodsNumber").toString();
+                switch (goodsNumber.length()) {
+                    case 0:
+                        province = "总公司";
+                        break;
+                    case 2:
+                        province = AreaCacheUtils.getAreaCache("province", AgentsInfoUtils.addZeroForNum(goodsNumber, 6));
+                        break;
+                    case 4:
+                        province = AreaCacheUtils.getAreaCache("province", AgentsInfoUtils.addZeroForNum(goodsNumber.substring(0, 2), 6));
+                        city = AreaCacheUtils.getAreaCache("city", AgentsInfoUtils.addZeroForNum(goodsNumber, 6));
+                        break;
+                    case 6:
+                        province = AreaCacheUtils.getAreaCache("province", AgentsInfoUtils.addZeroForNum(goodsNumber.substring(0, 2), 6));
+                        city = AreaCacheUtils.getAreaCache("city", AgentsInfoUtils.addZeroForNum(goodsNumber.substring(2, 4), 6));
+                        county = AreaCacheUtils.getAreaCache("county", goodsNumber);
+                        break;
+                }
+            }
+            StringBuilder stringBuilder=new StringBuilder();
+            if(StringUtils.isNotEmpty(province)){
+                stringBuilder.append(province);
+            }
+            if(StringUtils.isNotEmpty(city)){
+                stringBuilder.append(city);
+            }
+            if(StringUtils.isNotEmpty(county)){
+                stringBuilder.append(county);
+            }
+
+
+            map.put("cardArea",stringBuilder.toString());
         }
 
     }

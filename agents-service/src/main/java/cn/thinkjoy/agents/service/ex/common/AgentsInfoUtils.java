@@ -102,12 +102,28 @@ public class AgentsInfoUtils {
     }
 
     public static String getUserWhereSql(){
-        if(getAgentsUserArea()==null){
+        if(getAgentsUserArea()==null || getAgentsUserArea().isEmpty()){
             return null;
         }
         return "SELECT id FROM zgk_card WHERE goodsNumber LIKE '"+getAgentsUserArea()+"%'";
     }
 
+
+    public static String getMonitorWhereSql(){
+        if(getAgentsUserArea()==null || getAgentsUserArea().isEmpty()){
+            return null;
+        }
+        switch (getAgentsUserArea().length()){
+            case 2:
+                return "SELECT id FROM zgk_user_info WHERE provinceId="+addZeroForNum(getAgentsUserArea(),6);
+            case 4:
+                return "SELECT id FROM zgk_user_info WHERE cityId="+addZeroForNum(getAgentsUserArea(),6);
+            case 6:
+                return "SELECT id FROM zgk_user_info WHERE countyId="+addZeroForNum(getAgentsUserArea(),6);
+            default:
+                return null;
+        }
+    }
     /**
      * 通过用户上下文做代理商等级判定
      * 1第一级代理商多为省级
