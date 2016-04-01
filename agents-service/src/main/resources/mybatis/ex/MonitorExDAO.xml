@@ -82,6 +82,7 @@
             <if test="cityId!=null">
                 AND info.cityId=#{cityId}
             </if>
+
             <if test="countyId!=null">
                 AND info.countyId=#{countyId}
             </if>
