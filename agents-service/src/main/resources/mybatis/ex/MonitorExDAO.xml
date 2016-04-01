@@ -77,14 +77,14 @@
                 AND (account.account=#{queryParam} OR  card.cardNumber=#{queryParam})
             </if>
             <if test="provinceId!=null">
-                AND info.provinceId=#{provinceId}
+                AND info.provinceId like #{provinceId}
             </if>
             <if test="cityId!=null">
-                AND info.cityId=#{cityId}
+                AND info.cityId like #{cityId}
             </if>
 
             <if test="countyId!=null">
-                AND info.countyId=#{countyId}
+                AND info.countyId  like #{countyId}
             </if>
             <if test="activeDateStart!=null and activeDateEnd!=null">
                 AND (card.activeDate &gt;= #{activeDateStart} AND card.activeDate &lt;=  #{activeDateEnd})
