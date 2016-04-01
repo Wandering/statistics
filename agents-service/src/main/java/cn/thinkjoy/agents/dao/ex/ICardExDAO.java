@@ -7,6 +7,7 @@
 package cn.thinkjoy.agents.dao.ex;
 
 import cn.thinkjoy.agents.dao.ex.common.BaseCommonExDAO;
+import cn.thinkjoy.domain.agents.Card;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface ICardExDAO extends BaseCommonExDAO{
         public String selectCardByUid(String cardNumber);
         public int lastAgentsArea(String goodsNumber);
         public int hasAgentsArea(String goodsNumber);
+
+        Card getCardById(@Param("cardNumber")String cardNumber);
 }

@@ -214,14 +214,13 @@
     <!-- 更新 -->
     <update id="active" parameterType="java.util.Map">
         UPDATE zgk_card
-        <trim prefix="SET" suffixOverrides=",">
+        SET
             <if test="activeDate!=null">
                 activeDate = CONCAT('',#{activeDate}),
             </if>
-            <if test="errorStatus!=null and goodsNumber != null and goodsNumber != ''">
+            <if test="errorStatus!=null">
                 errorStatus = #{errorStatus},
             </if>
-        </trim>
         where
             cardNumber = #{cardNumber}
     </update>
@@ -253,4 +252,28 @@
     <select id="hasAgentsArea" resultType="java.lang.Integer">
         SELECT COUNT(1)  FROM zgk_system.k12system_department  department WHERE department.areaCode = #{goodsNumber}
     </select>
+
+    <select id="getCardById" resultType="java.util.Map">
+        select
+            id as id ,
+            goodsNumber as goodsNumber ,
+            cardNumber as cardNumber ,
+            password as password ,
+            userId as userId ,
+            status as status ,
+            cardType as cardType ,
+            endDate as endDate ,
+            creator as creator ,
+            createDate as createDate ,
+            lastModifier as lastModifier ,
+            lastModDate as lastModDate ,
+            areaId as areaId ,
+            outputDate1 as outputDate1 ,
+            outputDate2 as outputDate2 ,
+            outputDate3 as outputDate3 ,
+            activeDate as activeDate
+        FROM zgk_card cc
+        WHERE cc.cardNumber=#{cardNumber}
+    </select>
+
 </mapper>

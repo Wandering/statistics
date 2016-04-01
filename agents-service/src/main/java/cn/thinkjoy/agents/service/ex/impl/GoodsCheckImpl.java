@@ -2,7 +2,10 @@ package cn.thinkjoy.agents.service.ex.impl;
 
 import cn.thinkjoy.agents.IGoodsCheck;
 import cn.thinkjoy.agents.dao.ex.ICardExDAO;
+import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
+import cn.thinkjoy.domain.agents.Card;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -92,7 +95,10 @@ public class GoodsCheckImpl implements IGoodsCheck {
             condition.put("activeDate", System.currentTimeMillis());
             condition.put("errorStatus", status);
             condition.put("cardNumber",cardNumber);
-            cardExDAO.active(condition);
+            Card card=cardExDAO.getCardById(cardNumber);
+            if (StringUtils.isNotBlank(card.getGoodsNumber())) {
+                cardExDAO.active(condition);
+            }
         }
     }
 
