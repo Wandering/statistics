@@ -96,7 +96,7 @@ public class GoodsCheckImpl implements IGoodsCheck {
             condition.put("errorStatus", status);
             condition.put("cardNumber",cardNumber);
             Card card=cardExDAO.getCardById(cardNumber);
-            if (card!=null&&StringUtils.isNotBlank(card.getGoodsNumber())) {
+            if (card!=null&&card.getGoodsNumber()!=null&&!card.getGoodsNumber().equals("")) {
                 cardExDAO.active(condition);
             }
         }
