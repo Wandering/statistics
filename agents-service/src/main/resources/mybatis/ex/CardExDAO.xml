@@ -222,9 +222,9 @@
                 errorStatus = #{errorStatus},
             </if>
         </trim>
-        <where>
+        where
             cardNumber = #{cardNumber}
-        </where>
+        and goodsNumber is not null and goodsNumber != ''
     </update>
 
     <select id="selectByUid" resultType="java.util.Map">
