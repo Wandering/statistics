@@ -253,7 +253,7 @@
         SELECT COUNT(1)  FROM zgk_system.k12system_department  department WHERE department.areaCode = #{goodsNumber}
     </select>
 
-    <select id="getCardById" resultType="java.util.Map">
+    <select id="getCardById" resultType="cn.thinkjoy.domain.agents.Card">
         select
             id as id ,
             goodsNumber as goodsNumber ,
