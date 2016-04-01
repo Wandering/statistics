@@ -214,13 +214,14 @@
     <!-- 更新 -->
     <update id="active" parameterType="java.util.Map">
         UPDATE zgk_card
-        SET
+        <trim prefix="SET" suffixOverrides=",">
             <if test="activeDate!=null">
                 activeDate = CONCAT('',#{activeDate}),
             </if>
             <if test="errorStatus!=null">
                 errorStatus = #{errorStatus},
             </if>
+        </trim>
         where
             cardNumber = #{cardNumber}
     </update>
@@ -255,25 +256,24 @@
 
     <select id="getCardById" resultType="cn.thinkjoy.domain.agents.Card">
         select
-            id as id ,
-            goodsNumber as goodsNumber ,
-            cardNumber as cardNumber ,
-            password as password ,
-            userId as userId ,
-            status as status ,
-            cardType as cardType ,
-            endDate as endDate ,
-            creator as creator ,
-            createDate as createDate ,
-            lastModifier as lastModifier ,
-            lastModDate as lastModDate ,
-            areaId as areaId ,
-            outputDate1 as outputDate1 ,
-            outputDate2 as outputDate2 ,
-            outputDate3 as outputDate3 ,
-            activeDate as activeDate
+        id as id ,
+        goodsNumber as goodsNumber ,
+        cardNumber as cardNumber ,
+        password as password ,
+        userId as userId ,
+        status as status ,
+        cardType as cardType ,
+        endDate as endDate ,
+        creator as creator ,
+        createDate as createDate ,
+        lastModifier as lastModifier ,
+        lastModDate as lastModDate ,
+        areaId as areaId ,
+        outputDate1 as outputDate1 ,
+        outputDate2 as outputDate2 ,
+        outputDate3 as outputDate3 ,
+        activeDate as activeDate
         FROM zgk_card cc
         WHERE cc.cardNumber=#{cardNumber}
     </select>
-
 </mapper>
