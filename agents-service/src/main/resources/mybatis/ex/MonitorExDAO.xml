@@ -62,7 +62,7 @@
 
     <select id="count" resultType="java.lang.Integer">
         SELECT
-        count(account.id)
+        count(account.id) from
         zgk_user_account account
         INNER JOIN zgk_user_info info ON account.id = info.id
         LEFT JOIN zgk_card card ON card.userId = account.id
