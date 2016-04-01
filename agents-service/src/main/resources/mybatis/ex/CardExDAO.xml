@@ -218,13 +218,12 @@
             <if test="activeDate!=null">
                 activeDate = CONCAT('',#{activeDate}),
             </if>
-            <if test="errorStatus!=null">
+            <if test="errorStatus!=null and goodsNumber != null and goodsNumber != ''">
                 errorStatus = #{errorStatus},
             </if>
         </trim>
         where
             cardNumber = #{cardNumber}
-        and goodsNumber is not null and goodsNumber != ''
     </update>
 
     <select id="selectByUid" resultType="java.util.Map">
