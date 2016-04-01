@@ -98,6 +98,9 @@
             <if test="status!=null">
                 and card.status = #{status}
             </if>
+            <if test="status2!=null">
+                and (card.status IS NULL or card.status = #{status2})
+            </if>
         </where>
     </select>
     <select id="errorChart" resultType="java.util.Map">
