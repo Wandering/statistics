@@ -107,6 +107,7 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
             String county=null;
             if(map.containsKey("goodsNumber")) {
                 String goodsNumber = map.get("goodsNumber").toString();
+                //从缓存中读取区域信息
                 switch (goodsNumber.length()) {
                     case 0:
                         province = "总公司";
