@@ -93,12 +93,12 @@ public class GoodsCheckImpl implements IGoodsCheck {
             }
 
             condition.put("activeDate", System.currentTimeMillis());
-            condition.put("errorStatus", status);
             condition.put("cardNumber",cardNumber);
             Card card=cardExDAO.getCardById(cardNumber);
             if (card!=null&&card.getGoodsNumber()!=null&&!card.getGoodsNumber().equals("")) {
-                cardExDAO.active(condition);
+                condition.put("errorStatus", status);
             }
+            cardExDAO.active(condition);
         }
     }
 
