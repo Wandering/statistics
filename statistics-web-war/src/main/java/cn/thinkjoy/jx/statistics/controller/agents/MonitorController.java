@@ -2,15 +2,23 @@ package cn.thinkjoy.jx.statistics.controller.agents;
 
 import cn.thinkjoy.agents.service.ex.IMonitorExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
+import cn.thinkjoy.agents.service.ex.common.CacheService;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
+import cn.thinkjoy.jx.statistics.domain.pojo.MonitorPojo;
+import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
+import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -23,10 +31,11 @@ import java.util.*;
 @RequestMapping("/admin")
 public class MonitorController extends BaseCommonController<IMonitorExService>{
 
+    private static Logger LOGGER = LoggerFactory.getLogger(MonitorController.class);
     @Autowired
     private IMonitorExService monitorExService;
-
-
+    @Autowired
+    private CacheService cacheService;
 
     @ResponseBody
     @RequestMapping(value = "/monitors")
@@ -89,77 +98,42 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
 
     @ResponseBody
     @RequestMapping(value = "/errorChart")
-    public Object errorChart(@RequestParam String startDate,@RequestParam String endDate){
-        Map<String,Object> condition=new HashMap<>();
-        if(StringUtils.isNotEmpty(startDate)){
-            if(StringUtils.isEmpty(endDate)){
-                throw new BizException("error","截止时间不能为空");
-            }
-            try {
-//                condition.put("activeDateStart", DateUtils.parseDateFromHeader(startDate).getTime());
-//                condition.put("activeDateEnd", DateUtils.parseDateFromHeader(endDate).getTime());
-                System.currentTimeMillis();
-                DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
-                condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
-                condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
-            } catch (ParseException e) {
-                throw new BizException("error","不是标准的时间格式");
+    public List<MonitorPojo> errorChart(HttpServletRequest request,@RequestParam("startDate") String startDate,@RequestParam("endDate") String endDate){
+        if(StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)){
+            throw new BizException("error","查询时间不能为空");
+        }
+        Cookie[] cookies=request.getCookies();
+        String token = "";
+        for (Cookie cookie:cookies){
+            if("bizData".equals(cookie.getName()))
+            {
+                token = cookie.getValue();
             }
         }
-        condition.put("format","'%Y-%m-%d'");
-        condition.put("errorStatus",1);
-        List<Map<String,Object>> resultMaps=monitorExService.errorChart(condition);
-        condition.put("errorStatus",0);
-        List<Map<String,Object>> resultMapsNormal=monitorExService.errorChart(condition);
-        return resultHandler(resultMaps,resultMapsNormal,startDate,endDate);
-
-
-    }
-
-    private List<Map<String,Object>> resultHandler(List<Map<String,Object>> resultMaps,List<Map<String,Object>> resultMapsNormal,String startDate,String endDate){
-        List<Map<String,Object>> result=new ArrayList<>();
-        Calendar calendar=Calendar.getInstance();
-        DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
-        // 指定一个日期
-        Date date=null;
+        String oldUserInfo = cacheService.getValue(token);
+        UserPojo userPojo;
         try {
-            date = dateFormat.parse(startDate);
+            userPojo= JsonMapper.buildNormalMapper().fromJson(oldUserInfo, UserPojo.class);
+        }catch (Exception e){
+            LOGGER.error(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+        }
+        String areaCode=userPojo.getAreaCode();
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("areaCode",areaCode);
+        DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
+        try {
+            condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
+            condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        calendar.setTime(date);
-        List<String> list = new ArrayList<>();
 
-        while (true){
-            String dateStr=calendar.get(Calendar.YEAR)+"-"+AgentsInfoUtils.addStrForNum(String.valueOf(calendar.get(Calendar.MONTH)+1),2,"0",1)+"-"+AgentsInfoUtils.addStrForNum(String.valueOf(calendar.get(Calendar.DATE)),2,"0",1)+"";
-            calendar.add(Calendar.DATE,1);
-            list.add(dateStr);
-            if(dateStr.equals(endDate)){
-                break;
-            }
-        }
-        for(String str:list){
-            Integer num=0;
-            Integer err=0;
-            Map<String,Object> map=new HashMap<>();
-            for(Map<String,Object> map1:resultMapsNormal){
-                if("dateDay".equals(map1.get("dateDay"))){
-                    num=(Integer)map1.get("num");
-                }
-                for(Map<String,Object> map2:resultMaps){
-                    if("dateDay".equals(map2.get("dateDay"))){
-                        err=(Integer)map2.get("num");
-                    }
-                }
-            }
-            map.put("dateDay",str);
-            map.put("err",err>0?1:0);
-            map.put("num",num);
-            map.put("errNum",err);
-            result.add(map);
-        }
-        return result;
+        return monitorExService.errorChart(condition);
+
     }
+
+
     @Override
     protected IMonitorExService getService() {
         return monitorExService;

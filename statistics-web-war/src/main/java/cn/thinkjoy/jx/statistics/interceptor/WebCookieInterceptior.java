@@ -31,40 +31,40 @@ public class WebCookieInterceptior implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         UserInfoContext.removeCurrentUser();
-        try {
-            //尝试从cookie上面获取用户信息
-            String userInfoStr = null;
-            Map<String, Object> userInfo = null;
-            Cookie[] cookies = request.getCookies();
-            if(cookies!=null && cookies.length!=0) {
-                for (Cookie c : cookies) {
-                    if (c.getName().equals("userInfo")) {
-                        userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(), "UTF-8"));
-                        break;
-                    }
-                }
-            }
-            if(userInfo==null){
-                String token=request.getParameter("token");
-                userInfoStr=redisCacheService.getValue(token);
-                Cookie cookie=new Cookie("userInfo", URLEncoder.encode(userInfoStr,"UTF-8"));
-                logger.info("userInfo="+URLEncoder.encode(userInfoStr,"UTF-8"));
-                cookie.setPath("/");
-
-                userInfo=JSON.parseObject(userInfoStr);
-                if(userInfo==null){
-                    if(!"/statistics/login/checkLogin".equals(request.getRequestURI())){
-                        throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(), ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
-                    }
-                }
-                response.addCookie(cookie);
-            }
-            logger.info("用户信息："+userInfoStr);
-            UserInfoContext.setCurrentUserInfo(userInfo);
-        }catch (Exception e){
-            logger.info("用户信息获取异常");
-            throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
-        }
+//        try {
+//            //尝试从cookie上面获取用户信息
+//            String userInfoStr = null;
+//            Map<String, Object> userInfo = null;
+//            Cookie[] cookies = request.getCookies();
+//            if(cookies!=null && cookies.length!=0) {
+//                for (Cookie c : cookies) {
+//                    if (c.getName().equals("userInfo")) {
+//                        userInfo = JSON.parseObject(URLDecoder.decode(c.getValue(), "UTF-8"));
+//                        break;
+//                    }
+//                }
+//            }
+//            if(userInfo==null){
+//                String token=request.getParameter("token");
+//                userInfoStr=redisCacheService.getValue(token);
+//                Cookie cookie=new Cookie("userInfo", URLEncoder.encode(userInfoStr,"UTF-8"));
+//                logger.info("userInfo="+URLEncoder.encode(userInfoStr,"UTF-8"));
+//                cookie.setPath("/");
+//
+//                userInfo=JSON.parseObject(userInfoStr);
+//                if(userInfo==null){
+//                    if(!"/statistics/login/checkLogin".equals(request.getRequestURI())){
+//                        throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(), ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+//                    }
+//                }
+//                response.addCookie(cookie);
+//            }
+//            logger.info("用户信息："+userInfoStr);
+//            UserInfoContext.setCurrentUserInfo(userInfo);
+//        }catch (Exception e){
+//            logger.info("用户信息获取异常");
+//            throw new BizException(ERRORCODE.USER_EXPRIED_RELOGIN.getCode(),ERRORCODE.USER_EXPRIED_RELOGIN.getMessage());
+//        }
         return true;
     }
 

@@ -104,30 +104,18 @@
             </if>
         </where>
     </select>
-    <select id="errorChart" resultType="java.util.Map">
-          SELECT
-	      count(id) as num,
-	      FROM_UNIXTIME(LEFT (activeDate, 10), ${format}) AS dateDay
-          FROM
-	      zgk_card
-          <where>
-        <!--标记当前用户查询范围-->
-        <if test="whereSql != null">
-            and id in (${whereSql})
-        </if>
-         <if test="activeDateStart!=null and activeDateEnd!=null">
-            AND (activeDate &gt;= #{activeDateStart} AND activeDate &lt;=  #{activeDateEnd})
-         </if>
-              <if test="errorStatus != null">
-                  and errorStatus = #{errorStatus}
-              </if>
-
-            AND status=1
-          </where>
-
-          GROUP BY
-        dateDay
-          ORDER BY
-        dateDay asc
+    <select id="errorChart" resultType="cn.thinkjoy.jx.statistics.domain.pojo.MonitorPojo">
+        SELECT
+          FROM_UNIXTIME(left(card.activeDate,10),"%Y-%m-%d") as date,
+          count(*) as number,
+          sum(errorStatus) as status
+        FROM
+          zgk_user_account account
+          LEFT JOIN zgk_card card ON card.userId = account.id
+        WHERE
+          card.goodsNumber like CONCAT(#{areaCode},'%')
+          AND card.activeDate &gt; #{startDate}
+          AND card.activeDate &lt; #{endDate}
+        group by FROM_UNIXTIME(left(card.activeDate,10),"%Y-%m-%d")
     </select>
 </mapper>
