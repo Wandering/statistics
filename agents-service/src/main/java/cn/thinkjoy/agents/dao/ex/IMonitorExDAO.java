@@ -12,4 +12,5 @@ import java.util.Map;
  */
 public interface IMonitorExDAO extends BaseCommonExDAO{
     public List<MonitorPojo> errorChart(Map<String,Object> map);
+    public List findCard(Map<String,Object> map);
 }

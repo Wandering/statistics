@@ -121,10 +121,10 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         String areaCode=userPojo.getAreaCode();
         Map<String,Object> condition=new HashMap<>();
         condition.put("areaCode",areaCode);
-        DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
-            condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
+            condition.put("startDate", dateFormat.parse(startDate+" 00:00:00").getTime());
+            condition.put("endDate", dateFormat.parse(endDate+" 23:59:59").getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -133,6 +133,51 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
 
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/findCard")
+    public Object findCard(HttpServletRequest request,
+                           @RequestParam(value = "errorDate") String errorDate,
+                           @RequestParam(value = "errorStatus")String errorStatus,
+                           @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
+                           @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
+        if(StringUtils.isEmpty(errorDate)){
+            throw new BizException("error","查询时间不能为空");
+        }
+        if(StringUtils.isEmpty(errorStatus)){
+            throw new BizException("error","查询类型不能为空");
+        }
+        Cookie[] cookies=request.getCookies();
+        String token = "";
+        for (Cookie cookie:cookies){
+            if("bizData".equals(cookie.getName()))
+            {
+                token = cookie.getValue();
+            }
+        }
+        String oldUserInfo = cacheService.getValue(token);
+        UserPojo userPojo;
+        try {
+            userPojo= JsonMapper.buildNormalMapper().fromJson(oldUserInfo, UserPojo.class);
+        }catch (Exception e){
+            LOGGER.error(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.JSONCONVERT_ERROR.getMessage());
+        }
+        String areaCode=userPojo.getAreaCode();
+        Map<String,Object> condition=new HashMap<>();
+        if (!areaCode.equals("00")) {
+            condition.put("areaCode", areaCode);
+        }
+        condition.put("errorStatus",errorStatus);
+        DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            condition.put("activeDateStart", dateFormat.parse(errorDate+" 00:00:00").getTime());
+            condition.put("activeDateEnd", dateFormat.parse(errorDate+" 23:59:59").getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        doPage(1,10,condition);
+        return doPage(page,rows,condition);
+    }
 
     @Override
     protected IMonitorExService getService() {
