@@ -120,7 +120,9 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         }
         String areaCode=userPojo.getAreaCode();
         Map<String,Object> condition=new HashMap<>();
-        condition.put("areaCode",areaCode);
+        if (!areaCode.equals("00")) {
+            condition.put("areaCode", areaCode);
+        }
         DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
             condition.put("startDate", dateFormat.parse(startDate+" 00:00:00").getTime());
