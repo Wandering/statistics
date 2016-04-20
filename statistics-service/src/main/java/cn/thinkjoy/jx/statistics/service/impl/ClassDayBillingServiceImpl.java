@@ -10,16 +10,15 @@ package cn.thinkjoy.jx.statistics.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.service.impl.AbstractPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IClassDayBillingDAO;
 import cn.thinkjoy.jx.statistics.domain.ClassDayBilling;
 import cn.thinkjoy.jx.statistics.service.IClassDayBillingService;
 import cn.thinkjoy.jx.statistics.util.Constants;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,7 @@ public class ClassDayBillingServiceImpl extends AbstractPageService<IBaseDAO<Cla
      * @param sortBy
      * @return
      */
-    public Page<ClassDayBilling> queryByPage(Map<String, Object> map, int offset, int rows, String orderBy, String sortBy,int queryType) {
+    public Page<ClassDayBilling> queryByPage(Map<String, Object> map, int offset, int rows, String orderBy, String sortBy, int queryType) {
         Page<ClassDayBilling> page = new Page<>();
         if(queryType== Constants.BETWEEN_DATEDAY_QUERY_AREA_NUM){
             Integer count = classDayBillingDAO.countByPageTime(map);

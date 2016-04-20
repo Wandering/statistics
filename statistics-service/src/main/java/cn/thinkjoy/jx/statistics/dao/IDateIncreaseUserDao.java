@@ -3,7 +3,7 @@ package cn.thinkjoy.jx.statistics.dao;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.jx.statistics.domain.ParentIncreaseDetail;
 import cn.thinkjoy.jx.statistics.domain.TeacherIncreaseDetail;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

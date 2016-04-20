@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.ISplitPriceDAO">
+<!--
+insert
+update
+updateNull
+deleteById
+deleteByCondition
+deleteByProperty
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+        id,
+        user_id,
+        user_phone,
+        reward_level,
+        price,
+        order_no,
+        type,
+        status,
+        create_time
+    </sql>
+    <insert id="insert" parameterType="SplitPrice">
+        INSERT INTO zgk_split_price (
+        user_id,
+        user_phone,
+        reward_level,
+        price,
+        order_no,
+        type,
+        status,
+        create_time
+        ) VALUES (
+        #{userId},
+        #{userPhone},
+        #{rewardLevel},
+        #{price},
+        #{orderNo},
+        #{type},
+        #{status},
+        #{createTime}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="SplitPrice">
+        UPDATE zgk_split_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId!=null">
+                user_id = #{userId},
+            </if>
+            <if test="userPhone!=null">
+                user_phone = #{userPhone},
+            </if>
+            <if test="rewardLevel!=null">
+                reward_level = #{rewardLevel},
+            </if>
+            <if test="price!=null">
+                price = #{price},
+            </if>
+            <if test="orderNo!=null">
+                order_no = #{orderNo},
+            </if>
+            <if test="type!=null">
+                type = #{type},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="createTime!=null">
+                create_time = #{createTime},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMap">
+        UPDATE zgk_split_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.userId!=null">
+                user_id = #{map.userId},
+            </if>
+            <if test="map.userPhone!=null">
+                user_phone = #{map.userPhone},
+            </if>
+            <if test="map.rewardLevel!=null">
+                reward_level = #{map.rewardLevel},
+            </if>
+            <if test="map.price!=null">
+                price = #{map.price},
+            </if>
+            <if test="map.orderNo!=null">
+                order_no = #{map.orderNo},
+            </if>
+            <if test="map.type!=null">
+                type = #{map.type},
+            </if>
+            <if test="map.status!=null">
+                status = #{map.status},
+            </if>
+            <if test="map.createTime!=null">
+                create_time = #{map.createTime},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE zgk_split_price
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.userId!=null">
+                user_id = #{update.userId},
+            </if>
+            <if test="update.userPhone!=null">
+                user_phone = #{update.userPhone},
+            </if>
+            <if test="update.rewardLevel!=null">
+                reward_level = #{update.rewardLevel},
+            </if>
+            <if test="update.price!=null">
+                price = #{update.price},
+            </if>
+            <if test="update.orderNo!=null">
+                order_no = #{update.orderNo},
+            </if>
+            <if test="update.type!=null">
+                type = #{update.type},
+            </if>
+            <if test="update.status!=null">
+                status = #{update.status},
+            </if>
+            <if test="update.createTime!=null">
+                create_time = #{update.createTime},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND user_id = #{condition.userId}
+            </if>
+            <if test="condition.userPhone!=null">
+                AND user_phone = #{condition.userPhone}
+            </if>
+            <if test="condition.rewardLevel!=null">
+                AND reward_level = #{condition.rewardLevel}
+            </if>
+            <if test="condition.price!=null">
+                AND price = #{condition.price}
+            </if>
+            <if test="condition.orderNo!=null">
+                AND order_no = #{condition.orderNo}
+            </if>
+            <if test="condition.type!=null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.createTime!=null">
+                AND create_time = #{condition.createTime}
+            </if>
+        </trim>
+    </update>
+
+    <insert id="insertMap" >
+        INSERT INTO zgk_split_price (
+                user_id,
+                user_phone,
+                reward_level,
+                price,
+                order_no,
+                type,
+                status,
+                create_time
+        ) VALUES (
+                    #{map.userId},
+                    #{map.userPhone},
+                    #{map.rewardLevel},
+                    #{map.price},
+                    #{map.orderNo},
+                    #{map.type},
+                    #{map.status},
+                    #{map.createTime}
+        )
+    </insert>
+
+
+    <update id="updateNull" parameterType="SplitPrice">
+        UPDATE zgk_split_price
+        <trim prefix="SET" suffixOverrides=",">
+            user_id = #{userId},
+            user_phone = #{userPhone},
+            reward_level = #{rewardLevel},
+            price = #{price},
+            order_no = #{orderNo},
+            type = #{type},
+            status = #{status},
+            create_time = #{createTime},
+        </trim>
+        WHERE
+        id = #{id} 
+    </update>
+
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM zgk_split_price
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM zgk_split_price
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="userId!=null">
+                AND user_id = #{userId}
+            </if>
+            <if test="userPhone!=null">
+                AND user_phone = #{userPhone}
+            </if>
+            <if test="rewardLevel!=null">
+                AND reward_level = #{rewardLevel}
+            </if>
+            <if test="price!=null">
+                AND price = #{price}
+            </if>
+            <if test="orderNo!=null">
+                AND order_no = #{orderNo}
+            </if>
+            <if test="type!=null">
+                AND type = #{type}
+            </if>
+            <if test="status!=null">
+                AND status = #{status}
+            </if>
+            <if test="createTime!=null">
+                AND create_time = #{createTime}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty" parameterType="java.util.Map">
+        DELETE FROM zgk_split_price WHERE
+        ${property} = #{value}
+    </delete>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price
+        <where>
+
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+
+            <if test="condition.id!=null">
+                ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.userId!=null">
+                ${condition.groupOp}   user_id  ${condition.user_id.op}  #{condition.user_id.data}
+            </if>
+            <if test="condition.userPhone!=null">
+                ${condition.groupOp}   user_phone  ${condition.user_phone.op}  #{condition.user_phone.data}
+            </if>
+            <if test="condition.rewardLevel!=null">
+                ${condition.groupOp}   reward_level  ${condition.reward_level.op}  #{condition.reward_level.data}
+            </if>
+            <if test="condition.price!=null">
+                ${condition.groupOp}   price  ${condition.price.op}  #{condition.price.data}
+            </if>
+            <if test="condition.orderNo!=null">
+                ${condition.groupOp}   order_no  ${condition.order_no.op}  #{condition.order_no.data}
+            </if>
+            <if test="condition.type!=null">
+                ${condition.groupOp}   type  ${condition.type.op}  #{condition.type.data}
+            </if>
+            <if test="condition.status!=null">
+                ${condition.groupOp}   status  ${condition.status.op}  #{condition.status.data}
+            </if>
+            <if test="condition.createTime!=null">
+                ${condition.groupOp}   create_time  ${condition.create_time.op}  #{condition.create_time.data}
+            </if>
+
+
+    </where>
+
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id like CONCAT('%', #{id} , '%')
+            </if>
+            <if test="userId!=null">
+                AND user_id like CONCAT('%', #{userId} , '%')
+            </if>
+            <if test="userPhone!=null">
+                AND user_phone like CONCAT('%', #{userPhone} , '%')
+            </if>
+            <if test="rewardLevel!=null">
+                AND reward_level like CONCAT('%', #{rewardLevel} , '%')
+            </if>
+            <if test="price!=null">
+                AND price like CONCAT('%', #{price} , '%')
+            </if>
+            <if test="orderNo!=null">
+                AND order_no like CONCAT('%', #{orderNo} , '%')
+            </if>
+            <if test="type!=null">
+                AND type like CONCAT('%', #{type} , '%')
+            </if>
+            <if test="status!=null">
+                AND status like CONCAT('%', #{status} , '%')
+            </if>
+            <if test="createTime!=null">
+                AND create_time like CONCAT('%', #{createTime} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+
+    <select id="queryList" parameterType="java.util.Map" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND user_id = #{condition.userId}
+            </if>
+            <if test="condition.userPhone!=null">
+                AND user_phone = #{condition.userPhone}
+            </if>
+            <if test="condition.rewardLevel!=null">
+                AND reward_level = #{condition.rewardLevel}
+            </if>
+            <if test="condition.price!=null">
+                AND price = #{condition.price}
+            </if>
+            <if test="condition.orderNo!=null">
+                AND order_no = #{condition.orderNo}
+            </if>
+            <if test="condition.type!=null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.createTime!=null">
+                AND create_time = #{condition.createTime}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="SplitPrice">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_split_price
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.userId!=null">
+                AND user_id = #{condition.userId}
+            </if>
+            <if test="condition.userPhone!=null">
+                AND user_phone = #{condition.userPhone}
+            </if>
+            <if test="condition.rewardLevel!=null">
+                AND reward_level = #{condition.rewardLevel}
+            </if>
+            <if test="condition.price!=null">
+                AND price = #{condition.price}
+            </if>
+            <if test="condition.orderNo!=null">
+                AND order_no = #{condition.orderNo}
+            </if>
+            <if test="condition.type!=null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.status!=null">
+                AND status = #{condition.status}
+            </if>
+            <if test="condition.createTime!=null">
+                AND create_time = #{condition.createTime}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM zgk_split_price
+       <where>
+           <if test="id!=null">
+               ${groupOp} id ${id.op}  #{id.data}
+           </if>
+           <if test="userId!=null">
+               ${groupOp} user_id ${user_id.op}  #{user_id.data}
+           </if>
+           <if test="userPhone!=null">
+               ${groupOp} user_phone ${user_phone.op}  #{user_phone.data}
+           </if>
+           <if test="rewardLevel!=null">
+               ${groupOp} reward_level ${reward_level.op}  #{reward_level.data}
+           </if>
+           <if test="price!=null">
+               ${groupOp} price ${price.op}  #{price.data}
+           </if>
+           <if test="orderNo!=null">
+               ${groupOp} order_no ${order_no.op}  #{order_no.data}
+           </if>
+           <if test="type!=null">
+               ${groupOp} type ${type.op}  #{type.data}
+           </if>
+           <if test="status!=null">
+               ${groupOp} status ${status.op}  #{status.data}
+           </if>
+           <if test="createTime!=null">
+               ${groupOp} create_time ${create_time.op}  #{create_time.data}
+           </if>
+
+       </where>
+    <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+    </if>
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM zgk_split_price
+    </select>
+
+</mapper>
+

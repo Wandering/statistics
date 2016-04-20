@@ -1,7 +1,6 @@
 package cn.thinkjoy.jx.statistics.dao;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.domain.*;
 import org.apache.ibatis.annotations.Param;
 

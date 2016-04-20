@@ -37,6 +37,7 @@ dependencies {
 
 
     compile project(':menuAuthority-service')
+    compile project(':agents-service')
     compile project(':statistics-api')
 
 }

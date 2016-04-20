@@ -1,6 +1,6 @@
 package cn.thinkjoy.jx.statistics.dao;
 
-import cn.thinkjoy.jx.statistics.domain.pojo.ArticleStatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.ArticleStatisticsPojo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

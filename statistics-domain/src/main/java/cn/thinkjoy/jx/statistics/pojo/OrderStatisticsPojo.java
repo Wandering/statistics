@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.domain.pojo;
+package cn.thinkjoy.jx.statistics.pojo;
 
 import java.io.Serializable;
 
@@ -27,42 +27,42 @@ public class OrderStatisticsPojo implements Serializable {
     /**
      * web售价
      */
-    private float webPrice;
+    private double webPrice;
 
     /**
      * 微信售价
      */
-    private float wechatPrice;
+    private double wechatPrice;
 
     /**
      * 出厂价
      */
-    private float salePrice;
+    private double salePrice;
 
     /**
      * web销量
      */
-    private float webVolume;
+    private int webSaleCount;
 
     /**
      * 微信销量
      */
-    private float wechatVolume;
+    private int wechatSaleCount;
 
     /**
      * 网上收益
      */
-    private float netIncome;
+    private double netIncome;
 
     /**
      * 未结算
      */
-    private float notSettled;
+    private double notSettled;
 
     /**
      * 已结算
      */
-    private float settled;
+    private double settled;
 
     public String getDepartmentName() {
         return departmentName;
@@ -88,68 +88,67 @@ public class OrderStatisticsPojo implements Serializable {
         this.departmentLevel = departmentLevel;
     }
 
-    public float getWebPrice() {
+    public double getWebPrice() {
         return webPrice;
     }
 
-    public void setWebPrice(float webPrice) {
+    public void setWebPrice(double webPrice) {
         this.webPrice = webPrice;
     }
 
-    public float getWechatPrice() {
+    public double getWechatPrice() {
         return wechatPrice;
     }
 
-    public void setWechatPrice(float wechatPrice) {
+    public void setWechatPrice(double wechatPrice) {
         this.wechatPrice = wechatPrice;
     }
 
-    public float getSalePrice() {
+    public double getSalePrice() {
         return salePrice;
     }
 
-    public void setSalePrice(float salePrice) {
+    public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
 
-    public float getWebVolume() {
-        return webVolume;
+    public int getWebSaleCount() {
+        return webSaleCount;
     }
 
-    public void setWebVolume(float webVolume) {
-        this.webVolume = webVolume;
+    public void setWebSaleCount(int webSaleCount) {
+        this.webSaleCount = webSaleCount;
     }
 
-    public float getWechatVolume() {
-        return wechatVolume;
+    public int getWechatSaleCount() {
+        return wechatSaleCount;
     }
 
-    public void setWechatVolume(float wechatVolume) {
-        this.wechatVolume = wechatVolume;
+    public void setWechatSaleCount(int wechatSaleCount) {
+        this.wechatSaleCount = wechatSaleCount;
     }
 
-    public float getNetIncome() {
+    public double getNetIncome() {
         return netIncome;
     }
 
-    public void setNetIncome(float netIncome) {
+    public void setNetIncome(double netIncome) {
         this.netIncome = netIncome;
     }
 
-    public float getNotSettled() {
+    public double getNotSettled() {
         return notSettled;
     }
 
-    public void setNotSettled(float notSettled) {
+    public void setNotSettled(double notSettled) {
         this.notSettled = notSettled;
     }
 
-    public float getSettled() {
+    public double getSettled() {
         return settled;
     }
 
-    public void setSettled(float settled) {
+    public void setSettled(double settled) {
         this.settled = settled;
     }
-
 }

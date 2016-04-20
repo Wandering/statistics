@@ -1,13 +1,12 @@
 package cn.thinkjoy.jx.statistics.service.impl;
 
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.dao.IDateDecreaseUserDAO;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IDateDecreaseUserService;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +49,7 @@ public class DateDecreaseUserServiceImpl implements IDateDecreaseUserService {
         return list;
     }
     @Override
-    public Page<StatisticsPojo> queryByAreaIds(Map<String, Object> map,int offset,int rows) {
+    public Page<StatisticsPojo> queryByAreaIds(Map<String, Object> map, int offset, int rows) {
         Page<StatisticsPojo> page = new Page<>();
         List<StatisticsPojo> resultList = dateDecreaseUserDAO.queryByAreaIds(map, offset, rows);
         page.setList(resultList);

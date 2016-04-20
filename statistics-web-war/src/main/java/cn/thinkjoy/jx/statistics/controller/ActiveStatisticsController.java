@@ -6,7 +6,7 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.common.HttpUtil;
-import cn.thinkjoy.jx.statistics.domain.pojo.UserActiveInfo;
+import cn.thinkjoy.jx.statistics.pojo.UserActiveInfo;
 import cn.thinkjoy.jx.statistics.service.UserActiveService;
 import cn.thinkjoy.jx.statistics.util.DateUtil;
 import cn.thinkjoy.jx.statistics.util.DownloadUtil;

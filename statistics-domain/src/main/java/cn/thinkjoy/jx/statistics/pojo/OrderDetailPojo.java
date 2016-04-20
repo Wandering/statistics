@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.domain.pojo;
+package cn.thinkjoy.jx.statistics.pojo;
 
 import java.io.Serializable;
 
@@ -48,6 +48,16 @@ public class OrderDetailPojo implements Serializable {
      * 发货状态  0：未发货  1：已发货
      */
     private int handleState;
+
+    /**
+     * 奖励等级 1：一级奖励  2：二级奖励
+     */
+    private int rewardLevel;
+
+    /**
+     * 奖励金额
+     */
+    private double rewardMoney;
 
     public String getOrderNo() {
         return orderNo;
@@ -111,5 +121,21 @@ public class OrderDetailPojo implements Serializable {
 
     public void setHandleState(int handleState) {
         this.handleState = handleState;
+    }
+
+    public int getRewardLevel() {
+        return rewardLevel;
+    }
+
+    public void setRewardLevel(int rewardLevel) {
+        this.rewardLevel = rewardLevel;
+    }
+
+    public double getRewardMoney() {
+        return rewardMoney;
+    }
+
+    public void setRewardMoney(double rewardMoney) {
+        this.rewardMoney = rewardMoney;
     }
 }

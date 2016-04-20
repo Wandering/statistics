@@ -1,7 +1,7 @@
 package cn.thinkjoy.jx.statistics.service;
 
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
 
 import java.util.List;
 import java.util.Map;
@@ -12,7 +12,7 @@ import java.util.Map;
 public interface IDateDecreaseUserService {
 
     List<StatisticsPojo> queryByTime(Map<String, Object> map);
-    Page<StatisticsPojo> queryByAreaIds(Map<String, Object> map,int offset,int rows);
+    Page<StatisticsPojo> queryByAreaIds(Map<String, Object> map, int offset, int rows);
     Page<StatisticsPojo> queryBySchoolIds(Map<String, Object> map,int offset,int rows);
     Page<StatisticsPojo> queryByClassIds(Map<String, Object> map,int offset,int rows);
 }

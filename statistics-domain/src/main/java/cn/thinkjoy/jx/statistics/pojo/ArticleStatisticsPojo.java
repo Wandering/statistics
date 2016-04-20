@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.domain.pojo;
+package cn.thinkjoy.jx.statistics.pojo;
 
 /**
  * Created by jzli on 15/10/13.

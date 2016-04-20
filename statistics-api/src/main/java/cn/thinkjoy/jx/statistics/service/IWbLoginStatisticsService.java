@@ -1,7 +1,5 @@
 package cn.thinkjoy.jx.statistics.service;
 
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
-
 /**
  * Created by jingqinghua on 2016/1/25.
  * addStatisticsPojo 20160217

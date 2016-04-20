@@ -3,12 +3,12 @@ package cn.thinkjoy.jx.statistics.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.service.impl.AbstractPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IUserNoticeDAO;
 import cn.thinkjoy.jx.statistics.domain.UserNotice;
 import cn.thinkjoy.jx.statistics.service.IUserNoticeService;
 import cn.thinkjoy.jx.statistics.util.Constants;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class UserNoticeServiceImpl extends AbstractPageService<IBaseDAO<UserNoti
      * @param sortBy
      * @return
      */
-    public Page<UserNotice> queryByPage(Map<String, Object> map, int offset, int rows, String orderBy, String sortBy,int queryType) {
+    public Page<UserNotice> queryByPage(Map<String, Object> map, int offset, int rows, String orderBy, String sortBy, int queryType) {
         Page<UserNotice> page = new Page<>();
         if(queryType== Constants.BETWEEN_DATEDAY_QUERY_AREA_NUM){
             Integer count = userNoticeDAO.countByPageTime(map);

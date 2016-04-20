@@ -4,11 +4,8 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
-import cn.thinkjoy.jx.statistics.domain.UserDayLogin;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 
-import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 

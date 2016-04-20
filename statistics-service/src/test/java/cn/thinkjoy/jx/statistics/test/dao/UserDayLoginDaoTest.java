@@ -1,7 +1,7 @@
 package cn.thinkjoy.jx.statistics.test.dao;
 
 import cn.thinkjoy.jx.statistics.dao.IUserDayLoginDAO;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import com.google.common.collect.Maps;
 import org.junit.Test;
 import org.junit.runner.RunWith;

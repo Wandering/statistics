@@ -11,15 +11,13 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.domain.BillingInfo;
-import org.apache.ibatis.annotations.Param;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 
-import java.util.List;
 import java.util.Map;
 
 public interface IBillingInfoService<D extends IBaseDAO<T>, T extends BaseDomain> extends IBaseService<D, T>,IPageService<D, T>{
-    Page<BillingInfo> queryByPage(Map<String,Object> map,int offset,int rows,String orderBy,String sortBy);
+    Page<BillingInfo> queryByPage(Map<String,Object> map, int offset, int rows, String orderBy, String sortBy);
 
     //导入欠费数据  苏州 20151217
     int importInsert(BillingInfo bi);

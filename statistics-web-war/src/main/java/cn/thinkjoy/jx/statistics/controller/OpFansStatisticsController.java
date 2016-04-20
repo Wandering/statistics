@@ -2,7 +2,6 @@ package cn.thinkjoy.jx.statistics.controller;
 
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.common.HttpUtil;
 import cn.thinkjoy.jx.statistics.domain.OpFans;
@@ -10,6 +9,7 @@ import cn.thinkjoy.jx.statistics.service.IOpFansService;
 import cn.thinkjoy.jx.statistics.service.IOpStatisticsService;
 import cn.thinkjoy.jx.statistics.util.DownloadUtil;
 import cn.thinkjoy.jx.statistics.util.ExcelUtil;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
