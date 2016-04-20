@@ -47,7 +47,19 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
         /**
          * 图表
          */
-        getErrorChart:'/admin/errorChart'//图表
+        getErrorChart:'/admin/errorChart',//图表
+
+
+        /**
+         *  根据条件查询订单信息
+         *
+         */
+        queryOrderPageByConditions:'http://172.16.160.226:8082/statistics/order/queryOrderPageByConditions' //
+
+
+        // 172.16.160.226:8081   父系统
+        // 172.16.160.226:8082   子系统
+
 
     };
     module.exports = UrlConfig;

@@ -430,31 +430,75 @@
 
 
 
+
+
+
+
+<!--分享收益模板-->
+<script type="text/html" id="proportionManager">
+    <div class="form-tree-content" style="width:100%">
+        <div class="tile transparent menu-list-content">
+            <div class="tile-body transparent rounded-corners">
+                <div class="form-button" id="form_button">
+                </div>
+                <div class="table-responsive" id="table_content">
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<!--订单管理模板-->
+<script type="text/html" id="orderManager">
+    <div class="tile-body transparent rounded-corners">
+        <section class="tile transparent grid pd30">
+            <form class="form-inline">
+                <p class="color-white">订单来源查询：</p>
+                <div class="form-group">
+                    <select id="orderType" class="form-control input-sm form-w180">
+                        <option value="-1">订单来源</option>
+                        <option value="0">微信</option>
+                        <option value="1">web</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-sm form-w180" id="phoneNum"
+                           placeholder="输入订单编号/联系电话">
+                </div>
+                <div class="form-group">
+                    <div class="btn btn-sm btn-primary" id="orderSearch">查询</div>
+                </div>
+            </form>
+            <div id="order-tab-btn">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active" orderType="0"><a href="#" class="tab-sm">未发货</a></li>
+                    <li role="presentation" orderType="1"><a href="#" class="tab-sm">已发货</a></li>
+                </ul>
+            </div>
+            <div class="table-responsive" id="orderContent">
+                <div id="table_content"></div>
+            </div>
+        </section>
+    </div>
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--data-monitored数据监控-->
 <script type="text/html" id="dataMonitored">
-    <!--<div class="form-inline" id="form_search">-->
-        <!--<div class="control-group date-condition">-->
-            <!--<div class="col-xs-12">-->
-                <!--<label class="control-label">时间</label>-->
-                <!--<button type="button" class="btn btn-default btn-primary" id="recently_7">最近7日</button>-->
-                <!--<button type="button" class="btn btn-default" id="recently_30">最近30日</button>-->
-                <!--<button type="button" class="btn btn-default" id="defined">自定义时间</button>-->
-            <!--</div>-->
-            <!--<div class="col-xs-12">-->
-                <!--<label class="control-label">开始时间:</label>-->
-                <!--<input size="16" type="text" readonly class="form_date" id="start_date">-->
-            <!--</div>-->
-            <!--<div class="col-xs-12">-->
-                <!--<label class="control-label">结束时间:</label>-->
-                <!--<input size="16" type="text" readonly class="form_date" id="end_date">-->
-            <!--</div>-->
-            <!--<span id="date_error_tip" style="margin-left:10px;color:#f00"></span>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class="chart-content">-->
-        <!--<div class="chart" id="myChart"></div>-->
-    <!--</div>-->
-
     <div class="tile-body transparent rounded-corners">
         <section class="tile transparent grid pd30">
             <form class="form-inline">
@@ -484,16 +528,17 @@
                     <div class="btn btn-sm btn-primary" id="monitoredSearch">查询</div>
                 </div>
             </form>
+            <div id="tab-btn">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active" roleType="1"><a href="#" class="tab-sm">未出库</a></li>
+                    <li role="presentation" roleType="2"><a href="#" class="tab-sm">已出库</a></li>
+                </ul>
+            </div>
             <div class="table-responsive" id="dataMonitoredContent">
 
             </div>
         </section>
-
     </div>
-
-
-
-
 </script>
 
 <script type="text/javascript" src="../static/sea.js"></script>
