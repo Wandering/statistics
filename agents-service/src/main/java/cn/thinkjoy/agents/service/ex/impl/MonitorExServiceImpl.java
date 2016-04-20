@@ -11,6 +11,7 @@ import cn.thinkjoy.agents.service.ex.IMonitorExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.AreaCacheUtils;
 import cn.thinkjoy.agents.service.ex.common.impl.BaseExService;
+import cn.thinkjoy.jx.statistics.domain.pojo.MonitorPojo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -32,8 +33,8 @@ public class MonitorExServiceImpl extends BaseExService implements IMonitorExSer
     }
 
     @Override
-    public List<Map<String, Object>> errorChart(Map<String, Object> map) {
-        conditionHandler(map);
+    public List<MonitorPojo> errorChart(Map<String, Object> map) {
+//        conditionHandler(map);
         return getDao().errorChart(map);
     }
 

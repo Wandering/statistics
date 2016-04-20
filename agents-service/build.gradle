@@ -32,4 +32,5 @@ dependencies {
     compile "mysql:mysql-connector-java:$mysqlConnectorVersion"
 
     compile project(":agents-api")
+    compile project(":statistics-domain")
 }
