@@ -50,7 +50,7 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "根据条件查询订单信息",owner = "杨国荣")
-    @RequestMapping(value = "queryOrderPageByConditions",method = RequestMethod.POST)
+    @RequestMapping(value = "queryOrderPageByConditions",method = RequestMethod.GET)
     public Map<String,Object> queryOrderPageByConditions(HttpServletRequest request) {
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
         if(userPojo == null){
@@ -87,7 +87,7 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "单个部门收益总览",owner = "杨国荣")
-    @RequestMapping(value = "querySingleDepartmentIncome",method = RequestMethod.POST)
+    @RequestMapping(value = "querySingleDepartmentIncome",method = RequestMethod.GET)
     public OrderStatisticsPojo querySingleDepartmentIncome(HttpServletRequest request) {
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
         if(userPojo == null){
@@ -100,7 +100,7 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "根据区域编号查询所有部门收益总览",owner = "杨国荣")
-    @RequestMapping(value = "queryAllDepartmentIncome",method = RequestMethod.POST)
+    @RequestMapping(value = "queryAllDepartmentIncome",method = RequestMethod.GET)
     public Page<OrderStatisticsPojo> queryAllDepartmentIncome(HttpServletRequest request) {
 
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
@@ -154,7 +154,7 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "根据部门编号获取结算记录",owner = "杨国荣")
-    @RequestMapping(value = "getSettlementRecordsByDepartmentCode",method = RequestMethod.POST)
+    @RequestMapping(value = "getSettlementRecordsByDepartmentCode",method = RequestMethod.GET)
     public Page<SettlementRecord> getSettlementRecordsByDepartmentCode(HttpServletRequest request) {
 
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
@@ -182,7 +182,7 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "根据区域编号查询普通用户收益总览",owner = "杨国荣")
-    @RequestMapping(value = "queryAllUserIncome",method = RequestMethod.POST)
+    @RequestMapping(value = "queryAllUserIncome",method = RequestMethod.GET)
     public Page<IncomeStatisticsPojo> queryAllUserIncome(HttpServletRequest request) {
 
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
@@ -208,7 +208,7 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "根据用户ID查询用户收益详情",owner = "杨国荣")
-    @RequestMapping(value = "queryUserIncomeDetailByUserId",method = RequestMethod.POST)
+    @RequestMapping(value = "queryUserIncomeDetailByUserId",method = RequestMethod.GET)
     public Page<OrderDetailPojo> queryUserIncomeDetailByUserId(HttpServletRequest request) {
 
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
