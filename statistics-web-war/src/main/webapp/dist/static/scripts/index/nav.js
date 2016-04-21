@@ -164,6 +164,44 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
                 } catch (e) {
                 }
             },
+
+            /**
+             * ==================================
+             * 分成规则 - (proportionManager)
+             * ==================================
+             */
+            separateManager: function () {
+                $('#page_0').html('');
+                Nav.changeSection('proportionManager');
+                try {
+                    require.async(['static/scripts/index/proportionManager/proportionList'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+
+            /**
+             * ==================================
+             * 订单管理	orderManager
+             * ==================================
+             */
+            orderManager: function () {
+                $('#page_0').html('');
+                Nav.changeSection('orderManager');
+                try {
+                    require.async(['static/scripts/index/orderManager/orderManager'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+
+
+
+
+
+
             /**
              * 实时统计
              */

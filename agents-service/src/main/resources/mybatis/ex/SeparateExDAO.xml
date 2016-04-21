@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.agents.dao.ex.ISeparateExDAO">
+    <select id="findSeparate" resultType="cn.thinkjoy.jx.statistics.domain.pojo.MarketParamsPojo">
+        SELECT
+          split_percentage as splitPercentage,
+          substring_index(level_profits, '-', 1) as levelProfits1,
+          substring_index(level_profits, '-', -1) as levelProfits2
+        FROM zgk_market_parmas
+        WHERE 1=1
+        AND split_level = 2
+    </select>
+    <update id="updateSeparate" parameterType="java.util.Map">
+        UPDATE zgk_market_parmas
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="costPrice!=null">
+                cost_price = #{costPrice},
+            </if>
+            <if test="splitPercentage!=null">
+                split_percentage = #{splitPercentage},
+            </if>
+            <if test="levelProfits!=null">
+                level_profits = #{levelProfits},
+            </if>
+        </trim>
+        WHERE
+        split_level = 2
+    </update>
+</mapper>
