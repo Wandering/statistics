@@ -1,5 +1,6 @@
 package cn.thinkjoy.jx.statistics.controller;
 
+import cn.thinkjoy.agents.service.ex.common.UserInfoContext;
 import cn.thinkjoy.common.domain.SearchField;
 import cn.thinkjoy.common.restful.apigen.annotation.ApiDesc;
 import cn.thinkjoy.common.utils.ObjectFactory;
@@ -21,6 +22,7 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -154,8 +156,8 @@ public class OrderController {
 
     @ResponseBody
     @ApiDesc(value = "根据部门编号获取结算记录",owner = "杨国荣")
-    @RequestMapping(value = "getSettlementRecordsByDepartmentCode",method = RequestMethod.GET)
-    public Page<SettlementRecord> getSettlementRecordsByDepartmentCode(HttpServletRequest request) {
+    @RequestMapping(value = "querySettlementRecordsByDepartmentCode",method = RequestMethod.GET)
+    public Page<SettlementRecord> querySettlementRecordsByDepartmentCode(HttpServletRequest request) {
 
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
         int pageSize = Integer.parseInt(HttpUtil.getParameter(request, "pageSize", "10"));
@@ -185,7 +187,7 @@ public class OrderController {
     @RequestMapping(value = "queryAllUserIncome",method = RequestMethod.GET)
     public Page<IncomeStatisticsPojo> queryAllUserIncome(HttpServletRequest request) {
 
-        UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
+        UserPojo userPojo = JSON.parseObject(UserInfoContext.getCurrentUserInfo().toString(),UserPojo.class);
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
