@@ -177,7 +177,6 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        doPage(1,10,condition);
         return doPage(page,rows,condition);
     }
 

@@ -3,8 +3,8 @@ package cn.thinkjoy.jx.statistics.controller.agents;
 import cn.thinkjoy.agents.service.ex.ISeparateExService;
 import cn.thinkjoy.agents.service.ex.common.CacheService;
 import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.jx.statistics.domain.pojo.MarketParamsPojo;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
+import com.google.common.collect.Maps;
 import com.jlusoft.microschool.core.utils.JsonMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,7 +31,7 @@ public class SeparateController {
 
     @ResponseBody
     @RequestMapping(value = "findSeparate",method = RequestMethod.GET)
-    public MarketParamsPojo findSeparate(HttpServletRequest request){
+    public Map<String,Object> findSeparate(HttpServletRequest request){
         Cookie[] cookies=request.getCookies();
         String token = "";
         for (Cookie cookie:cookies){
@@ -52,12 +51,15 @@ public class SeparateController {
         if (!areaCode.equals("00")) {
             return null;
         }
-        return separateExService.findSeparate();
+        Map<String,Object> returnMap= Maps.newHashMap();
+        returnMap.put("count",1);
+        returnMap.put("list", separateExService.findSeparate());
+        return returnMap;
     }
 
     @ResponseBody
     @RequestMapping(value = "updateSeparate",method = RequestMethod.GET)
-    public MarketParamsPojo updateSeparate(HttpServletRequest request,@RequestParam(value = "levelProfits1",required = true)Integer levelProfits1,
+    public Map<String,Object> updateSeparate(HttpServletRequest request,@RequestParam(value = "levelProfits1",required = true)Integer levelProfits1,
                                @RequestParam(value = "levelProfits2",required = true)Integer levelProfits2){
         Cookie[] cookies=request.getCookies();
         String token = "";
@@ -79,6 +81,9 @@ public class SeparateController {
             return null;
         }
         separateExService.updateSeparate(levelProfits1, levelProfits2);
-        return separateExService.findSeparate();
+        Map<String,Object> returnMap= Maps.newHashMap();
+        returnMap.put("count",1);
+        returnMap.put("list", separateExService.findSeparate());
+        return returnMap;
     }
 }

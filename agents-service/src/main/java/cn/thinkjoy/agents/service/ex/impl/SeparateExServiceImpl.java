@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,7 +20,7 @@ public class SeparateExServiceImpl implements ISeparateExService {
     ISeparateExDAO separateExDAO;
 
     @Override
-    public MarketParamsPojo findSeparate() {
+    public List<MarketParamsPojo> findSeparate() {
         return separateExDAO.findSeparate();
     }
 
