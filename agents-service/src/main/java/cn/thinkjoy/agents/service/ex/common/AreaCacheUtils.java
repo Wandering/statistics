@@ -98,7 +98,5 @@ public class AreaCacheUtils {
             return null;
         }
     }
-    private static String PROVINCE="province";
-    private static String CITY="city";
-    private static String COUNTY="county";
+
 }

@@ -3,22 +3,14 @@ package cn.thinkjoy.jx.statistics.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.service.impl.AbstractPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IUserDayActionDAO;
-import cn.thinkjoy.jx.statistics.dao.IUserDayLoginDAO;
 import cn.thinkjoy.jx.statistics.domain.UserDayLogin;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IUserDayActionService;
-import cn.thinkjoy.jx.statistics.service.IUserDayWebLoginService;
-import cn.thinkjoy.jx.statistics.util.Constants;
-import cn.thinkjoy.jx.statistics.util.DateUtil;
-import com.alibaba.dubbo.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

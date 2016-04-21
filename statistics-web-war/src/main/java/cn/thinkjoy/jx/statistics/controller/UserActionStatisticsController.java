@@ -1,16 +1,11 @@
 package cn.thinkjoy.jx.statistics.controller;
 
 import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.common.utils.SqlOrderEnum;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.common.HttpUtil;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
-import cn.thinkjoy.jx.statistics.service.IClassDayWebLoginService;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IUserDayActionService;
-import cn.thinkjoy.jx.statistics.service.IUserDayWebLoginService;
-import cn.thinkjoy.jx.statistics.util.Constants;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

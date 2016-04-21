@@ -1,14 +1,14 @@
 package cn.thinkjoy.jx.statistics.service.impl;
 
 import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IDateIncreaseUserDao;
 import cn.thinkjoy.jx.statistics.domain.ParentIncreaseDetail;
 import cn.thinkjoy.jx.statistics.domain.TeacherIncreaseDetail;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IDateIncreaseUserService;
 import cn.thinkjoy.jx.statistics.util.Constants;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class DateIncreaseUserImpl implements IDateIncreaseUserService {
     /**
      *根据时间区域学校班级查询日增长老师和家长数
      */
-    public Page<StatisticsPojo> queryByPageTime(Map<String,Object> map,int offset ,int rows,String orderBy, String sortBy,int queryType){
+    public Page<StatisticsPojo> queryByPageTime(Map<String,Object> map, int offset , int rows, String orderBy, String sortBy, int queryType){
         Page<StatisticsPojo> page = new Page<>();
         if (queryType == Constants.BETWEEN_DATEDAY_QUERY_AREA_NUM){
             Integer count = dateIncreaseUserDao.countByPageTime(map);

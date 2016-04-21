@@ -1,5 +1,6 @@
 package cn.thinkjoy.jx.statistics.pojo;
 
+
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 
 import java.io.Serializable;

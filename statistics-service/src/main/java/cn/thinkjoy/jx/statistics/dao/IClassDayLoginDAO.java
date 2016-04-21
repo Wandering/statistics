@@ -2,7 +2,7 @@ package cn.thinkjoy.jx.statistics.dao;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.jx.statistics.domain.ClassDayLogin;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

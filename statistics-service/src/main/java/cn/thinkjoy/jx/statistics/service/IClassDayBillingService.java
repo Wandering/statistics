@@ -11,14 +11,14 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.domain.ClassDayBilling;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 
 import java.util.List;
 import java.util.Map;
 
 public interface IClassDayBillingService<D extends IBaseDAO<T>, T extends BaseDomain> extends IBaseService<D, T>,IPageService<D, T>{
-    Page<ClassDayBilling> queryByPage(Map<String, Object> map, int offset, int rows, String orderBy, String sortBy,int queryType);
+    Page<ClassDayBilling> queryByPage(Map<String, Object> map, int offset, int rows, String orderBy, String sortBy, int queryType);
 
     List<ClassDayBilling> queryByTime(Map<String,Object> map);
 

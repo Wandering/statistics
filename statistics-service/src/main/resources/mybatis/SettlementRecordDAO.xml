@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.ISettlementRecordDAO">
+<!--
+insert
+update
+updateNull
+deleteById
+deleteByCondition
+deleteByProperty
+fetch
+findOne
+findList
+findAll
+queryPage
+like
+queryList
+queryOne
+count
+selectMaxId
+updateOrSave
+selectOne
+selectList
+-->
+    <sql id="Base_Column_List">
+        id,
+        requestTime,
+        departmentCode,
+        type,
+        money,
+        operationUserId
+    </sql>
+    <insert id="insert" parameterType="SettlementRecord">
+        INSERT INTO zgk_settlement_record (
+        requestTime,
+        departmentCode,
+        type,
+        money,
+        operationUserId
+        ) VALUES (
+        #{requestTime},
+        #{departmentCode},
+        #{type},
+        #{money},
+        #{operationUserId}
+        )
+        <selectKey resultType="java.lang.Long" keyProperty="id">
+        SELECT LAST_INSERT_ID() AS ID
+        </selectKey>
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="SettlementRecord">
+        UPDATE zgk_settlement_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="requestTime!=null">
+                requestTime = #{requestTime},
+            </if>
+            <if test="departmentCode!=null">
+                departmentCode = #{departmentCode},
+            </if>
+            <if test="type!=null">
+                type = #{type},
+            </if>
+            <if test="money!=null">
+                money = #{money},
+            </if>
+            <if test="operationUserId!=null">
+                operationUserId = #{operationUserId},
+            </if>
+        </trim>
+        WHERE
+        id = #{id}
+    </update>
+
+    <update id="updateMap">
+        UPDATE zgk_settlement_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="map.requestTime!=null">
+                requestTime = #{map.requestTime},
+            </if>
+            <if test="map.departmentCode!=null">
+                departmentCode = #{map.departmentCode},
+            </if>
+            <if test="map.type!=null">
+                type = #{map.type},
+            </if>
+            <if test="map.money!=null">
+                money = #{map.money},
+            </if>
+            <if test="map.operationUserId!=null">
+                operationUserId = #{map.operationUserId},
+            </if>
+        </trim>
+        WHERE
+        id = #{map.id}
+    </update>
+
+    <update id="updateByCondition">
+        UPDATE zgk_settlement_record
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="update.requestTime!=null">
+                requestTime = #{update.requestTime},
+            </if>
+            <if test="update.departmentCode!=null">
+                departmentCode = #{update.departmentCode},
+            </if>
+            <if test="update.type!=null">
+                type = #{update.type},
+            </if>
+            <if test="update.money!=null">
+                money = #{update.money},
+            </if>
+            <if test="update.operationUserId!=null">
+                operationUserId = #{update.operationUserId},
+            </if>
+        </trim>
+
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.requestTime!=null">
+                AND requestTime = #{condition.requestTime}
+            </if>
+            <if test="condition.departmentCode!=null">
+                AND departmentCode = #{condition.departmentCode}
+            </if>
+            <if test="condition.type!=null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.money!=null">
+                AND money = #{condition.money}
+            </if>
+            <if test="condition.operationUserId!=null">
+                AND operationUserId = #{condition.operationUserId}
+            </if>
+        </trim>
+    </update>
+
+    <insert id="insertMap" >
+        INSERT INTO zgk_settlement_record (
+                requestTime,
+                departmentCode,
+                type,
+                money,
+                operationUserId
+        ) VALUES (
+                    #{map.requestTime},
+                    #{map.departmentCode},
+                    #{map.type},
+                    #{map.money},
+                    #{map.operationUserId}
+        )
+    </insert>
+
+
+    <update id="updateNull" parameterType="SettlementRecord">
+        UPDATE zgk_settlement_record
+        <trim prefix="SET" suffixOverrides=",">
+            requestTime = #{requestTime},
+            departmentCode = #{departmentCode},
+            type = #{type},
+            money = #{money},
+            operationUserId = #{operationUserId},
+        </trim>
+        WHERE
+        id = #{id} 
+    </update>
+
+    <!-- 按Id删除 -->
+    <delete id="deleteById" parameterType="java.lang.Long">
+        DELETE FROM zgk_settlement_record
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+    </delete>
+
+
+    <delete id="deleteByCondition" parameterType="java.util.Map">
+        DELETE FROM zgk_settlement_record
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id = #{id}
+            </if>
+            <if test="requestTime!=null">
+                AND requestTime = #{requestTime}
+            </if>
+            <if test="departmentCode!=null">
+                AND departmentCode = #{departmentCode}
+            </if>
+            <if test="type!=null">
+                AND type = #{type}
+            </if>
+            <if test="money!=null">
+                AND money = #{money}
+            </if>
+            <if test="operationUserId!=null">
+                AND operationUserId = #{operationUserId}
+            </if>
+        </trim>
+    </delete>
+
+    <delete id="deleteByProperty" parameterType="java.util.Map">
+        DELETE FROM zgk_settlement_record WHERE
+        ${property} = #{value}
+    </delete>
+
+    <select id="fetch" parameterType="java.lang.Long" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            AND id = #{id}
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findOne" parameterType="java.util.Map" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record WHERE
+        ${property} = #{value}
+        LIMIT 0,1
+    </select>
+
+    <select id="findList" parameterType="java.util.Map" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record WHERE
+        ${property} = #{value}
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="findAll" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record
+        <if test="orderBy!=null">
+            ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryPage" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record
+        <where>
+
+            <if test="condition.whereSql != null">
+                and id in (#{condition.whereSql})
+            </if>
+
+            <if test="condition.id!=null">
+                ${condition.groupOp}   id  ${condition.id.op}  #{condition.id.data}
+            </if>
+            <if test="condition.requestTime!=null">
+                ${condition.groupOp}   requestTime  ${condition.requestTime.op}  #{condition.requestTime.data}
+            </if>
+            <if test="condition.departmentCode!=null">
+                ${condition.groupOp}   departmentCode  ${condition.departmentCode.op}  #{condition.departmentCode.data}
+            </if>
+            <if test="condition.type!=null">
+                ${condition.groupOp}   type  ${condition.type.op}  #{condition.type.data}
+            </if>
+            <if test="condition.money!=null">
+                ${condition.groupOp}   money  ${condition.money.op}  #{condition.money.data}
+            </if>
+            <if test="condition.operationUserId!=null">
+                ${condition.groupOp}   operationUserId  ${condition.operationUserId.op}  #{condition.operationUserId.data}
+            </if>
+
+
+    </where>
+
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+        <if test="offset != null">
+            limit ${offset}, ${rows}
+        </if>
+    </select>
+
+    <select id="like" parameterType="java.util.Map" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="id!=null">
+                AND id like CONCAT('%', #{id} , '%')
+            </if>
+            <if test="requestTime!=null">
+                AND requestTime like CONCAT('%', #{requestTime} , '%')
+            </if>
+            <if test="departmentCode!=null">
+                AND departmentCode like CONCAT('%', #{departmentCode} , '%')
+            </if>
+            <if test="type!=null">
+                AND type like CONCAT('%', #{type} , '%')
+            </if>
+            <if test="money!=null">
+                AND money like CONCAT('%', #{money} , '%')
+            </if>
+            <if test="operationUserId!=null">
+                AND operationUserId like CONCAT('%', #{operationUserId} , '%')
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+
+    <select id="queryList" parameterType="java.util.Map" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.requestTime!=null">
+                AND requestTime = #{condition.requestTime}
+            </if>
+            <if test="condition.departmentCode!=null">
+                AND departmentCode = #{condition.departmentCode}
+            </if>
+            <if test="condition.type!=null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.money!=null">
+                AND money = #{condition.money}
+            </if>
+            <if test="condition.operationUserId!=null">
+                AND operationUserId = #{condition.operationUserId}
+            </if>
+        </trim>
+        <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+        </if>
+    </select>
+
+    <select id="queryOne" parameterType="java.util.Map" resultType="SettlementRecord">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM zgk_settlement_record
+        <trim prefix="WHERE" prefixOverrides="AND | OR">
+            <if test="condition.id!=null">
+                AND id = #{condition.id}
+            </if>
+            <if test="condition.requestTime!=null">
+                AND requestTime = #{condition.requestTime}
+            </if>
+            <if test="condition.departmentCode!=null">
+                AND departmentCode = #{condition.departmentCode}
+            </if>
+            <if test="condition.type!=null">
+                AND type = #{condition.type}
+            </if>
+            <if test="condition.money!=null">
+                AND money = #{condition.money}
+            </if>
+            <if test="condition.operationUserId!=null">
+                AND operationUserId = #{condition.operationUserId}
+            </if>
+        </trim>
+        limit 0,1
+    </select>
+
+    <select id="count" resultType="java.lang.Integer">
+        SELECT count(id) FROM zgk_settlement_record
+       <where>
+           <if test="id!=null">
+               ${groupOp} id ${id.op}  #{id.data}
+           </if>
+           <if test="requestTime!=null">
+               ${groupOp} requestTime ${requestTime.op}  #{requestTime.data}
+           </if>
+           <if test="departmentCode!=null">
+               ${groupOp} departmentCode ${departmentCode.op}  #{departmentCode.data}
+           </if>
+           <if test="type!=null">
+               ${groupOp} type ${type.op}  #{type.data}
+           </if>
+           <if test="money!=null">
+               ${groupOp} money ${money.op}  #{money.data}
+           </if>
+           <if test="operationUserId!=null">
+               ${groupOp} operationUserId ${operationUserId.op}  #{operationUserId.data}
+           </if>
+
+       </where>
+    <if test="orderBy!=null">
+        ORDER BY ${orderBy} ${sortBy}
+    </if>
+    </select>
+
+    <select id="selectMaxId" resultType="java.lang.Long">
+        SELECT
+        MAX(id)
+        FROM zgk_settlement_record
+    </select>
+
+</mapper>
+

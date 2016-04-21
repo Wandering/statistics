@@ -2,10 +2,10 @@ package cn.thinkjoy.jx.statistics.service.impl;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.service.impl.AbstractPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.dao.ArrearAnalysisDAO;
 import cn.thinkjoy.jx.statistics.domain.*;
 import cn.thinkjoy.jx.statistics.service.IArrearAnalysisService;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ import java.util.Map;
 /**
  * Created by Mike on 2015/12/18.
  */
-@Service("IArrearAnalysisServiceImpl")
-public class IArrearAnalysisServiceImpl extends AbstractPageService<IBaseDAO<ArrearInfo>,ArrearInfo> implements IArrearAnalysisService<IBaseDAO<ArrearInfo>,ArrearInfo> {
+@Service("ArrearAnalysisServiceImpl")
+public class ArrearAnalysisServiceImpl extends AbstractPageService<IBaseDAO<ArrearInfo>,ArrearInfo> implements IArrearAnalysisService<IBaseDAO<ArrearInfo>,ArrearInfo> {
     @Autowired
     private ArrearAnalysisDAO arrearAnalysisDAO;
 

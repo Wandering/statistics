@@ -4,9 +4,8 @@ import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.domain.BaseDomain;
 import cn.thinkjoy.common.service.IBaseService;
 import cn.thinkjoy.common.service.IPageService;
+import cn.thinkjoy.jx.statistics.pojo.UserActiveInfo;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
-import cn.thinkjoy.jx.statistics.domain.Billing;
-import cn.thinkjoy.jx.statistics.domain.pojo.UserActiveInfo;
 
 import java.util.Map;
 

@@ -9,16 +9,14 @@ package cn.thinkjoy.jx.statistics.service.impl;
 import cn.thinkjoy.common.dao.IBaseDAO;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.service.impl.AbstractPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IBillingInfoDAO;
 import cn.thinkjoy.jx.statistics.domain.BillingInfo;
 import cn.thinkjoy.jx.statistics.service.IBillingInfoService;
-import org.apache.ibatis.annotations.Param;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 
 @Service("BillingInfoServiceImpl")
