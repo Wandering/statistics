@@ -4077,6 +4077,9 @@ input:focus {
     width: 300px;
 }
 
+.form-w100 {
+    width: 100px;
+}
 .form-w180 {
     display: inline-block;
     width: 180px;
