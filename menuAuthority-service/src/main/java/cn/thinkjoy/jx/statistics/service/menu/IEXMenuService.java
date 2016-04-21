@@ -1,5 +1,6 @@
 package cn.thinkjoy.jx.statistics.service.menu;
 
+
 import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface IEXMenuService {
      * @param postCode
      * @return
      */
-    List<TreeBean> menuList(Long postCode,boolean hasResource);
+    List<TreeBean> menuList(Long postCode, boolean hasResource);
 
     /**
      * 按照菜单code修改菜单角色表

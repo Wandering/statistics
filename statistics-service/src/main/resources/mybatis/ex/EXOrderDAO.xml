@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.thinkjoy.jx.statistics.dao.ex.IEXOrderDAO">
+
+    <!-- 根据条件查询订单数据集合 -->
+    <select id="queryOrderListByConditions" parameterType="map" resultType="OrderDetailPojo">
+        select
+            t0.order_no as orderNo ,
+            t0.channle as channle ,
+            t0.create_date as createDate ,
+            t0.goods_address as registAddress ,
+            t0.goods_count as goodsCount ,
+            t0.handle_state as handleState ,
+            t1.name as userName ,
+            t2.account as phoneNum
+        from
+            zgk_order t0 ,
+            zgk_user_info t1 ,
+            zgk_user_account t2
+        where
+            t0.user_id = t1.id
+        and t1.id = t2.id
+        <if test="orderFrom != -1">
+            and t0.channle = #{orderFrom}
+        </if>
+        <if test="handleState != -1">
+            and t0.handle_state = #{handleState}
+        </if>
+        <if test="departmentCode != -1">
+            and t0.department_code = #{departmentCode}
+        </if>
+        <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
+            and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
+        </if>
+        and t0.`status` = 1
+        order by create_date desc
+        LIMIT #{index},#{pageSize}
+    </select>
+
+    <!-- 根据条件查询订单数量 -->
+    <select id="getOrderCountByConditions" parameterType="map" resultType="Integer">
+        select
+            count(*)
+        from
+            zgk_order t0 ,
+            zgk_user_info t1 ,
+            zgk_user_account t2
+        where
+        t0.user_id = t1.id
+        and t1.id = t2.id
+        <if test="orderFrom != -1">
+            and t0.channle = #{orderFrom}
+        </if>
+        <if test="handleState != -1">
+            and t0.handle_state = #{handleState}
+        </if>
+        <if test="departmentCode != -1">
+            and t0.department_code = #{departmentCode}
+        </if>
+        <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
+            and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
+        </if>
+        and t0.`status` = 1
+    </select>
+
+    <!-- 根据部门编号查询未发货的订单个数 -->
+    <select id="getNotSendCountByDepartCode" parameterType="long" resultType="Integer">
+        select count(*) from zgk_order
+        where status = 1
+        <if test="departmentCode != -1">
+            and department_code = #{departmentCode}
+        </if>
+        and handle_state = 0
+    </select>
+
+    <!-- 根据部门编号和订单来源查询货物销售个数 -->
+    <select id="getGoodsCountByChannelAndDepartCode" parameterType="map" resultType="Integer">
+        SELECT
+            sum(goods_count)
+        FROM
+            zgk_order
+        WHERE
+            department_code = #{departmentCode}
+        AND channle = #{channel}
+    </select>
+
+    <!-- 根据部门编号 or 用户ID 获取已结算的金额 -->
+    <select id="getSettledByDepartCode" parameterType="long" resultType="Integer">
+        SELECT
+            sum(money)
+        FROM
+            zgk_settlement_record
+        WHERE
+            departmentCode = #{departmentCode}
+    </select>
+
+    <!-- 根据地区查询所有用户总收益 -->
+    <select id="queryUserIncomeByAreaCodeAndAccount" parameterType="map" resultType="IncomeStatisticsPojo">
+        select
+            t1.name as userName ,
+            t1.id as userId ,
+            t0.user_phone as phoneNum ,
+            t0.user_phone as account ,
+            count(
+                case
+                when t0.reward_level = 1 then
+                    t0.user_id
+                end
+            ) as firstLevelCount ,
+            count(
+                case
+                when t0.reward_level = 2 then
+                    t0.user_id
+                end
+            ) as secondLevelCount ,
+            sum(t0.price) as allIncome
+        from
+            zgk_split_price t0 ,
+            zgk_user_info t1
+        where
+            t0.user_id = t1.id
+        <if test="areaType == 1">
+            and t1.provinceId = #{areaCode}
+        </if>
+        <if test="areaType == 2">
+            and t1.cityId = #{areaCode}
+        </if>
+        <if test="areaType == 3">
+            and t1.countyId = #{areaCode}
+        </if>
+        <if test="account != null and account != ''">
+            and t0.user_phone = #{account}
+        </if>
+        and type = 1
+        GROUP BY
+            t0.user_id
+        limit #{index},#{pageSize}
+    </select>
+
+    <!-- 根据地区查询用户总收益的个数 -->
+    <select id="getCountByAreaCodeAndAccount" parameterType="map" resultType="Integer">
+    select
+        count(*)
+    from
+        zgk_split_price t0 ,
+        zgk_user_info t1
+    where
+        t0.user_id = t1.id
+        <if test="areaType == 1">
+            and t1.provinceId = #{areaCode}
+        </if>
+        <if test="areaType == 2">
+            and t1.cityId = #{areaCode}
+        </if>
+        <if test="areaType == 3">
+            and t1.countyId = #{areaCode}
+        </if>
+        <if test="account != null and account != ''">
+            and t0.user_phone = #{account}
+        </if>
+        and type = 1
+    </select>
+
+    <!-- 根据用户ID查询用户收益详情 -->
+    <select id="queryUserIncomeDetailByUserId" parameterType="map" resultType="OrderDetailPojo">
+        SELECT
+            t0.order_no as orderNo,
+            t0.user_phone as phoneNum,
+            t0.price as rewardMoney,
+            t0.create_time as createDate,
+            t0.reward_level as rewardLevel,
+            t1.goods_count as goodsCount,
+            t2.name as userName
+        FROM
+            zgk_split_price t0 ,
+            zgk_order t1,
+            zgk_user_info t2
+        WHERE
+            t0.order_no = t1.order_no
+        and t1.user_id = t2.id
+        AND t0.user_id = #{userId}
+        ORDER BY t0.create_time desc
+        limit #{index},#{pageSize}
+    </select>
+
+    <!-- 根据用户ID获取用户收益详情总数 -->
+    <select id="getUserIncomeCountByUserId" parameterType="map" resultType="Integer">
+        SELECT
+            count(*)
+        FROM
+            zgk_split_price t0 ,
+            zgk_order t1,
+            zgk_user_info t2
+        WHERE
+            t0.order_no = t1.order_no
+        and t1.user_id = t2.id
+        AND t0.user_id = #{userId}
+    </select>
+</mapper>
+

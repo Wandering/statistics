@@ -1,16 +1,11 @@
 package cn.thinkjoy.jx.statistics.service.impl;
 
-import cn.thinkjoy.common.exception.BizException;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
-import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IArticleStatisticsDAO;
-import cn.thinkjoy.jx.statistics.domain.BillingInfo;
-import cn.thinkjoy.jx.statistics.domain.pojo.ArticleStatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.ArticleStatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IArticleStatisticsService;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Created by jzli on 15/10/13.

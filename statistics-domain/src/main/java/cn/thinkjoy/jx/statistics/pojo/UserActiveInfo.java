@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.domain.pojo;
+package cn.thinkjoy.jx.statistics.pojo;
 
 import cn.thinkjoy.common.domain.BaseDomain;
 

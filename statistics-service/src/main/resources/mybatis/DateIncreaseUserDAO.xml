@@ -18,7 +18,7 @@
     selectList
     -->
 
-    <select id="queryByTime" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+    <select id="queryByTime" resultType="cn.thinkjoy.jx.statistics.pojo.StatisticsPojo">
         select sum(teacherNum) as teacherNum,sum(parentNum) as parentNum,date_format(t.dateDay,'%Y-%m-%d') as dateDay
         from
         ( select createDate as dateDay,count(1) as teacherNum,0 as parentNum,areaId

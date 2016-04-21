@@ -3,7 +3,7 @@
 
 <mapper namespace="cn.thinkjoy.jx.statistics.dao.IDateDecreaseUserDAO">
 
-    <select id="queryByTime" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+    <select id="queryByTime" resultType="cn.thinkjoy.jx.statistics.pojo.StatisticsPojo">
       SELECT * FROM (
 SELECT A.CREATEDATE dateDay,
 SUM(A.USERTYPE_1) teacherNum,SUM(A.USERTYPE_2) delStudentNum,SUM(A.USERTYPE_3) graduateStudentNum
@@ -18,7 +18,7 @@ FROM (
    ) A GROUP BY A.CREATEDATE) B ORDER BY B.dateDay ASC;
     </select>
 
-    <select id="queryByAreaIds" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+    <select id="queryByAreaIds" resultType="cn.thinkjoy.jx.statistics.pojo.StatisticsPojo">
         SELECT h.*,a.*,b.*,c.* FROM
         (SELECT areaName,areaId  FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
         <if test="condition.areaIds!=null">
@@ -106,7 +106,7 @@ FROM (
     </select>
 
 
-    <select id="queryBySchoolIds" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+    <select id="queryBySchoolIds" resultType="cn.thinkjoy.jx.statistics.pojo.StatisticsPojo">
         SELECT h.*,a.*,b.*,c.* FROM
         (SELECT schoolName,schoolId FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
         <if test="condition.areaIds!=null">
@@ -194,7 +194,7 @@ FROM (
     </select>
 
 
-    <select id="queryByClassIds" resultType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+    <select id="queryByClassIds" resultType="cn.thinkjoy.jx.statistics.pojo.StatisticsPojo">
         SELECT h.*,a.*,b.*,c.* FROM
         (SELECT className,classId FROM ms_decreaseuser_statistics WHERE userType=1 and createDate = #{condition.dateDay}
         <if test="condition.areaIds!=null">
@@ -280,7 +280,7 @@ FROM (
             limit ${offset}, ${rows}
         </if>
     </select>
-    <insert id="saveStatistics"  useGeneratedKeys="true"  parameterType="cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo">
+    <insert id="saveStatistics"  useGeneratedKeys="true"  parameterType="cn.thinkjoy.jx.statistics.pojo.StatisticsPojo">
         insert into ms_decreaseuser_statistics(areaId, areaName, schoolId, schoolName,classId,className,userId,userType,createDate)
         values
         (#{areaId},#{areaName},#{schoolId},#{schoolName},#{classId},#{className},#{userId},#{userType},NOW())

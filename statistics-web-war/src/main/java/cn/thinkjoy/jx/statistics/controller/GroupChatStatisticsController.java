@@ -6,7 +6,7 @@ import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.common.HttpUtil;
-import cn.thinkjoy.jx.statistics.domain.pojo.StatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.StatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IUserGroupChatDetailService;
 import cn.thinkjoy.jx.statistics.service.IUserGroupChatMemberService;
 import cn.thinkjoy.jx.statistics.util.Constants;

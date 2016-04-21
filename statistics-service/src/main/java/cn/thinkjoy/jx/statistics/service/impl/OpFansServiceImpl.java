@@ -1,13 +1,11 @@
 package cn.thinkjoy.jx.statistics.service.impl;
 
 import cn.thinkjoy.common.dao.IBaseDAO;
-import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.service.impl.AbstractPageService;
-import cn.thinkjoy.zgk.zgksystem.common.Page;
-import cn.thinkjoy.jx.statistics.common.ERRORCODE;
 import cn.thinkjoy.jx.statistics.dao.IOpFansDAO;
 import cn.thinkjoy.jx.statistics.domain.OpFans;
 import cn.thinkjoy.jx.statistics.service.IOpFansService;
+import cn.thinkjoy.zgk.zgksystem.common.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,5 @@
 package cn.thinkjoy.jx.statistics.service.menu.impl;
 
-import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import cn.thinkjoy.jx.statistics.dao.IMenuDAO;
 import cn.thinkjoy.jx.statistics.dao.ex.IEXMenuDAO;
 import cn.thinkjoy.jx.statistics.dao.ex.IEXResourceDAO;
@@ -9,6 +8,7 @@ import cn.thinkjoy.jx.statistics.pojo.ResourcesPojo;
 import cn.thinkjoy.jx.statistics.service.menu.IEXMenuService;
 import cn.thinkjoy.jx.statistics.service.menu.IMenuService;
 import cn.thinkjoy.jx.statistics.util.IdentityUtil;
+import cn.thinkjoy.zgk.zgksystem.common.TreeBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class EXMenuServiceImpl implements IEXMenuService{
      * @return
      */
     @Override
-    public List<TreeBean> menuList(Long postCode,boolean hasResource) {
+    public List<TreeBean> menuList(Long postCode, boolean hasResource) {
         List<TreeBean> treeBeanList = new ArrayList<>();
         List<MenuPojo> menuList = new ArrayList<>();
         long parentCode = -1;
