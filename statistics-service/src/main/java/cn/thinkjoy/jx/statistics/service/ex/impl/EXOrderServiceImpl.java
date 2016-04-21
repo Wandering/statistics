@@ -46,7 +46,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 handleState,
                 orderNoOrPhone,
                 departmentCode,
-                currentPageNo*pageSize,
+                (currentPageNo-1)*pageSize,
                 pageSize);
 
         int detailPojoCount = exOrderDAO.getOrderCountByConditions(
@@ -121,18 +121,20 @@ public class EXOrderServiceImpl implements IEXOrderService {
         Integer wechatSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
                 departmentCode,
                 Constants.WECHAT);
-        pojo.setWechatSaleCount(wechatSaleCount==null?0:wechatSaleCount);
+        int wechatSaleCountTmp = wechatSaleCount==null?0:wechatSaleCount;
+        pojo.setWechatSaleCount(wechatSaleCountTmp);
 
         // web销量
         Integer webSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
                 departmentCode,
                 Constants.WECHAT);
-        pojo.setWebSaleCount(webSaleCount==null?0:webSaleCount);
+        int webSaleCountTmp = webSaleCount==null?0:webSaleCount;
+        pojo.setWebSaleCount(webSaleCountTmp);
 
         // 网上总收益
         double netIncome =
-                wechatSaleCount*department.getWechatPrice() +
-                        webSaleCount*department.getWebPrice();
+                wechatSaleCountTmp*department.getWechatPrice() +
+                        webSaleCountTmp*department.getWebPrice();
         pojo.setNetIncome(netIncome);
 
         // 已结算的金额
@@ -153,7 +155,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
         }
         StringBuffer registAddress = new StringBuffer();
         if(!"00".equals(userInfo.getProvinceId())){
-            String provice = AreaCacheUtils.getAreaCache("provice",userInfo.getProvinceId());
+            String provice = AreaCacheUtils.getAreaCache("province",userInfo.getProvinceId());
             registAddress.append(provice);
         }
         if(!"00".equals(userInfo.getProvinceId())){
@@ -174,7 +176,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 areaCode,
                 areaType,
                 account,
-                currentPageNo*pageSize,
+                (currentPageNo-1)*pageSize,
                 pageSize);
 
         for(IncomeStatisticsPojo pojo : pojos){
@@ -205,7 +207,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
 
         List<OrderDetailPojo> pojos = exOrderDAO.queryUserIncomeDetailByUserId(
                 userId,
-                currentPageNo*pageSize,
+                (currentPageNo-1)*pageSize,
                 pageSize);
 
         Integer count = exOrderDAO.getUserIncomeCountByUserId(userId);

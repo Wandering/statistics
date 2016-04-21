@@ -167,7 +167,7 @@ public class OrderController {
 
         List<SettlementRecord> records = settlementRecordService.queryPage(
                 condition,
-                currentPageNo*pageSize,
+                (currentPageNo-1)*pageSize,
                 pageSize,
                 "requestTime",
                 SqlOrderEnum.DESC);
@@ -188,6 +188,10 @@ public class OrderController {
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
+        }
+
+        if(userPojo.getRoleType() != UserRoleEnum.SUPER_MANAGE.getValue()){
+            ModelUtil.throwException(ErrorCode.NO_PERMISSION);
         }
 
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
