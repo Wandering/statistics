@@ -9,9 +9,11 @@ define(function (require, exports, module) {
         var timeFomate = require('../common/timeFomate.js');
         var message = require('../message.js');
         var Table = require('../datatable.js');
+
         var UrlConfig = require('../common/urlConfig');
         var token = $.cookie('bizData');
         var cookieJson = JSON.parse($.cookie('userInfo'));
+
 
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
@@ -42,6 +44,30 @@ define(function (require, exports, module) {
             var foo = $(this).attr('data-type');
             foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
         });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         function willOutput(url) {
             var col = [{
                 data: 'id',
@@ -106,9 +132,10 @@ define(function (require, exports, module) {
                 columns: col,
                 tableContentId: 'table_content',
                 tableId: (+new Date()) + '_table_body',
-                sAjaxSource: url,
-                columnDefs: columnDefs
+                columnDefs: columnDefs,
+                sAjaxSource: url
             });
+
             TableInstance.init();
 
         }

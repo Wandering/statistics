@@ -54,7 +54,7 @@ define(function (require, exports, module) {
          *  根据条件查询订单信息
          *
          */
-        queryOrderPageByConditions:'http://172.16.160.226:8082/statistics/order/queryOrderPageByConditions' //
+        queryOrderPageByConditions:'/statistics/order/queryOrderPageByConditions' //
 
 
         // 172.16.160.226:8081   父系统
