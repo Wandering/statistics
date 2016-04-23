@@ -120,7 +120,7 @@ public class IncomeStatisticsPojo implements Serializable {
     }
 
     public void setAllIncome(double allIncome) {
-        allIncome = allIncome;
+        this.allIncome = allIncome;
     }
 
     public double getNotSettled() {

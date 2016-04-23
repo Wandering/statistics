@@ -3,23 +3,6 @@
 
 <mapper namespace="cn.thinkjoy.jx.statistics.dao.ex.IEXOrderDAO">
 
-    <sql id="Base_Column_List">
-        id,
-        user_id,
-        status,
-        order_no,
-        channle,
-        create_date,
-        update_date,
-        state,
-        goods_address,
-        product_price,
-        department_name,
-        department_phone,
-        goods_count,
-        handle_state
-    </sql>
-
     <!-- 根据条件查询订单数据集合 -->
     <select id="queryOrderListByConditions" parameterType="map" resultType="OrderDetailPojo">
         select
@@ -47,7 +30,7 @@
         <if test="departmentCode != -1">
             and t0.department_code = #{departmentCode}
         </if>
-        <if test="orderNoOrPhone != null">
+        <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
             and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
         </if>
         and t0.`status` = 1
@@ -75,7 +58,7 @@
         <if test="departmentCode != -1">
             and t0.department_code = #{departmentCode}
         </if>
-        <if test="orderNoOrPhone != null">
+        <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
             and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
         </if>
         and t0.`status` = 1
@@ -109,13 +92,13 @@
         FROM
             zgk_settlement_record
         WHERE
-            department_code = #{departmentCode}
+            departmentCode = #{departmentCode}
     </select>
 
     <!-- 根据地区查询所有用户总收益 -->
     <select id="queryUserIncomeByAreaCodeAndAccount" parameterType="map" resultType="IncomeStatisticsPojo">
         select
-            t1. name as userName ,
+            t1.name as userName ,
             t1.id as userId ,
             t0.user_phone as phoneNum ,
             t0.user_phone as account ,
@@ -135,21 +118,21 @@
         from
             zgk_split_price t0 ,
             zgk_user_info t1
-
         where
             t0.user_id = t1.id
-        <if test="areaType = 1">
+        <if test="areaType == 1">
             and t1.provinceId = #{areaCode}
         </if>
-        <if test="areaType = 2">
+        <if test="areaType == 2">
             and t1.cityId = #{areaCode}
         </if>
-        <if test="areaType = 3">
+        <if test="areaType == 3">
             and t1.countyId = #{areaCode}
         </if>
-        <if test="account != null">
+        <if test="account != null and account != ''">
             and t0.user_phone = #{account}
         </if>
+        and type = 1
         GROUP BY
             t0.user_id
         limit #{index},#{pageSize}
@@ -164,20 +147,19 @@
         zgk_user_info t1
     where
         t0.user_id = t1.id
-        <if test="areaType = 1">
+        <if test="areaType == 1">
             and t1.provinceId = #{areaCode}
         </if>
-        <if test="areaType = 2">
+        <if test="areaType == 2">
             and t1.cityId = #{areaCode}
         </if>
-        <if test="areaType = 3">
+        <if test="areaType == 3">
             and t1.countyId = #{areaCode}
         </if>
-        <if test="account != null">
+        <if test="account != null and account != ''">
             and t0.user_phone = #{account}
         </if>
-    GROUP BY
-        t0.user_id
+        and type = 1
     </select>
 
     <!-- 根据用户ID查询用户收益详情 -->
