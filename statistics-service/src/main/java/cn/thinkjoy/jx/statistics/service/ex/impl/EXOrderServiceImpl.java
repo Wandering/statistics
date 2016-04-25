@@ -55,12 +55,9 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 orderNoOrPhone,
                 departmentCode);
 
-        Page<OrderDetailPojo> detailPojoPage = new Page<>();
-        detailPojoPage.setList(detailPojos);
-        detailPojoPage.setCount(detailPojoCount);
-
         Map<String, Object> returnMap = Maps.newHashMap();
-        returnMap.put("page",detailPojoPage);
+        returnMap.put("count",detailPojoCount);
+        returnMap.put("list",detailPojos);
         returnMap.put("message",convertMessage(departmentCode));
         return returnMap;
     }

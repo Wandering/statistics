@@ -59,7 +59,7 @@ public class WebCookieInterceptior implements HandlerInterceptor {
                 }
                 response.addCookie(cookie);
             }
-            logger.info("用户信息："+userInfoStr);
+//            logger.info("用户信息："+userInfo);
             UserInfoContext.setCurrentUserInfo(userInfo);
         }catch (Exception e){
             logger.info("用户信息获取异常");
