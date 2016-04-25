@@ -117,5 +117,15 @@ public interface IEXOrderDAO {
      * @param userId
      * @return
      */
-    Integer getUserIncomeCountByUserId(@Param("userId") long userId);
+    Integer getUserIncomeDetailCountByUserId(@Param("userId") long userId);
+
+    /**
+     * 根据用户ID和类型获取用户总收益
+     *
+     * @param userId
+     * @param type 0:代理商  1:普通用户
+     * @return
+     */
+    Integer getAllIncomeByUserIdAndType(@Param("userId") long userId,
+                                        @Param("type") long type);
 }

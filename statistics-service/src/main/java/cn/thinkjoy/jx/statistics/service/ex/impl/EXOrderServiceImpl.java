@@ -55,12 +55,9 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 orderNoOrPhone,
                 departmentCode);
 
-        Page<OrderDetailPojo> detailPojoPage = new Page<>();
-        detailPojoPage.setList(detailPojos);
-        detailPojoPage.setCount(detailPojoCount);
-
         Map<String, Object> returnMap = Maps.newHashMap();
-        returnMap.put("page",detailPojoPage);
+        returnMap.put("count",detailPojoCount);
+        returnMap.put("list",detailPojos);
         returnMap.put("message",convertMessage(departmentCode));
         return returnMap;
     }
@@ -132,9 +129,12 @@ public class EXOrderServiceImpl implements IEXOrderService {
         pojo.setWebSaleCount(webSaleCountTmp);
 
         // 网上总收益
-        double netIncome =
-                wechatSaleCountTmp*department.getWechatPrice() +
-                        webSaleCountTmp*department.getWebPrice();
+//        double netIncome =
+//                wechatSaleCountTmp*department.getWechatPrice() +
+//                        webSaleCountTmp*department.getWebPrice();
+        double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
+                Long.valueOf(department.getId().toString()),
+                0);
         pojo.setNetIncome(netIncome);
 
         // 已结算的金额
@@ -210,7 +210,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 (currentPageNo-1)*pageSize,
                 pageSize);
 
-        Integer count = exOrderDAO.getUserIncomeCountByUserId(userId);
+        Integer count = exOrderDAO.getUserIncomeDetailCountByUserId(userId);
 
         Page<OrderDetailPojo> pojoPage = new Page<>();
         pojoPage.setList(pojos);
