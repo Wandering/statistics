@@ -54,11 +54,14 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  根据条件查询订单信息
          *
          */
-        queryOrderPageByConditions:'/statistics/order/queryOrderPageByConditions' //
+        queryOrderPageByConditions:'/statistics/order/queryOrderPageByConditions', //
 
+        /**
+         *  收益总览
+         *
+         */
+        queryAllDepartmentIncome:'/statistics/order/queryAllDepartmentIncome' //
 
-        // 172.16.160.226:8081   父系统
-        // 172.16.160.226:8082   子系统
 
 
     };

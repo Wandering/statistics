@@ -17,23 +17,19 @@ define(function (require, exports, module) {
 
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
+            var curSelectedV = $('#orderType option:selected').val();
+            var phoneNum = $('#phoneNum').val();
             if ($(this).attr('orderType') == 0) {
-                var curSelectedV = $('#orderType option:selected').val();
-                var phoneNum = $('#phoneNum').val();
-                console.log(curSelectedV);
-                console.log(phoneNum);
                 // 未发货
-                willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=0");
+                willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
             } else {
                 //已发货
-                alreadyOutput(UrlConfig.getGoodsMangeOut);
+                alreadyOutput(UrlConfig.getGoodsMangeOut+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
             }
         });
 
-
-        $('#tab-btn li:eq(0)').click();
+        $('#order-tab-btn li:eq(0)').click();
         //$('#flowarea').hide();
-
 
         $(document).on('click', '#search-btn', function () {
             var cardNumber = $.trim($('#vip-card').val());
@@ -44,29 +40,6 @@ define(function (require, exports, module) {
             var foo = $(this).attr('data-type');
             foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         function willOutput(url) {
             var col = [{
@@ -126,7 +99,7 @@ define(function (require, exports, module) {
                 "aTargets": [8],
                 "render": function (data, type, row) {
                     return '<button type="button">发货</button>';
-                },
+                }
             }];
             var TableInstance = Table({
                 columns: col,
@@ -135,9 +108,7 @@ define(function (require, exports, module) {
                 columnDefs: columnDefs,
                 sAjaxSource: url
             });
-
             TableInstance.init();
-
         }
 
         function alreadyOutput(url) {
