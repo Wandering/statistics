@@ -11,7 +11,41 @@ define(function (require, exports, module) {
         var Table = require('../datatable.js');
         var token = $.cookie('bizData');
         var UrlConfig = require('../common/urlConfig');
-        getEarningsList(UrlConfig.queryAllDepartmentIncome);
+
+
+        $.getJSON(UrlConfig.findProvinceList, function (res) {
+            console.log(res)
+            for (var i = 0; i < res.bizData.length; i++) {
+                $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
+            }
+        });
+
+
+        $.getJSON(UrlConfig.findCityList, function (res) {
+            console.log(res)
+            for (var i = 0; i < res.bizData.length; i++) {
+                $('#dep_city').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].cityName + '</option>')
+            }
+        });
+
+
+        $.getJSON(UrlConfig.findCountyList, function (res) {
+            console.log(res)
+            for (var i = 0; i < res.bizData.length; i++) {
+                $('#dep_county').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].countyName + '</option>')
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+        getEarningsList(UrlConfig.queryAllDepartmentIncome+"?areaCode=-1&areaType=-1");
         function getEarningsList(url) {
             var col = [
                 {

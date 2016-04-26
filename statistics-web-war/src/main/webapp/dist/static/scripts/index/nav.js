@@ -196,7 +196,21 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
                 } catch (e) {
                 }
             },
-
+            /**
+             * ==================================
+             * 订单管理	orderManager
+             * ==================================
+             */
+            agentIncome: function () {
+                $('#page_0').html('');
+                Nav.changeSection('agentIncome');
+                try {
+                    require.async(['static/scripts/index/earningsManager/earningsManager'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
 
 
 

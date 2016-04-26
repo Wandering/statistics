@@ -60,7 +60,27 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  收益总览
          *
          */
-        queryAllDepartmentIncome:'/statistics/order/queryAllDepartmentIncome' //
+        queryAllDepartmentIncome:'/statistics/order/queryAllDepartmentIncome', //
+        /**
+         *  个单位收益总览
+         *
+         */
+        querySingleDepartmentIncome:'/statistics/order/querySingleDepartmentIncome', //
+        /**
+         *  省份
+         *
+         */
+        findProvinceList:'/system/dataDictionary/findProvinceList',//
+        /**
+         *  市
+         *
+         */
+        findCityList:'/system/dataDictionary/findCityList',//
+        /**
+         *  区县
+         *
+         */
+        findCountyList:'/system/dataDictionary/findCountyList' //
 
 
 

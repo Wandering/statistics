@@ -196,7 +196,21 @@ define(function (require, exports, module) {
                 } catch (e) {
                 }
             },
-
+            /**
+             * ==================================
+             * 订单管理	orderManager
+             * ==================================
+             */
+            agentIncome: function () {
+                $('#page_0').html('');
+                Nav.changeSection('agentIncome');
+                try {
+                    require.async(['./earningsManager/earningsManager.js'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
 
 
 

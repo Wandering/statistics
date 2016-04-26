@@ -15,32 +15,120 @@ define(function (require, exports, module) {
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
 
+
+
+        var colOverview = [{
+            data: 'id',
+            title: ''
+        }, {
+            data: 'departmentName',
+            title: '代理商'
+        }, {
+            data: 'departmentLevel',
+            title: '代理商层级'
+        }, {
+            data: 'wechatPrice',
+            title: '微信售价'
+        }, {
+            data: 'webPrice',
+            title: 'web售价'
+        }, {
+            data: 'salePrice',
+            title: '出厂价'
+        }, {
+            data: 'wechatVolume',
+            title: '微信销量'
+        }, {
+            data: 'webVolume',
+            title: 'web销量'
+        }, {
+            data: 'netIncome',
+            title: '网上收益'
+        }, {
+            data: 'notSettled',
+            title: '未结算'
+        }, {
+            data: 'settled',
+            title: '已结算'
+        }];
+        var columnDefsOverview = [{
+            "bVisible": false,
+            "aTargets": [0]
+        }, {
+            "sClass": "center",
+            "aTargets": [1]
+        }, {
+            "sClass": "center",
+            "aTargets": [2]
+        }, {
+            "sClass": "center",
+            "aTargets": [3]
+        }, {
+            "sClass": "center",
+            "aTargets": [4]
+        }, {
+            "sClass": "center",
+            "aTargets": [5]
+        }, {
+            "sClass": "center",
+            "aTargets": [6]
+        }, {
+            "sClass": "center",
+            "aTargets": [7]
+        }, {
+            "sClass": "center",
+            "aTargets": [8]
+        }, {
+            "sClass": "center",
+            "aTargets": [9]
+        }, {
+            "sClass": "center",
+            "aTargets": [10]
+        }];
+        var TableInstanceOverview = Table({
+            columns: colOverview,
+            tableContentId: 'table_contentOverview',
+            tableId: (+new Date()) + '_table_body',
+            columnDefs: columnDefsOverview,
+            sAjaxSource: UrlConfig.querySingleDepartmentIncome
+        });
+        TableInstanceOverview.init();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var curSelectedV = $('#orderType option:selected').val();
             var phoneNum = $('#phoneNum').val();
-            if ($(this).attr('orderType') == 0) {
-                // 未发货
-                willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
-            } else {
-                //已发货
-                alreadyOutput(UrlConfig.getGoodsMangeOut+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
-            }
+            var orderType = $(this).attr('orderType');
+            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
         });
-
         $('#order-tab-btn li:eq(0)').click();
-        //$('#flowarea').hide();
-
-        $(document).on('click', '#search-btn', function () {
-            var cardNumber = $.trim($('#vip-card').val());
-            if (cardNumber.length > 10) {
-                $('.form-error').text('您输入的卡号不正确').fadeIn(1000).fadeOut(1000);
-                return false
-            }
-            var foo = $(this).attr('data-type');
-            foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
+        $(document).on('click', '#orderSearch', function () {
+            var curSelectedV = $('#orderType option:selected').val();
+            var phoneNum = $('#phoneNum').val();
+            var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
+            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
         });
-
         function willOutput(url) {
             var col = [{
                 data: 'id',

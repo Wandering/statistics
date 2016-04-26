@@ -35,6 +35,7 @@ seajs.config({alias:{
   "static/scripts/index/proportionManager/proportion-form": "/dist/static/scripts/index/proportionManager/proportion-form",
   "static/scripts/index/proportionManager/proportionList": "/dist/static/scripts/index/proportionManager/proportionList",
   "static/scripts/index/orderManager/orderManager": "/dist/static/scripts/index/orderManager/orderManager",
+  "static/scripts/index/earningsManager/earningsManager": "/dist/static/scripts/index/earningsManager/earningsManager",
   "sea-modules/dot/doT.min": "/dist/sea-modules/dot/doT.min",
   "static/scripts/index/common/businessTable": "/dist/static/scripts/index/common/businessTable",
   "static/scripts/index/realTimeDebt/realTimeDebt": "/dist/static/scripts/index/realTimeDebt/realTimeDebt",
