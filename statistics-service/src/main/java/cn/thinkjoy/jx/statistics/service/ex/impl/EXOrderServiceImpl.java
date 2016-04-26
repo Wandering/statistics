@@ -132,9 +132,10 @@ public class EXOrderServiceImpl implements IEXOrderService {
 //        double netIncome =
 //                wechatSaleCountTmp*department.getWechatPrice() +
 //                        webSaleCountTmp*department.getWebPrice();
-        double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
+        Double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
                 Long.valueOf(department.getId().toString()),
                 0);
+        netIncome = netIncome==null?0:netIncome;
         pojo.setNetIncome(netIncome);
 
         // 已结算的金额

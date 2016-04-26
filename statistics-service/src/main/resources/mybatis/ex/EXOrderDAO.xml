@@ -199,13 +199,13 @@
     </select>
 
     <!-- 根据用户ID和类型获取用户总收益 -->
-    <select id="getAllIncomeByUserIdAndType" parameterType="map" resultType="Integer">
+    <select id="getAllIncomeByUserIdAndType" parameterType="map" resultType="Double">
         select
             sum(price)
         from
-            zgk_split_price t0
+            zgk_split_price
         where
-        and type = #{type}
+            type = #{type}
         and user_id = #{userId}
     </select>
 </mapper>

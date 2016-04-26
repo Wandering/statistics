@@ -105,7 +105,7 @@ public class OrderController {
     @RequestMapping(value = "queryAllDepartmentIncome",method = RequestMethod.GET)
     public Page<OrderStatisticsPojo> queryAllDepartmentIncome(HttpServletRequest request) {
 
-        UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
+        UserPojo userPojo = JSON.parseObject(UserInfoContext.getCurrentUserInfo().toString(),UserPojo.class);
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
