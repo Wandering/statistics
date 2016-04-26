@@ -126,6 +126,6 @@ public interface IEXOrderDAO {
      * @param type 0:代理商  1:普通用户
      * @return
      */
-    Integer getAllIncomeByUserIdAndType(@Param("userId") long userId,
+    Double getAllIncomeByUserIdAndType(@Param("userId") long userId,
                                         @Param("type") long type);
 }
