@@ -53,43 +53,43 @@ define(function (require, exports, module) {
                     title: '用户名'
                 },
                 {
-                    data: 'departmentName',
+                    data: 'account',
                     title: '账号'
                 },
                 {
-                    data: 'departmentLevel',
+                    data: 'phoneNum',
                     title: '联系电话'
                 },
                 {
-                    data: 'webPrice',
+                    data: 'registAddress',
                     title: '注册地'
                 },
                 {
-                    data: 'salePrice',
+                    data: 'firstLevelCount',
                     title: '一级奖励数量'
                 },
                 {
-                    data: 'webSaleCount',
+                    data: 'secondLevelCount',
                     title: '二级奖励数量'
                 },
                 {
-                    data: 'wechatSaleCount',
+                    data: 'allIncome',
                     title: '总收益'
                 },
                 {
-                    data: 'netIncome',
+                    data: 'notSettled',
                     title: '未结算'
                 },
                 {
-                    data: 'notSettled',
+                    data: 'settled',
                     title: '已结算'
                 },
                 {
-                    data: 'settled',
+                    data: 'details',
                     title: '详情'
                 },
                 {
-                    data: 'settled',
+                    data: 'funs',
                     title: '操作'
                 }
             ];
@@ -134,7 +134,14 @@ define(function (require, exports, module) {
                     "sClass": "center",
                     "aTargets": [9],
                     "render": function (data, type, row) {
-                        return '<button type="button">结算</button>';
+                        return '<a href="javascript:void(0);" class="btn btn-links">结算记录</a><a href="javascript:void(0);" class="btn btn-links">收益详情</a>';
+                    }
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [10],
+                    "render": function (data, type, row) {
+                        return '<button type="button" class="btn btn-info">结算</button>';
                     }
                 }
             ];

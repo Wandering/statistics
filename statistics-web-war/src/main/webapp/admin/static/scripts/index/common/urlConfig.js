@@ -86,7 +86,14 @@ define(function (require, exports, module) {
          *  分享收益
          *
          */
-        queryAllUserIncome:'/statistics/order/queryAllUserIncome' //
+        queryAllUserIncome:'/statistics/order/queryAllUserIncome', //
+
+
+        /**
+         *  分成
+         *
+         */
+        findSeparate:'/separateController/findSeparate' //
 
 
 

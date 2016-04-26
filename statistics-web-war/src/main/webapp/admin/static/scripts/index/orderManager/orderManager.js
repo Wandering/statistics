@@ -120,7 +120,8 @@ define(function (require, exports, module) {
             var curSelectedV = $('#orderType option:selected').val();
             var phoneNum = $('#phoneNum').val();
             var orderType = $(this).attr('orderType');
-            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
+            //willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
+            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
         });
         $('#order-tab-btn li:eq(0)').click();
         $(document).on('click', '#orderSearch', function () {
@@ -186,9 +187,10 @@ define(function (require, exports, module) {
                 "sClass": "center",
                 "aTargets": [8],
                 "render": function (data, type, row) {
-                    return '<button type="button">发货</button>';
+                    return '<button type="button" class="btn btn-info btn-delivery">发货</button>';
                 }
             }];
+
             var TableInstance = Table({
                 columns: col,
                 tableContentId: 'table_content',
@@ -199,66 +201,46 @@ define(function (require, exports, module) {
             TableInstance.init();
         }
 
-        function alreadyOutput(url) {
-            var col = [{
-                data: 'id',
-                title: ''
-            }, {
-                data: 'orderNo',
-                title: '订单编号'
-            }, {
-                data: 'channle',
-                title: '订单来源'
-            }, {
-                data: 'userName',
-                title: '用户名称'
-            }, {
-                data: 'phoneNum',
-                title: '联系电话'
-            }, {
-                data: 'registAddress',
-                title: '注册地址'
-            }, {
-                data: 'goodsCount',
-                title: '数量'
-            }, {
-                data: 'createDate',
-                title: '订单时间'
-            }];
-            var columnDefs = [{
-                "bVisible": false,
-                "aTargets": [0]
-            }, {
-                "sClass": "center",
-                "aTargets": [1]
-            }, {
-                "sClass": "center",
-                "aTargets": [2]
-            }, {
-                "sClass": "center",
-                "aTargets": [3]
-            }, {
-                "sClass": "center",
-                "aTargets": [4]
-            }, {
-                "sClass": "center",
-                "aTargets": [5]
-            }, {
-                "sClass": "center",
-                "aTargets": [6]
-            }, {
-                "sClass": "center",
-                "aTargets": [7]
-            }];
-            var TableInstance = Table({
-                columns: col,
-                tableContentId: 'table_content',
-                tableId: (+new Date()) + '_table_body',
-                sAjaxSource: url,
-                columnDefs: columnDefs
-            });
-            TableInstance.init();
-        };
+
+        $('body').on('click','.btn-delivery',function(){
+            alert(234);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -481,14 +463,7 @@ define(function (require, exports, module) {
         });
 
 
-        function tip(ele, str) {
-            var errorLable = ele.find('p');
-            errorLable.html(str);
-            errorLable.show(500);
-            setTimeout(function () {
-                errorLable.hide(500);
-            }, 2000)
-        }
+
 
 
     }

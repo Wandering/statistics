@@ -86,7 +86,14 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  分享收益
          *
          */
-        queryAllUserIncome:'/statistics/order/queryAllUserIncome' //
+        queryAllUserIncome:'/statistics/order/queryAllUserIncome', //
+
+
+        /**
+         *  分成
+         *
+         */
+        findSeparate:'/separateController/findSeparate' //
 
 
 
