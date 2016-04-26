@@ -198,7 +198,7 @@ define(function (require, exports, module) {
             },
             /**
              * ==================================
-             * 订单管理	orderManager
+             * 订单管理	agentIncome
              * ==================================
              */
             agentIncome: function () {
@@ -211,6 +211,22 @@ define(function (require, exports, module) {
                 } catch (e) {
                 }
             },
+            /**
+             * ==================================
+             * 	分享收益 shareIncome
+             * ==================================
+             */
+            shareIncome: function () {
+                $('#page_0').html('');
+                Nav.changeSection('shareIncome');
+                try {
+                    require.async(['./shareIncome/shareIncome.js'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+
 
 
 

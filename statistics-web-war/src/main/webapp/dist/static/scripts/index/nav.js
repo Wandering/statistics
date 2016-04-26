@@ -198,7 +198,7 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
             },
             /**
              * ==================================
-             * 订单管理	orderManager
+             * 订单管理	agentIncome
              * ==================================
              */
             agentIncome: function () {
@@ -211,6 +211,22 @@ define('static/scripts/index/nav', ['sea-modules/jquery/cookie/jquery.cookie', '
                 } catch (e) {
                 }
             },
+            /**
+             * ==================================
+             * 	分享收益 shareIncome
+             * ==================================
+             */
+            shareIncome: function () {
+                $('#page_0').html('');
+                Nav.changeSection('shareIncome');
+                try {
+                    require.async(['static/scripts/index/shareIncome/shareIncome'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+
 
 
 

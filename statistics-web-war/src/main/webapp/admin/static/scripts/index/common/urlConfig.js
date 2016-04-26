@@ -80,7 +80,13 @@ define(function (require, exports, module) {
          *  区县
          *
          */
-        findCountyList:'/system/dataDictionary/findCountyList' //
+        findCountyList:'/system/dataDictionary/findCountyList', //
+
+        /**
+         *  分享收益
+         *
+         */
+        queryAllUserIncome:'/statistics/order/queryAllUserIncome' //
 
 
 

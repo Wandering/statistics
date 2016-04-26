@@ -45,47 +45,43 @@ define(function (require, exports, module) {
 
 
 
-        getEarningsList(UrlConfig.queryAllDepartmentIncome+"?areaCode=-1&areaType=-1&token="+token);
+        getEarningsList(UrlConfig.queryAllUserIncome+"?areaCode=-1&areaType=-1&account=&token="+token);
         function getEarningsList(url) {
             var col = [
                 {
-                    data: 'departmentCode',
-                    title: '部门编码'
+                    data: 'userName',
+                    title: '用户名'
                 },
                 {
                     data: 'departmentName',
-                    title: '部门名称'
+                    title: '账号'
                 },
                 {
                     data: 'departmentLevel',
-                    title: '代理商等级'
+                    title: '联系电话'
                 },
                 {
                     data: 'webPrice',
-                    title: 'web售价'
+                    title: '注册地'
                 },
                 {
                     data: 'salePrice',
-                    title: '出厂价'
+                    title: '一级奖励数量'
                 },
                 {
                     data: 'webSaleCount',
-                    title: 'web销量'
+                    title: '二级奖励数量'
                 },
                 {
                     data: 'wechatSaleCount',
-                    title: '微信销量'
+                    title: '总收益'
                 },
                 {
                     data: 'netIncome',
-                    title: '网上收益'
-                },
-                {
-                    data: 'notSettled',
                     title: '未结算'
                 },
                 {
-                    data: 'settled',
+                    data: 'notSettled',
                     title: '已结算'
                 },
                 {
@@ -136,19 +132,16 @@ define(function (require, exports, module) {
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [9]
-                },
-                {
-                    "sClass": "center",
-                    "aTargets": [10],
+                    "aTargets": [9],
                     "render": function (data, type, row) {
-                        return '<button type="button">结算记录</button>';
+                        return '<button type="button">结算</button>';
                     }
                 }
             ];
+
             var TableInstance = Table({
                 columns: col,
-                tableContentId: 'earningsManagerContent',
+                tableContentId: 'shareManagerContent',
                 tableId: (+new Date()) + '_table_body',
                 sAjaxSource: url,
                 columnDefs: columnDefs
