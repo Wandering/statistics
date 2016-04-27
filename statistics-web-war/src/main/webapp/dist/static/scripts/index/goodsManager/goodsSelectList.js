@@ -42,7 +42,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                         $('#selectall')[0].checked = false;
                     }
                 };
-
             } else {
                 $('.tables-t .h4-st').text('已出库货物');
                 //已出库table
@@ -91,7 +90,8 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                 "sClass": "center",
                 "sWidth": "30px",
                 "render": function (data, type, row) {
-                    return '<input class="selNoOutbound" onclick="clickChecked()" type="checkbox"  data-id="' + data + '"  />';
+                    console.log(data)
+                    return '<input class="selNoOutbound" onclick="clickChecked()" type="checkbox"  data-id="' + data + '"  />'
                 },
                 "aTargets": [0]
             }, {
