@@ -441,7 +441,7 @@
             <div class="tile-body transparent rounded-corners">
                 <div class="form-button" id="form_button">
                 </div>
-                <div class="table-responsive" id="table_content">
+                <div class="table-responsive" id="table_content_proportion">
                 </div>
             </div>
         </div>
@@ -453,6 +453,9 @@
 <script type="text/html" id="orderManager">
     <div class="tile-body transparent rounded-corners">
         <section class="tile transparent grid pd30">
+            <div class="table-responsive">
+                <div id="table_contentOverview"></div>
+            </div>
             <form class="form-inline">
                 <p class="color-white">订单来源查询：</p>
                 <div class="form-group">
@@ -540,6 +543,72 @@
         </section>
     </div>
 </script>
+
+
+
+
+
+<!--代理商收益-->
+<script type="text/html" id="agentIncome">
+    <div class="tile-body transparent rounded-corners">
+        <section class="tile transparent grid pd30">
+            <form class="form-inline">
+                <p class="color-white">代理商收益：</p>
+
+                <div class="form-group">
+                    <select id="dep_provinces" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="btn btn-sm btn-primary" id="earningsManagerSearch">查询</div>
+                </div>
+            </form>
+            <div class="table-responsive" id="earningsManagerContent">
+
+            </div>
+        </section>
+    </div>
+</script>
+
+
+
+
+<!--分享收益-->
+<script type="text/html" id="shareIncome">
+    <div class="tile-body transparent rounded-corners">
+        <section class="tile transparent grid pd30">
+            <form class="form-inline">
+                <p class="color-white">分享收益：</p>
+
+                <div class="form-group">
+                    <select id="dep_provinces" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="btn btn-sm btn-primary" id="shareManagerSearch">查询</div>
+                </div>
+            </form>
+            <div class="table-responsive" id="shareManagerContent">
+
+            </div>
+        </section>
+    </div>
+</script>
+
+
+
+
+
+
+
 
 <script type="text/javascript" src="../static/sea.js"></script>
 <script type="text/javascript" src="../lib/echarts/echarts-all.min.js"></script>
