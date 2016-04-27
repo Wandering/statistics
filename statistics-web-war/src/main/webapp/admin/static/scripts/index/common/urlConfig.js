@@ -93,7 +93,12 @@ define(function (require, exports, module) {
          *  分成
          *
          */
-        findSeparate:'/separateController/findSeparate' //
+        findSeparate:'/separateController/findSeparate', //
+        /**
+         *  修改状态为发货
+         *
+         */
+        updateSendGoodsState:'/statistics/order/updateSendGoodsState' //
 
 
 

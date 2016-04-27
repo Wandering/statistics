@@ -101,6 +101,34 @@ define(function (require, exports, module) {
             var phoneNum = $('#phoneNum').val();
             var orderType = $(this).attr('orderType');
             if(orderType=="0"){
+                willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
+                // 全选
+                $('#selectall').on('click', function () {
+                    var that = this;
+                    $('.selNoOutbound[type="checkbox"]').each(function () {
+                        this.checked = that.checked;
+                    });
+                });
+                // 单选
+                window.clickChecked = function () {
+                    var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
+                    var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
+                    if (selNoOutboundLength == selNoOutboundCheckedLength) {
+                        $('#selectall')[0].checked = true;
+                    } else {
+                        $('#selectall')[0].checked = false;
+                    }
+                };
+            }else{
+                willOutputAlready(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
+            }
+        });
+        $('#order-tab-btn li:eq(0)').click();
+        $(document).on('click', '#orderSearch', function () {
+            var curSelectedV = $('#orderType option:selected').val();
+            var phoneNum = $('#phoneNum').val();
+            var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
+            if(orderType=="0"){
                 //willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
                 willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
                 // 全选
@@ -123,20 +151,10 @@ define(function (require, exports, module) {
             }else{
                 willOutputAlready(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
             }
-
-
-
-        });
-        $('#order-tab-btn li:eq(0)').click();
-        $(document).on('click', '#orderSearch', function () {
-            var curSelectedV = $('#orderType option:selected').val();
-            var phoneNum = $('#phoneNum').val();
-            var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
-            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
         });
         function willOutput(url) {
             var col = [{
-                data: 'id',
+                data: 'orderNo',
                 title: '<input type="checkbox" id="selectall">'
             }, {
                 data: 'orderNo',
@@ -164,6 +182,7 @@ define(function (require, exports, module) {
                 "sClass": "center",
                 "sWidth": "30px",
                 "render": function (data, type, row) {
+                    console.log(data)
                     return '<input class="selNoOutbound" onclick="clickChecked()" type="checkbox"  data-id="' + data + '"  />';
                 },
                 "aTargets": [0]
@@ -200,16 +219,6 @@ define(function (require, exports, module) {
             TableInstance.init();
         }
 
-
-
-
-
-
-
-
-
-
-
         function willOutputAlready(url) {
             var col = [{
                 data: 'id',
@@ -237,7 +246,7 @@ define(function (require, exports, module) {
                 title: '订单时间'
             }];
             var columnDefs = [{
-                "sClass": "center",
+                "bVisible": false,
                 "aTargets": [0]
             }, {
                 "sClass": "center",
@@ -272,6 +281,32 @@ define(function (require, exports, module) {
             TableInstance.init();
         }
 
+        var deliveryDepartment = function (succCallback, id) {
+            var selNoOutboundArr = [];
+            $('.selNoOutbound[type="checkbox"]:checked').each(function () {
+                selNoOutboundArr.push($(this).attr('data-id'));
+            });
+            $.ajax({
+                type: 'post',
+                url: UrlConfig.updateSendGoodsState+'?token=' + token,
+                contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                data: {
+                    orderNo: selNoOutboundArr.join(","),
+                },
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    alert('发货完成');
+                    succCallback(data);
+                },
+                beforeSend: function (xhr) {
+                },
+                error: function (data) {
+
+                }
+            });
+        };
+
 
 
 
@@ -284,11 +319,12 @@ define(function (require, exports, module) {
                     if ($('.selNoOutbound[type="checkbox"]:checked').length == 0) {
                         message({
                             title: '温馨提示',
-                            msg: '请至少选择一个发货项',
+                            msg: '请至少选择一个发货列表',
                             type: 'alert'
                         });
                         return false;
                     }
+
                     $.get('../tmpl/orderTmpl/order.html', function (tmpl) {
                         require('dialog');
                         $("#order_dialog").dialog({
@@ -301,10 +337,28 @@ define(function (require, exports, module) {
 
                             },
                             buttons: [{
-                                text: "确定发货",
+                                text: "确定",
                                 'class': "btn btn-primary",
                                 click: function () {
-
+                                    deliveryDepartment(function (ret) {
+                                        if ('0000000' === ret.rtnCode) {
+                                            var curSelectedV = $('#orderType option:selected').val();
+                                            var phoneNum = $('#phoneNum').val();
+                                            var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
+                                            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
+                                            $("#order_dialog").dialog("destroy");
+                                        } else {
+                                            $("#order_dialog").dialog("destroy");
+                                            message({
+                                                title: '温馨提示',
+                                                msg: ret.msg,
+                                                type: 'alert',
+                                                clickHandle: function () {
+                                                    window.location.href = 'login.html';
+                                                }
+                                            });
+                                        }
+                                    });
                                 }
                             }, {
                                 text: "取消",
@@ -318,17 +372,8 @@ define(function (require, exports, module) {
                 });
             }
         };
-
-
         require.async('../renderResource', function (resource) {
             resource(ButtonEvent, token);
         });
-
-
-
-
-
     }
-
-
 });

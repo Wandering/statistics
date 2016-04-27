@@ -93,7 +93,12 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  分成
          *
          */
-        findSeparate:'/separateController/findSeparate' //
+        findSeparate:'/separateController/findSeparate', //
+        /**
+         *  修改状态为发货
+         *
+         */
+        updateSendGoodsState:'/statistics/order/updateSendGoodsState' //
 
 
 
