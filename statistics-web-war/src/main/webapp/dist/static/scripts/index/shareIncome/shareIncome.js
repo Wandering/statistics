@@ -175,7 +175,7 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
         //    "account":"账号   String",
         //    "currentPageNo":"当前页  int",
         //    "pageSize":"页大小  int"
-        ajaxFun.get(UrlConfig.findProvinceList, function (res) {
+        ajaxFun.get(UrlConfig.getProvinceList, function (res) {
             var optionList = '<option value="">选择省份</option>';
             res.bizData.forEach(function (v) {
                 optionList += '<option value="' + v.simpleCode + '">' + v.name + '</option>'
@@ -198,10 +198,7 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
         });
 
         $(document).on('click', '#shareManagerSearch', function () {
-            var numberOrCard = $('#share-select-province').val();
-            var selectArea = $('#selectArea').val();
-            var statusType = $('#statusType').val();
-            var activityStatus = $('#activityStatusSelect').val();
+            var selectArea = $('#share-select-province').val();
             var link = UrlConfig.queryAllUserIncome + '?token=' + token + '&areaCode='+areaCodeVal+'&areaCode='+'&areaType'+areaTypeVal+'&account'+accountVal+'&currentPageNo'+currentPageNo+'&pageSize'+pageSize;
             getEarningsList(link);
         });
