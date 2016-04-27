@@ -1,9 +1,10 @@
-define('static/scripts/index/proportionManager/proportionList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/proportionManager/proportion-form'], function (require, exports, module) {
+define('static/scripts/index/proportionManager/proportionList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/urlConfig', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/proportionManager/proportion-form'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
         require('sea-modules/jquery/dialog/jquery.dialog');
+        var UrlConfig = require('static/scripts/index/common/urlConfig');
         var message = require('static/scripts/index/message');
         var Table = require('static/scripts/index/datatable');
 
@@ -26,10 +27,10 @@ define('static/scripts/index/proportionManager/proportionList', ['sea-modules/bo
         }];
         var TableInstance = Table({
             columns: col,
-            tableContentId: 'table_content',
+            tableContentId: 'table_content_proportion',
             tableId: (+new Date()) + '_table_body',
             columnDefs: columnDefs,
-            sAjaxSource: '/separateController/findSeparate?token=' + token
+            sAjaxSource: UrlConfig.findSeparate+'?token=' + token
         });
         TableInstance.init();
         var tableObj = TableInstance.dataTable;
