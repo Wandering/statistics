@@ -1,6 +1,5 @@
 define(function (require, exports, module) {
     module.exports = function () {
-        alert(8)
         //获取所需组件依赖
         require('bootstrap');
         require('cookie');
@@ -37,15 +36,7 @@ define(function (require, exports, module) {
         });
 
 
-
-
-
-
-
-
-
-
-        getEarningsList(UrlConfig.queryAllUserIncome+"?areaCode=-1&areaType=-1&account=&token="+token);
+        getEarningsList(UrlConfig.queryAllUserIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
         function getEarningsList(url) {
             var col = [
                 {
@@ -172,6 +163,48 @@ define(function (require, exports, module) {
         //    var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
         //    getMonitoredList(link);
         //});
+
+        /*
+         *
+         * 分享收益<查询>模块
+         *
+         *
+         */
+        //    "areaCode":"地区编码  -1:所有地区  long",
+        //    "areaType":"类型  -1：所有地区 1:省 2：市  3：区县",
+        //    "account":"账号   String",
+        //    "currentPageNo":"当前页  int",
+        //    "pageSize":"页大小  int"
+        ajaxFun.get(UrlConfig.findProvinceList, function (res) {
+            var optionList = '<option value="">选择省份</option>';
+            res.bizData.forEach(function (v) {
+                optionList += '<option value="' + v.simpleCode + '">' + v.name + '</option>'
+            });
+            $('#share-select-province').html(optionList);
+        });
+        ajaxFun.get(UrlConfig.findCityList, function (res) {
+            var optionList = '<option value="">选择城市</option>';
+            res.bizData.forEach(function (v) {
+                optionList += '<option value="' + v.simpleCode + '">' + v.name + '</option>'
+            });
+            $('#share-select-city').html(optionList);
+        });
+        ajaxFun.get(UrlConfig.findCountyList, function (res) {
+            var optionList = '<option value="">选择县</option>';
+            res.bizData.forEach(function (v) {
+                optionList += '<option value="' + v.simpleCode + '">' + v.name + '</option>'
+            });
+            $('#share-select-district').html(optionList);
+        });
+
+        $(document).on('click', '#shareManagerSearch', function () {
+            var numberOrCard = $('#share-select-province').val();
+            var selectArea = $('#selectArea').val();
+            var statusType = $('#statusType').val();
+            var activityStatus = $('#activityStatusSelect').val();
+            var link = UrlConfig.queryAllUserIncome + '?token=' + token + '&areaCode='+areaCodeVal+'&areaCode='+'&areaType'+areaTypeVal+'&account'+accountVal+'&currentPageNo'+currentPageNo+'&pageSize'+pageSize;
+            getEarningsList(link);
+        });
 
 
     }
