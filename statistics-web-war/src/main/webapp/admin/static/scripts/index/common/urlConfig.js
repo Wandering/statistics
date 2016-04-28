@@ -54,11 +54,52 @@ define(function (require, exports, module) {
          *  根据条件查询订单信息
          *
          */
-        queryOrderPageByConditions:'http://172.16.160.226:8082/statistics/order/queryOrderPageByConditions' //
+        queryOrderPageByConditions:'/statistics/order/queryOrderPageByConditions', //
+
+        /**
+         *  收益总览
+         *
+         */
+        queryAllDepartmentIncome:'/statistics/order/queryAllDepartmentIncome', //
+        /**
+         *  个单位收益总览
+         *
+         */
+        querySingleDepartmentIncome:'/statistics/order/querySingleDepartmentIncome', //
+        /**
+         *  省份
+         *
+         */
+        findProvinceList:'/admin/getAllAreaInfo',//
+        /**
+         *  市
+         *
+         */
+        findCityList:'/system/dataDictionary/findCityList',//
+        /**
+         *  区县
+         *
+         */
+        findCountyList:'/system/dataDictionary/findCountyList', //
+
+        /**
+         *  分享收益
+         *
+         */
+        queryAllUserIncome:'/statistics/order/queryAllUserIncome', //
 
 
-        // 172.16.160.226:8081   父系统
-        // 172.16.160.226:8082   子系统
+        /**
+         *  分成
+         *
+         */
+        findSeparate:'/separateController/findSeparate', //
+        /**
+         *  修改状态为发货
+         *
+         */
+        updateSendGoodsState:'/statistics/order/updateSendGoodsState' //
+
 
 
     };

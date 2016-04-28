@@ -1,12 +1,12 @@
-define(function (require, exports, module) {
+define('static/scripts/index/proportionManager/proportionList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/urlConfig', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/proportionManager/proportion-form'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
-        require('bootstrap');
-        require('cookie');
-        require('dialog');
-        var UrlConfig = require('../common/urlConfig');
-        var message = require('../message');
-        var Table = require('../datatable');
+        require('sea-modules/bootstrap/bootstrap');
+        require('sea-modules/jquery/cookie/jquery.cookie');
+        require('sea-modules/jquery/dialog/jquery.dialog');
+        var UrlConfig = require('static/scripts/index/common/urlConfig');
+        var message = require('static/scripts/index/message');
+        var Table = require('static/scripts/index/datatable');
 
         var token = $.cookie('bizData');
         var col = [{
@@ -93,7 +93,7 @@ define(function (require, exports, module) {
                                 text: "确定",
                                 'class': "btn btn-primary",
                                 click: function () {
-                                    var vali = require('./proportion-form.js');
+                                    var vali = require('static/scripts/index/proportionManager/proportion-form');
                                     vali.validate(function (formArry) {
                                         settingDepartment(formArry, function (ret) {
                                             tableObj.fnDraw();
@@ -128,7 +128,7 @@ define(function (require, exports, module) {
         };
 
 
-        require.async('../renderResource', function (resource) {
+        require.async(['static/scripts/index/renderResource'], function (resource) {
             resource(ButtonEvent, token);
         });
 

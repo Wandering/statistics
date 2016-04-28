@@ -4505,3 +4505,9 @@ body #content .menu-list-content {
 #card-area-btn{
     width: 110px;
 }
+
+.btn-links{
+    display: inline;
+    color: #fff;
+    text-decoration:underline;
+}

@@ -1,16 +1,16 @@
 /**
  * Created by pdeng on 16/3/23.
  */
-define(function (require, exports, module) {
+define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/jquery/dialog/jquery.dialog'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
-        require('bootstrap');
-        require('cookie');
-        var timeFomate = require('../common/timeFomate.js');
-        var message = require('../message.js');
-        var Table = require('../datatable.js');
+        require('sea-modules/bootstrap/bootstrap');
+        require('sea-modules/jquery/cookie/jquery.cookie');
+        var timeFomate = require('static/scripts/index/common/timeFomate');
+        var message = require('static/scripts/index/message');
+        var Table = require('static/scripts/index/datatable');
 
-        var UrlConfig = require('../common/urlConfig');
+        var UrlConfig = require('static/scripts/index/common/urlConfig');
         var token = $.cookie('bizData');
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
@@ -326,7 +326,7 @@ define(function (require, exports, module) {
                     }
 
                     $.get('../tmpl/orderTmpl/order.html', function (tmpl) {
-                        require('dialog');
+                        require('sea-modules/jquery/dialog/jquery.dialog');
                         $("#order_dialog").dialog({
                             title: "发货",
                             tmpl: tmpl,
@@ -372,7 +372,7 @@ define(function (require, exports, module) {
                 });
             }
         };
-        require.async('../renderResource', function (resource) {
+        require.async(['static/scripts/index/renderResource'], function (resource) {
             resource(ButtonEvent, token);
         });
     }
