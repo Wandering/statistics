@@ -205,7 +205,6 @@ define(function (require, exports, module) {
         };
 
 
-
         window.shareIncomeDetail = function(id){
             $.get('../tmpl/shareIncome/shareIncomeDetail.html', function (tmpl) {
                 require('dialog');
