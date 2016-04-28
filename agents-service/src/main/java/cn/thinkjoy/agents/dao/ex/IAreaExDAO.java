@@ -1,5 +1,7 @@
 package cn.thinkjoy.agents.dao.ex;
 
+import cn.thinkjoy.jx.statistics.pojo.AreaPojo;
+
 import java.util.List;
 import java.util.Map;
 
@@ -17,4 +19,25 @@ public interface IAreaExDAO {
     public List<Map<String,Object>> likeCountyById(String id);
     public List<Map<String,Object>> likeCityById(String id);
     public List<String> getAgentsAreas(String areaCode);
+
+    /**
+     * 获取所有省份信息
+     *
+     * @return
+     */
+    List<AreaPojo> getAllProvince();
+
+    /**
+     * 获取所有省份信息
+     *
+     * @return
+     */
+    List<AreaPojo> getAllCity();
+
+    /**
+     * 获取所有省份信息
+     *
+     * @return
+     */
+    List<AreaPojo> getAllCounty();
 }
