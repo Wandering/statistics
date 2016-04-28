@@ -119,7 +119,13 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  获取收益详情
          *
          */
-        queryUserIncomeDetailByUserId:'/statistics/order/queryUserIncomeDetailByUserId' //
+        queryUserIncomeDetailByUserId:'/statistics/order/queryUserIncomeDetailByUserId', //
+
+        /**
+         *  省市区
+         *
+         */
+        getAllAreaInfo:'/admin/getAllAreaInfo' //
 
 
 

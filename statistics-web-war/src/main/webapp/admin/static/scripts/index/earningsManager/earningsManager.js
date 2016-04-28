@@ -1,5 +1,11 @@
 define(function (require, exports, module) {
     module.exports = function () {
+        // ============  代理商收益管理
+
+        alert(22)
+
+
+
         //获取所需组件依赖
         require('bootstrap');
         require('cookie');
@@ -12,12 +18,12 @@ define(function (require, exports, module) {
         var UrlConfig = require('../common/urlConfig');
 
 
-        //$.getJSON(UrlConfig.findProvinceList, function (res) {
-        //    console.log(res)
-        //    for (var i = 0; i < res.bizData.length; i++) {
-        //        $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
-        //    }
-        //});
+        $.getJSON(UrlConfig.getAllAreaInfo, function (res) {
+            console.log(res)
+            for (var i = 0; i < res.bizData.length; i++) {
+                $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
+            }
+        });
         //
         //
         //$.getJSON(UrlConfig.findCityList, function (res) {
@@ -34,6 +40,13 @@ define(function (require, exports, module) {
         //        $('#dep_county').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].countyName + '</option>')
         //    }
         //});
+
+
+
+
+
+
+
 
 
         //var areaCode = $('#orderType option:selected').val();

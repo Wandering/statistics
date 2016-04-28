@@ -1,5 +1,11 @@
 define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
     module.exports = function () {
+        // ============  代理商收益管理
+
+        alert(22)
+
+
+
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
@@ -12,12 +18,12 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         var UrlConfig = require('static/scripts/index/common/urlConfig');
 
 
-        //$.getJSON(UrlConfig.findProvinceList, function (res) {
-        //    console.log(res)
-        //    for (var i = 0; i < res.bizData.length; i++) {
-        //        $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
-        //    }
-        //});
+        $.getJSON(UrlConfig.getAllAreaInfo, function (res) {
+            console.log(res)
+            for (var i = 0; i < res.bizData.length; i++) {
+                $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
+            }
+        });
         //
         //
         //$.getJSON(UrlConfig.findCityList, function (res) {
@@ -34,6 +40,13 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         //        $('#dep_county').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].countyName + '</option>')
         //    }
         //});
+
+
+
+
+
+
+
 
 
         //var areaCode = $('#orderType option:selected').val();

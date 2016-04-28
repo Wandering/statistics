@@ -205,7 +205,6 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
         };
 
 
-
         window.shareIncomeDetail = function(id){
             $.get('../tmpl/shareIncome/shareIncomeDetail.html', function (tmpl) {
                 require('sea-modules/jquery/dialog/jquery.dialog');

@@ -119,7 +119,13 @@ define(function (require, exports, module) {
          *  获取收益详情
          *
          */
-        queryUserIncomeDetailByUserId:'/statistics/order/queryUserIncomeDetailByUserId' //
+        queryUserIncomeDetailByUserId:'/statistics/order/queryUserIncomeDetailByUserId', //
+
+        /**
+         *  省市区
+         *
+         */
+        getAllAreaInfo:'/admin/getAllAreaInfo' //
 
 
 
