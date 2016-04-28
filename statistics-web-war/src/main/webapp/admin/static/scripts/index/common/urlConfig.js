@@ -70,7 +70,7 @@ define(function (require, exports, module) {
          *  省份
          *
          */
-        findProvinceList:'/system/dataDictionary/findProvinceList',//
+        findProvinceList:'/admin/getAllAreaInfo',//
         /**
          *  市
          *

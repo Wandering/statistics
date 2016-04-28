@@ -70,7 +70,7 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  省份
          *
          */
-        findProvinceList:'/system/dataDictionary/findProvinceList',//
+        findProvinceList:'/admin/getAllAreaInfo',//
         /**
          *  市
          *
