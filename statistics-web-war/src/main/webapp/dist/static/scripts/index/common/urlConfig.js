@@ -98,7 +98,29 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  修改状态为发货
          *
          */
-        updateSendGoodsState:'/statistics/order/updateSendGoodsState' //
+        updateSendGoodsState:'/statistics/order/updateSendGoodsState', //
+
+        /**
+         *  获取结算记录
+         *
+         */
+        querySettlementRecordsByDepartmentCode:'/statistics/order/querySettlementRecordsByDepartmentCode', //
+
+
+        /**
+         *  确定结算
+         *
+         */
+        settlementByDepartmentCode:'/statistics/order/settlementByDepartmentCode', //
+
+
+
+        /**
+         *  获取收益详情
+         *
+         */
+        queryUserIncomeDetailByUserId:'/statistics/order/queryUserIncomeDetailByUserId' //
+
 
 
 

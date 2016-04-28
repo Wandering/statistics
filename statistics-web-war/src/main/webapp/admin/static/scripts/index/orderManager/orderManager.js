@@ -296,7 +296,6 @@ define(function (require, exports, module) {
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
-                    alert('发货完成');
                     succCallback(data);
                 },
                 beforeSend: function (xhr) {
@@ -375,5 +374,15 @@ define(function (require, exports, module) {
         require.async('../renderResource', function (resource) {
             resource(ButtonEvent, token);
         });
+
+
+
+
+
+
+
+
+
+
     }
 });

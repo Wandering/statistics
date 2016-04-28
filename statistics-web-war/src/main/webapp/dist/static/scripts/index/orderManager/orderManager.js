@@ -296,7 +296,6 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                 dataType: 'json',
                 success: function (data) {
                     console.log(data);
-                    alert('发货完成');
                     succCallback(data);
                 },
                 beforeSend: function (xhr) {
@@ -375,5 +374,15 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
         require.async(['static/scripts/index/renderResource'], function (resource) {
             resource(ButtonEvent, token);
         });
+
+
+
+
+
+
+
+
+
+
     }
 });

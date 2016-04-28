@@ -1,6 +1,5 @@
 define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
     module.exports = function () {
-        alert(8)
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
@@ -13,40 +12,35 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         var UrlConfig = require('static/scripts/index/common/urlConfig');
 
 
-        $.getJSON(UrlConfig.findProvinceList, function (res) {
-            console.log(res)
-            for (var i = 0; i < res.bizData.length; i++) {
-                $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
-            }
-        });
+        //$.getJSON(UrlConfig.findProvinceList, function (res) {
+        //    console.log(res)
+        //    for (var i = 0; i < res.bizData.length; i++) {
+        //        $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
+        //    }
+        //});
+        //
+        //
+        //$.getJSON(UrlConfig.findCityList, function (res) {
+        //    console.log(res)
+        //    for (var i = 0; i < res.bizData.length; i++) {
+        //        $('#dep_city').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].cityName + '</option>')
+        //    }
+        //});
+        //
+        //
+        //$.getJSON(UrlConfig.findCountyList, function (res) {
+        //    console.log(res)
+        //    for (var i = 0; i < res.bizData.length; i++) {
+        //        $('#dep_county').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].countyName + '</option>')
+        //    }
+        //});
 
 
-        $.getJSON(UrlConfig.findCityList, function (res) {
-            console.log(res)
-            for (var i = 0; i < res.bizData.length; i++) {
-                $('#dep_city').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].cityName + '</option>')
-            }
-        });
+        //var areaCode = $('#orderType option:selected').val();
 
 
-        $.getJSON(UrlConfig.findCountyList, function (res) {
-            console.log(res)
-            for (var i = 0; i < res.bizData.length; i++) {
-                $('#dep_county').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].countyName + '</option>')
-            }
-        });
-
-
-
-
-
-
-
-
-
-
-        getEarningsList(UrlConfig.queryAllDepartmentIncome+"?areaCode=-1&areaType=-1&token="+token);
-        function getEarningsList(url) {
+        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
+        function getRecordList(url) {
             var col = [
                 {
                     data: 'departmentCode',
@@ -54,28 +48,34 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                 },
                 {
                     data: 'departmentName',
-                    title: '部门名称'
+                    title: '代理商'
                 },
                 {
                     data: 'departmentLevel',
                     title: '代理商等级'
                 },
                 {
-                    data: 'webPrice',
-                    title: 'web售价'
-                },
-                {
                     data: 'salePrice',
                     title: '出厂价'
                 },
                 {
-                    data: 'webSaleCount',
-                    title: 'web销量'
+                    data: 'wechatPrice',
+                    title: '微信售价'
+                },
+                {
+                    data: 'webPrice',
+                    title: 'web售价'
                 },
                 {
                     data: 'wechatSaleCount',
                     title: '微信销量'
                 },
+
+                {
+                    data: 'webSaleCount',
+                    title: 'web销量'
+                },
+
                 {
                     data: 'netIncome',
                     title: '网上收益'
@@ -87,13 +87,15 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                 {
                     data: 'settled',
                     title: '已结算'
-                },
+                }
+                ,
                 {
-                    data: 'settled',
+                    data: 'detail',
                     title: '详情'
-                },
+                }
+                ,
                 {
-                    data: 'settled',
+                    data: 'detail',
                     title: '操作'
                 }
             ];
@@ -140,9 +142,22 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [10],
+                    "aTargets": [10]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [11],
                     "render": function (data, type, row) {
-                        return '<button type="button">结算记录</button>';
+
+                        return '<a href="javascript:void(0);" class="btn btn-links"  onclick=\"shareIncome('+ row.departmentCode +')\">结算记录</a>';
+                    }
+
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [12],
+                    "render": function (data, type, row) {
+                        return '<a href="javascript:void(0);" class="btn btn-links" departmentCode="'+ row.departmentCode +'" departmentName="'+ row.departmentName +'" wechatPrice="'+ row.wechatPrice +'" webPrice="'+ row.webPrice +'" wechatSaleCount="'+ row.wechatSaleCount +'" webSaleCount="'+ row.webSaleCount +'" notSettled="'+ row.notSettled +'"  onclick=\"settlement(this)\">结算</a>';
                     }
                 }
             ];
@@ -155,23 +170,121 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
             });
             TableInstance.init();
         }
+        window.shareIncome = function(id){
+            $.get('../tmpl/earningsManager/earningsManager.html', function (tmpl) {
+                require('sea-modules/jquery/dialog/jquery.dialog');
+                $("#earningsManager_dialog").dialog({
+                    title: "结算记录详情",
+                    tmpl: tmpl,
+                    onClose: function () {
+                        $("#earningsManager_dialog").dialog("destroy");
+                    },
+                    render: function () {
+                        $.ajax({
+                            type: 'GET',
+                            url: UrlConfig.querySettlementRecordsByDepartmentCode + '?token=' + token,
+                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                            data: {
+                                departmentCode: id,
+                            },
+                            dataType: 'json',
+                            success: function (data) {
+                                console.log(data);
+                                var list = '';
+                                var dataList = data.bizData.list;
+                                for (var i = 0; i < dataList.length; i++) {
+                                    list += '<tr><td class="center">' + timeFomate(dataList[i].requestTime) + '</td><td class="center">' + dataList[i].money + '</td></tr>'
+                                }
+                                $('#earningsManager-list').append(list);
+                            },
+                            beforeSend: function (xhr) {
+                            },
+                            error: function (data) {
+
+                            }
+                        });
+                    },
+
+                    buttons: [
+
+                        {
+                            text: "取消",
+                            'class': "btn btn-primary",
+                            click: function () {
+                                $("#earningsManager_dialog").dialog("destroy");
+                            }
+                        }]
+                });
+            })
+        };
 
 
-        //ajaxFun.get(UrlConfig.getProvinceList, function (res) {
-        //    var optionList = '<option value="">所在地</option>';
-        //    res.bizData.forEach(function (v) {
-        //        optionList += '<option value="' + v.simpleCode + '">' + v.name + '</option>'
-        //    });
-        //    $('#selectArea').html(optionList);
-        //});
-        //$(document).on('click', '#monitoredSearch', function () {
-        //    var numberOrCard = $('#phoneOrVipNumber').val();
-        //    var selectArea = $('#selectArea').val();
-        //    var statusType = $('#statusType').val();
-        //    var activityStatus = $('#activityStatusSelect').val();
-        //    var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
-        //    getMonitoredList(link);
-        //});
+
+        window.settlement = function(obj){
+            $.get('../tmpl/earningsManager/settlementManager.html', function (tmpl) {
+                require('sea-modules/jquery/dialog/jquery.dialog');
+                $("#settlement_dialog").dialog({
+                    title: "结算记录详情",
+                    tmpl: tmpl,
+                    onClose: function () {
+                        $("#settlement_dialog").dialog("destroy");
+                    },
+                    render: function () {
+                        $('.departmentName').text($(obj).attr('departmentName'));
+                        $('.wechatPrice').text($(obj).attr('wechatPrice'));
+                        $('.webPrice').text($(obj).attr('webPrice'));
+                        $('.wechatSaleCount').text($(obj).attr('wechatSaleCount'));
+                        $('.webSaleCount').text($(obj).attr('webSaleCount'));
+                        $('.notSettled').text($(obj).attr('notSettled'));
+                    },
+
+                    buttons: [
+                        {
+                            text: "确定结算",
+                            'class': "btn btn-primary",
+                            click: function () {
+                                var selNoOutboundArr = [];
+                                $('.selNoOutbound[type="radio"]:checked').each(function () {
+                                    selNoOutboundArr.push($(this).attr('data-id'));
+                                });
+                                var money = $('#money').val();
+                                $.ajax({
+                                    type: 'POST',
+                                    url: UrlConfig.settlementByDepartmentCode,
+                                    contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                                    data: {
+                                        departmentCode: selNoOutboundArr.join(","),
+                                        money:money
+                                    },
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        console.log(data)
+
+                                        //if(data.rtnCode=="0000000"){
+                                        //    console.log(data);
+                                        //    getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
+                                        //    $("#settlement_dialog").dialog("destroy");
+                                        //}
+
+                                    },
+                                    beforeSend: function (xhr) {
+                                    },
+                                    error: function (data) {
+                                    }
+                                });
+                            }
+                        },
+                        {
+                            text: "取消",
+                            'class': "btn btn-primary",
+                            click: function () {
+                                $("#settlement_dialog").dialog("destroy");
+                            }
+                        }]
+                });
+            })
+        };
+
 
 
     }
