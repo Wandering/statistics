@@ -165,7 +165,7 @@ public class OrderController {
 
         Map<String, Object> condition = new HashMap<>();
         condition.put("groupOp", "and");
-        condition.put("sendUserId", new SearchField("departmentCode", "=", departmentCode));
+        condition.put("departmentCode", new SearchField("departmentCode", "=", departmentCode));
 
         List<SettlementRecord> records = settlementRecordService.queryPage(
                 condition,
