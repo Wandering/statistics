@@ -1,3 +1,4 @@
+
 define(function (require, exports, module) {
     module.exports = function () {
         // ============  代理商收益管理
@@ -312,7 +313,9 @@ define(function (require, exports, module) {
                         $(".modal-dialog").css('width','60%');
                         getSettleList(UrlConfig.querySettlementRecordsByDepartmentCode + '?departmentCode='+ id +'&token=' + token)
                     },
+
                     buttons: [
+
                         {
                             text: "取消",
                             'class': "btn btn-primary",
@@ -343,7 +346,6 @@ define(function (require, exports, module) {
                         $('.webSaleCount').text($(obj).attr('webSaleCount'));
                         $('.notSettled').text($(obj).attr('notSettled'));
                     },
-
                     buttons: [
                         {
                             text: "确定结算",

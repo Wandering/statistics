@@ -1,3 +1,4 @@
+
 define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
     module.exports = function () {
         // ============  代理商收益管理
@@ -312,7 +313,9 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                         $(".modal-dialog").css('width','60%');
                         getSettleList(UrlConfig.querySettlementRecordsByDepartmentCode + '?departmentCode='+ id +'&token=' + token)
                     },
+
                     buttons: [
+
                         {
                             text: "取消",
                             'class': "btn btn-primary",
@@ -343,7 +346,6 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                         $('.webSaleCount').text($(obj).attr('webSaleCount'));
                         $('.notSettled').text($(obj).attr('notSettled'));
                     },
-
                     buttons: [
                         {
                             text: "确定结算",
