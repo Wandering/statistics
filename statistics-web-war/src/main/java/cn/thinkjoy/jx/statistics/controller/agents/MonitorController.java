@@ -98,7 +98,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
 
     @ResponseBody
     @RequestMapping(value = "/errorChart")
-    public List<MonitorPojo> errorChart(HttpServletRequest request,@RequestParam("startDate") String startDate,@RequestParam("endDate") String endDate){
+    public List<MonitorPojo> errorChart(HttpServletRequest request,@RequestParam("dateStart") String startDate,@RequestParam("dateEnd") String endDate){
         if(StringUtils.isEmpty(startDate) && StringUtils.isEmpty(endDate)){
             throw new BizException("error","查询时间不能为空");
         }

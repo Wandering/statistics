@@ -66,7 +66,7 @@
 
     <!-- 根据部门编号查询未发货的订单个数 -->
     <select id="getNotSendCountByDepartCode" parameterType="long" resultType="Integer">
-        select count(*) from zgk_order
+        select sum(goods_count) from zgk_order
         where status = 1
         <if test="departmentCode != -1">
             and department_code = #{departmentCode}
@@ -141,7 +141,7 @@
     <!-- 根据地区查询用户总收益的个数 -->
     <select id="getCountByAreaCodeAndAccount" parameterType="map" resultType="Integer">
     select
-        count(*)
+        count(t0.user_id)
     from
         zgk_split_price t0 ,
         zgk_user_info t1
@@ -160,6 +160,8 @@
             and t0.user_phone = #{account}
         </if>
         and type = 1
+        GROUP BY
+        t0.user_id
     </select>
 
     <!-- 根据用户ID查询用户收益详情 -->
