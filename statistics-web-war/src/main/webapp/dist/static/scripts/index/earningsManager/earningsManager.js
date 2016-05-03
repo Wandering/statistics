@@ -1,11 +1,6 @@
 define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
     module.exports = function () {
         // ============  代理商收益管理
-
-        alert(22)
-
-
-
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
@@ -18,41 +13,122 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         var UrlConfig = require('static/scripts/index/common/urlConfig');
 
 
-        $.getJSON(UrlConfig.getAllAreaInfo, function (res) {
-            console.log(res)
-            for (var i = 0; i < res.bizData.length; i++) {
-                $('#dep_provinces').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].provinceName + '</option>')
+        var Area = {
+            data:[],
+            cityData: [],
+            countyData: [],
+            init: function() {
+                this.getData();
+                var that = this;
+                $('#agentIncome-select-province').on('change', function() {
+                    var provinceId = $(this).val();
+                    that.cityData = that.getCity(provinceId);
+                    that.renderCity(that.render(that.cityData));
+                    var cityId =  $('#agentIncome-select-city').val();
+                    that.countyData = that.getCounty(cityId);
+                    that.renderCounty(that.render(that.countyData));
+                });
+                $('#agentIncome-select-city').on('change', function() {
+                    var cityId = $(this).val();
+                    that.countyData = that.getCounty(cityId);
+                    that.renderCounty(that.render(that.countyData));
+                });
+            },
+
+            getData: function() {
+                var that = this;
+                $.getJSON(UrlConfig.getAllAreaInfo, function (res) {
+                    that.data = res.bizData;
+                    that.renderProvince(that.render(that.data));
+
+                    var provinceId = $('#agentIncome-select-province').val();
+                    that.cityData = that.getCity(provinceId);
+
+
+                    that.renderCity(that.render(that.cityData));
+                    var cityId =  $('#agentIncome-select-city').val();
+                    that.countyData = that.getCounty(cityId);
+
+                    that.renderCounty(that.render(that.countyData));
+                });
+            },
+
+            renderProvince: function(html) {
+                html = '<option value="00">请选择省</option>' + html;
+                $('#agentIncome-select-province').html(html);
+            },
+
+            getCity: function(provinceId) {
+                for (var i = 0, len = this.data.length; i < len; i++) {
+                    if (this.data[i].areaId == provinceId) {
+                        return this.data[i].childList;
+                    }
+                }
+                return [];
+            },
+            renderCity: function(html) {
+                html = '<option value="00">请选择市</option>' + html;
+                $('#agentIncome-select-city').html(html);
+            },
+            getCounty: function(cityId) {
+                for (var i = 0, len = this.cityData.length; i < len; i++) {
+                    if (this.cityData[i].areaId == cityId) {
+                        return this.cityData[i].childList;
+                    }
+                }
+                return [];
+            },
+
+            renderCounty: function(html) {
+                html = '<option value="00">请选择区县</option>' + html;
+                $('#agentIncome-select-district').html(html);
+            },
+
+            render: function(data) {
+                var html = [];
+                for (var i = 0,len = data.length; i < len; i++) {
+                    html.push('<option value="' + data[i].areaId + '">' + data[i].areaName + '</option>');
+                }
+                return html.join('');
             }
+        };
+        Area.init();
+
+
+
+
+
+
+
+
+
+        // 查询事件
+        $('#earningsManagerSearch').on('click',function(){
+            var areaCode = '';
+            var areaType = '';
+            var agentIncomeSelectProvinceV = $('#agentIncome-select-province option:selected').val();
+            var agentIncomeSelectCityV = $('#agentIncome-select-city option:selected').val();
+            var agentIncomeSelectDistrictV = $('#agentIncome-select-district option:selected').val();
+
+            if(agentIncomeSelectProvinceV=="00" && agentIncomeSelectCityV=="00" && agentIncomeSelectDistrictV=="00"){
+                areaCode = "-1";
+                areaType = "-1";
+            }else if(agentIncomeSelectProvinceV!="00" && agentIncomeSelectCityV=="00" && agentIncomeSelectDistrictV=="00"){
+                areaCode = agentIncomeSelectProvinceV;
+                areaType = "1";
+            }else if(agentIncomeSelectCityV!="00" && agentIncomeSelectCityV!="00" && agentIncomeSelectDistrictV=="00"){
+                areaCode = shareSelectCityV;
+                areaType = "2";
+            }else if(agentIncomeSelectProvinceV!="00" && agentIncomeSelectCityV!="00" && agentIncomeSelectDistrictV!="00"){
+                areaCode = agentIncomeSelectDistrictV;
+                areaType = "3";
+            }
+
+            getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode="+ areaCode +"&areaType="+ areaType +"&token=" + token);
         });
-        //
-        //
-        //$.getJSON(UrlConfig.findCityList, function (res) {
-        //    console.log(res)
-        //    for (var i = 0; i < res.bizData.length; i++) {
-        //        $('#dep_city').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].cityName + '</option>')
-        //    }
-        //});
-        //
-        //
-        //$.getJSON(UrlConfig.findCountyList, function (res) {
-        //    console.log(res)
-        //    for (var i = 0; i < res.bizData.length; i++) {
-        //        $('#dep_county').append('<option value="' + res.bizData[i].id + '">' + res.bizData[i].countyName + '</option>')
-        //    }
-        //});
 
 
-
-
-
-
-
-
-
-        //var areaCode = $('#orderType option:selected').val();
-
-
-        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
+        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&token=" + token);
         function getRecordList(url) {
             var col = [
                 {
@@ -183,6 +259,45 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
             });
             TableInstance.init();
         }
+
+
+        function getSettleList(url) {
+            var col = [
+                {
+                    data: 'requestTime',
+                    title: '日期'
+                },
+                {
+                    data: 'money',
+                    title: '已结算金额'
+                }
+            ];
+            var columnDefs = [
+                {
+                    "sClass": "center",
+                    "aTargets": [0]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [1]
+                }
+            ];
+
+            var TableInstance = Table({
+                columns: col,
+                tableContentId: 'earningsManager_form',
+                tableId: (+new Date()) + '_table_body',
+                sAjaxSource: url,
+                columnDefs: columnDefs
+            });
+            TableInstance.init();
+        }
+
+
+
+
+
+
         window.shareIncome = function(id){
             $.get('../tmpl/earningsManager/earningsManager.html', function (tmpl) {
                 require('sea-modules/jquery/dialog/jquery.dialog');
@@ -193,33 +308,11 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                         $("#earningsManager_dialog").dialog("destroy");
                     },
                     render: function () {
-                        $.ajax({
-                            type: 'GET',
-                            url: UrlConfig.querySettlementRecordsByDepartmentCode + '?token=' + token,
-                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                            data: {
-                                departmentCode: id,
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                                var list = '';
-                                var dataList = data.bizData.list;
-                                for (var i = 0; i < dataList.length; i++) {
-                                    list += '<tr><td class="center">' + timeFomate(dataList[i].requestTime) + '</td><td class="center">' + dataList[i].money + '</td></tr>'
-                                }
-                                $('#earningsManager-list').append(list);
-                            },
-                            beforeSend: function (xhr) {
-                            },
-                            error: function (data) {
 
-                            }
-                        });
+                        $(".modal-dialog").css('width','60%');
+                        getSettleList(UrlConfig.querySettlementRecordsByDepartmentCode + '?departmentCode='+ id +'&token=' + token)
                     },
-
                     buttons: [
-
                         {
                             text: "取消",
                             'class': "btn btn-primary",
@@ -232,8 +325,8 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         };
 
 
-
         window.settlement = function(obj){
+            console.log($(obj).attr('departmentCode'))
             $.get('../tmpl/earningsManager/settlementManager.html', function (tmpl) {
                 require('sea-modules/jquery/dialog/jquery.dialog');
                 $("#settlement_dialog").dialog({
@@ -256,28 +349,20 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                             text: "确定结算",
                             'class': "btn btn-primary",
                             click: function () {
-                                var selNoOutboundArr = [];
-                                $('.selNoOutbound[type="radio"]:checked').each(function () {
-                                    selNoOutboundArr.push($(this).attr('data-id'));
-                                });
                                 var money = $('#money').val();
                                 $.ajax({
                                     type: 'POST',
                                     url: UrlConfig.settlementByDepartmentCode,
                                     contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                                     data: {
-                                        departmentCode: selNoOutboundArr.join(","),
-                                        money:money
+                                        departmentCode: $(obj).attr('departmentCode'),
+                                        money:money,
+                                        type:1
                                     },
                                     dataType: 'json',
                                     success: function (data) {
-                                        console.log(data)
-
-                                        //if(data.rtnCode=="0000000"){
-                                        //    console.log(data);
-                                        //    getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
-                                        //    $("#settlement_dialog").dialog("destroy");
-                                        //}
+                                        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
+                                        $("#settlement_dialog").dialog("destroy");
 
                                     },
                                     beforeSend: function (xhr) {

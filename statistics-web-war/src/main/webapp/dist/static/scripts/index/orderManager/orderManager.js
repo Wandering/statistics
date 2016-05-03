@@ -15,8 +15,14 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
 
+        $.getJSON(UrlConfig.checkLogin, function (res) {
+            console.log(res)
+            if(res.roleType=="1"){
+                $('#table_contentOverview').hide();
+            }
+        });
 
-
+        // 总览
         var colOverview = [{
             data: 'id',
             title: ''
@@ -129,8 +135,7 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
             var phoneNum = $('#phoneNum').val();
             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
             if(orderType=="0"){
-                //willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
-                willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
+                willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
                 // 全选
                 $('#selectall').on('click', function () {
                     var that = this;
@@ -149,7 +154,7 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                     }
                 };
             }else{
-                willOutputAlready(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
+                willOutputAlready(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
             }
         });
         function willOutput(url) {
@@ -182,7 +187,6 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                 "sClass": "center",
                 "sWidth": "30px",
                 "render": function (data, type, row) {
-                    console.log(data)
                     return '<input class="selNoOutbound" onclick="clickChecked()" type="checkbox"  data-id="' + data + '"  />';
                 },
                 "aTargets": [0]
@@ -218,6 +222,9 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
             });
             TableInstance.init();
         }
+
+
+
 
         function willOutputAlready(url) {
             var col = [{
@@ -374,15 +381,5 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
         require.async(['static/scripts/index/renderResource'], function (resource) {
             resource(ButtonEvent, token);
         });
-
-
-
-
-
-
-
-
-
-
     }
 });

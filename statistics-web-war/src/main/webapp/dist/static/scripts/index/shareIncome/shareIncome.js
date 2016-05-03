@@ -1,6 +1,5 @@
 define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
     module.exports = function () {
-        alert(8)
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
@@ -11,6 +10,115 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
         var Table = require('static/scripts/index/datatable');
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
+
+        var Area = {
+            data:[],
+            cityData: [],
+            countyData: [],
+            init: function() {
+                this.getData();
+                var that = this;
+                $('#share-select-province').on('change', function() {
+                    var provinceId = $(this).val();
+                    that.cityData = that.getCity(provinceId);
+                    that.renderCity(that.render(that.cityData));
+                    var cityId =  $('#share-select-city').val();
+                    that.countyData = that.getCounty(cityId);
+                    that.renderCounty(that.render(that.countyData));
+                });
+                $('#share-select-city').on('change', function() {
+                    var cityId = $(this).val();
+                    that.countyData = that.getCounty(cityId);
+                    that.renderCounty(that.render(that.countyData));
+                });
+            },
+
+            getData: function() {
+                var that = this;
+                $.getJSON(UrlConfig.getAllAreaInfo, function (res) {
+                    that.data = res.bizData;
+                    that.renderProvince(that.render(that.data));
+
+                    var provinceId = $('#share-select-province').val();
+                    that.cityData = that.getCity(provinceId);
+
+
+                    that.renderCity(that.render(that.cityData));
+                    var cityId =  $('#share-select-city').val();
+                    that.countyData = that.getCounty(cityId);
+
+                    that.renderCounty(that.render(that.countyData));
+                });
+            },
+
+            renderProvince: function(html) {
+                html = '<option value="00">请选择省</option>' + html;
+                $('#share-select-province').html(html);
+            },
+
+            getCity: function(provinceId) {
+                for (var i = 0, len = this.data.length; i < len; i++) {
+                    if (this.data[i].areaId == provinceId) {
+                        return this.data[i].childList;
+                    }
+                }
+                return [];
+            },
+            renderCity: function(html) {
+                html = '<option value="00">请选择市</option>' + html;
+                $('#share-select-city').html(html);
+            },
+            getCounty: function(cityId) {
+                for (var i = 0, len = this.cityData.length; i < len; i++) {
+                    if (this.cityData[i].areaId == cityId) {
+                        return this.cityData[i].childList;
+                    }
+                }
+                return [];
+            },
+
+            renderCounty: function(html) {
+                html = '<option value="00">请选择区县</option>' + html;
+                $('#share-select-district').html(html);
+            },
+
+            render: function(data) {
+                var html = [];
+                for (var i = 0,len = data.length; i < len; i++) {
+                    html.push('<option value="' + data[i].areaId + '">' + data[i].areaName + '</option>');
+                }
+                return html.join('');
+            }
+        };
+        Area.init();
+
+
+
+        // 查询事件
+        $('#shareManagerSearch').on('click',function(){
+            var areaCode = '';
+            var areaType = '';
+            var shareSelectProvinceV = $('#share-select-province option:selected').val();
+            var shareSelectCityV = $('#share-select-city option:selected').val();
+            var shareSelectDistrictV = $('#share-select-district option:selected').val();
+
+            if(shareSelectProvinceV=="00" && shareSelectCityV=="00" && shareSelectDistrictV=="00"){
+                areaCode = "-1";
+                areaType = "-1";
+            }else if(shareSelectProvinceV!="00" && shareSelectCityV=="00" && shareSelectDistrictV=="00"){
+                areaCode = shareSelectProvinceV;
+                areaType = "1";
+            }else if(shareSelectProvinceV!="00" && shareSelectCityV!="00" && shareSelectDistrictV=="00"){
+                areaCode = shareSelectCityV;
+                areaType = "2";
+            }else if(shareSelectProvinceV!="00" && shareSelectCityV!="00" && shareSelectDistrictV!="00"){
+                areaCode = shareSelectDistrictV;
+                areaType = "3";
+            }
+            var account = $.trim($('#account-txt').val());
+
+            getEarningsList(UrlConfig.queryAllUserIncome+"?areaCode="+ areaCode +"&areaType="+ areaType +"&account="+ account +"&token="+token);
+        });
 
         getEarningsList(UrlConfig.queryAllUserIncome+"?areaCode=-1&areaType=-1&account=&token="+token);
         function getEarningsList(url) {
@@ -108,6 +216,7 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                     "sClass": "center",
                     "aTargets": [10],
                     "render": function (data, type, row) {
+                        console.log(row)
                         return '<button type="button" class="btn btn-info"  onclick=\"settlement('+ row.userId +')\">结算</button>';
                     }
                 }
@@ -123,6 +232,127 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
             TableInstance.init();
         }
 
+
+
+
+
+
+
+        function getSettleList(url) {
+            var col = [
+                {
+                    data: 'requestTime',
+                    title: '日期'
+                },
+                {
+                    data: 'money',
+                    title: '已结算金额'
+                }
+            ];
+            var columnDefs = [
+                {
+                    "sClass": "center",
+                    "aTargets": [0]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [1]
+                }
+            ];
+
+            var TableInstance = Table({
+                columns: col,
+                tableContentId: 'shareIncomeManager_form',
+                tableId: (+new Date()) + '_table_body',
+                sAjaxSource: url,
+                columnDefs: columnDefs
+            });
+            TableInstance.init();
+        }
+
+
+
+
+
+        function getShareIncomeDetailList(url) {
+            var col = [
+                {
+                    data: 'orderNo',
+                    title: '订单编号'
+                },
+                {
+                    data: 'phoneNum',
+                    title: '购买者账号'
+                },
+                {
+                    data: 'userName',
+                    title: '购买者姓名'
+                },
+                {
+                    data: 'createDate',
+                    title: '购买时间'
+                },
+                {
+                    data: 'goodsCount',
+                    title: '购买数量'
+                },
+                {
+                    data: 'rewardLevel',
+                    title: '奖励类型'
+                },
+                {
+                    data: 'rewardMoney',
+                    title: '奖励总金额'
+                }
+            ];
+            var columnDefs = [
+                {
+                    "sClass": "center",
+                    "aTargets": [0]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [1]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [2]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [3]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [4]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [5]
+                },
+                {
+                    "sClass": "center",
+                    "aTargets": [6]
+                }
+            ];
+
+            var TableInstance = Table({
+                columns: col,
+                tableContentId: 'shareIncomeDetailManager_form',
+                tableId: (+new Date()) + '_table_body',
+                sAjaxSource: url,
+                columnDefs: columnDefs
+            });
+            TableInstance.init();
+        }
+
+
+
+
+
+
+
+
         window.shareIncome = function(id){
             $.get('../tmpl/shareIncome/shareIncome.html', function (tmpl) {
                 require('sea-modules/jquery/dialog/jquery.dialog');
@@ -133,66 +363,10 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                         $("#shareIncome_dialog").dialog("destroy");
                     },
                     render: function () {
-                        $.ajax({
-                            type: 'GET',
-                            url: UrlConfig.querySettlementRecordsByDepartmentCode + '?token=' + token,
-                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                            data: {
-                                departmentCode: id,
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                                var list = '';
-                                var dataList = data.bizData.list;
-                                for (var i = 0; i < dataList.length; i++) {
-                                    list += '<tr><td class="center">' + timeFomate(dataList[i].requestTime) + '</td><td class="center">' + dataList[i].money + '</td></tr>'
-                                }
-                                $('#shareIncome-list').append(list);
-                            },
-                            beforeSend: function (xhr) {
-                            },
-                            error: function (data) {
-
-                            }
-                        });
+                        $(".modal-dialog").css('width','60%');
+                        getSettleList(UrlConfig.querySettlementRecordsByDepartmentCode + '?departmentCode='+ id +'&token=' + token)
                     },
                     buttons: [
-                        {
-                            text: "确定结算",
-                            'class': "btn btn-primary",
-                            click: function () {
-                                var selNoOutboundArr = [];
-                                $('.selNoOutbound[type="radio"]:checked').each(function () {
-                                    selNoOutboundArr.push($(this).attr('data-id'));
-                                });
-                                var money = $('#money').val();
-                                $.ajax({
-                                    type: 'POST',
-                                    url: UrlConfig.settlementByDepartmentCode,
-                                    contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                                    data: {
-                                        departmentCode: selNoOutboundArr.join(","),
-                                        money:money
-                                    },
-                                    dataType: 'json',
-                                    success: function (data) {
-                                        console.log(data)
-
-                                        //if(data.rtnCode=="0000000"){
-                                        //    console.log(data);
-                                        //    getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
-                                        //    $("#settlement_dialog").dialog("destroy");
-                                        //}
-
-                                    },
-                                    beforeSend: function (xhr) {
-                                    },
-                                    error: function (data) {
-                                    }
-                                });
-                            }
-                        },
                         {
                             text: "取消",
                             'class': "btn btn-primary",
@@ -204,7 +378,6 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
             })
         };
 
-
         window.shareIncomeDetail = function(id){
             $.get('../tmpl/shareIncome/shareIncomeDetail.html', function (tmpl) {
                 require('sea-modules/jquery/dialog/jquery.dialog');
@@ -215,29 +388,8 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                         $("#shareIncomeDetail_dialog").dialog("destroy");
                     },
                     render: function () {
-                        $.ajax({
-                            type: 'GET',
-                            url: UrlConfig.querySettlementRecordsByDepartmentCode + '?token=' + token,
-                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                            data: {
-                                departmentCode: id,
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                                var list = '';
-                                var dataList = data.bizData.list;
-                                for (var i = 0; i < dataList.length; i++) {
-                                    list += '<tr><td class="center">' + timeFomate(dataList[i].requestTime) + '</td><td class="center">' + dataList[i].money + '</td></tr>'
-                                }
-                                $('#shareIncome-list').append(list);
-                            },
-                            beforeSend: function (xhr) {
-                            },
-                            error: function (data) {
-
-                            }
-                        });
+                        $(".modal-dialog").css('width','80%');
+                        getShareIncomeDetailList(UrlConfig.queryUserIncomeDetailByUserId + '?userId='+ id +'&token=' + token)
                     },
                     buttons: [
                         {
@@ -263,36 +415,12 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                         $("#settlement_dialog").dialog("destroy");
                     },
                     render: function () {
-                        $.ajax({
-                            type: 'GET',
-                            url: UrlConfig.querySettlementRecordsByDepartmentCode + '?token=' + token,
-                            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
-                            data: {
-                                departmentCode: id,
-                            },
-                            dataType: 'json',
-                            success: function (data) {
-                                console.log(data);
-                                var list = '';
-                                var dataList = data.bizData.list;
-                                for (var i = 0; i < dataList.length; i++) {
-                                    list += '<tr><td class="center">' + timeFomate(dataList[i].requestTime) + '</td><td class="center">' + dataList[i].money + '</td></tr>'
-                                }
-                                $('#shareIncome-list').append(list);
-                            },
-                            beforeSend: function (xhr) {
-                            },
-                            error: function (data) {
-
-                            }
-                        });
                     },
                     buttons: [
                         {
                             text: "确定结算",
                             'class': "btn btn-primary",
                             click: function () {
-
                                 var money = $('#money').val();
                                 $.ajax({
                                     type: 'POST',
@@ -300,7 +428,8 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                                     contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                                     data: {
                                         departmentCode: id,
-                                        money:money
+                                        money:money,
+                                        type:2
                                     },
                                     dataType: 'json',
                                     success: function (data) {

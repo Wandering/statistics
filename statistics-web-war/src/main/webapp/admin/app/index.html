@@ -505,8 +505,39 @@
 
 <!--data-monitored数据监控-->
 <script type="text/html" id="dataMonitored">
+
+
+
     <div class="tile-body transparent rounded-corners">
+
         <section class="tile transparent grid pd30">
+
+            <div class="form-inline" id="form_search">
+                <div class="control-group date-condition">
+                    <div class="col-xs-12">
+                        <label class="control-label">时间</label>
+                        <button type="button" class="btn btn-default btn-primary" id="recently_7">最近7日</button>
+                        <button type="button" class="btn btn-default" id="recently_30">最近30日</button>
+                        <button type="button" class="btn btn-default" id="defined">自定义时间</button>
+                    </div>
+                    <div class="col-xs-12">
+                        <label class="control-label">开始时间:</label>
+                        <input size="16" type="text" readonly class="form_date" id="start_date">
+                    </div>
+                    <div class="col-xs-12">
+                        <label class="control-label">结束时间:</label>
+                        <input size="16" type="text" readonly class="form_date" id="end_date">
+                    </div>
+                    <span id="date_error_tip" style="margin-left:10px;color:#f00"></span>
+                </div>
+            </div>
+            <div class="chart-content">
+                <div class="chart" id="myChart"></div>
+            </div>
+
+
+
+
             <form class="form-inline">
                 <p class="color-white">用户数据明细：</p>
                 <div class="form-group">
@@ -559,11 +590,15 @@
                 <p class="color-white">代理商收益：</p>
 
                 <div class="form-group">
-                    <select id="dep_provinces" class="form-control input-sm form-w180">
+                    <select id="agentIncome-select-province" class="form-control input-sm form-w180">
                     </select>
                 </div>
                 <div class="form-group">
-                    <select id="" class="form-control input-sm form-w180">
+                    <select id="agentIncome-select-city" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="agentIncome-select-district" class="form-control input-sm form-w180">
                     </select>
                 </div>
                 <div class="form-group">
@@ -601,15 +636,18 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <input type="text" class="form-control input-sm form-w180" id="account-txt" placeholder="输入账号查询">
+                </div>
+                <div class="form-group">
                     <div class="btn btn-sm btn-primary" id="shareManagerSearch">查询</div>
                 </div>
             </form>
             <div class="table-responsive" id="shareManagerContent">
-
             </div>
         </section>
     </div>
 </script>
+
 
 
 

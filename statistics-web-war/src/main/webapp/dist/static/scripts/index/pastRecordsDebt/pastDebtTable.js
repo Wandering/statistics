@@ -3,6 +3,7 @@
  */
 define('static/scripts/index/pastRecordsDebt/pastDebtTable', [], function(require, exports, module) {
 
+
     module.exports = function(dateDay) {
         require.async(['static/scripts/index/common/businessTable','static/scripts/index/common/columsCommon1'], function(businessTable, tableModel) {
             businessTable({
@@ -16,4 +17,7 @@ define('static/scripts/index/pastRecordsDebt/pastDebtTable', [], function(requir
             });
         });
     };
+
+
+
 });

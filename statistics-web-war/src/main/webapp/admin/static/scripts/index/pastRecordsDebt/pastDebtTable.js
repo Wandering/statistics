@@ -3,6 +3,7 @@
  */
 define(function(require, exports, module) {
 
+
     module.exports = function(dateDay) {
         require.async(['../common/businessTable', '../common/columsCommon1'], function(businessTable, tableModel) {
             businessTable({
@@ -16,4 +17,7 @@ define(function(require, exports, module) {
             });
         });
     };
+
+
+
 });
