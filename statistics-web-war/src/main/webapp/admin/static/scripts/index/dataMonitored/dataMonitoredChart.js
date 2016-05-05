@@ -208,9 +208,14 @@ define(function(require, exports, module) {
         Controller.init({
             url: UrlConfig.getErrorChart,
             handle: function(param) {
-                console.log(param)
-                getMonitoredList(UrlConfig.getFindCard+"?errorStatus=1&errorDate="+param.name);
                 $('#chartsTxt').text(param.seriesName + ":" + param.data)
+                var numberOrCard = $('#phoneOrVipNumber').val();
+                var selectArea = $('#selectArea option:selected').val();
+                $('#statusType option[value="1"]').attr('selected',true);
+                $('#activityStatusSelect option[value="1"]').attr('selected',true);
+                var endDate = (Tool.timeFormat(new Date(+new Date(param.name) + 24 * 60 * 60 * 1000), 'yyyy-MM-dd'));
+                var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=1&activityStatus=1&startDate='+param.name + "&endDate="+endDate;
+                getMonitoredList(link);
             },
             legendData: [],
             data: function(bizData) {
@@ -316,13 +321,8 @@ define(function(require, exports, module) {
         });
         $('#selectArea').html(optionList);
     });
-    $(document).on('click', '#monitoredSearch', function () {
-        var numberOrCard = $('#phoneOrVipNumber').val();
-        var selectArea = $('#selectArea').val();
-        var statusType = $('#statusType').val();
-        var activityStatus = $('#activityStatusSelect').val();
-        var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
-        getMonitoredList(link);
-    });
+
+
+
 
 });
