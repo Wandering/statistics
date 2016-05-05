@@ -14,6 +14,9 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         var UrlConfig = require('static/scripts/index/common/urlConfig');
 
 
+
+
+
         var Area = {
             data:[],
             cityData: [],

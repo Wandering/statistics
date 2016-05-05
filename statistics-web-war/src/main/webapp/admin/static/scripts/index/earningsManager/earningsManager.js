@@ -14,6 +14,9 @@ define(function (require, exports, module) {
         var UrlConfig = require('../common/urlConfig');
 
 
+
+
+
         var Area = {
             data:[],
             cityData: [],

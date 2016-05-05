@@ -33,9 +33,15 @@ define(function (require, exports, module) {
         getGoodsMange: '/admin/agents?token=' + token + '&isOutput=false', //未出库
 
         /**
-         * 异常模块
+         * 默认异常模块
          */
         getMonitorsList: '/admin/monitors?token=' + token,
+
+
+        /**
+         * 异常模块
+         */
+        getFindCard: '/admin/findCard',
 
 
         /**

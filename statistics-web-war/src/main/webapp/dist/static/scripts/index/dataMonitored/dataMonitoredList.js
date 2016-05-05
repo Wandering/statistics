@@ -14,20 +14,8 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
 
-        require.async(['static/scripts/index/common/businessTable','static/scripts/index/dataMonitored/columsCommon1'], function(businessTable, tableModel) {
-            businessTable({
-                dateDay: dateDay,
-                url: {
-                    areaUrl: UrlConfig.getMonitorsList
-                },
-                tableModel: tableModel()
-            });
-        });
+        getMonitoredList(UrlConfig.getMonitorsList);
 
-
-
-
-        //getMonitoredList(UrlConfig.getMonitorsList);
         function getMonitoredList(url) {
             var col = [{
                 data: 'index',
@@ -115,6 +103,10 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
             var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
             getMonitoredList(link);
         });
+
+
+
+
 
 
     }
