@@ -103,11 +103,5 @@ define(function (require, exports, module) {
             var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
             getMonitoredList(link);
         });
-
-
-
-
-
-
     }
 });
