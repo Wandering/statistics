@@ -23,6 +23,7 @@ import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,14 +91,17 @@ public class OrderController {
     @ResponseBody
     @ApiDesc(value = "单个部门收益总览",owner = "杨国荣")
     @RequestMapping(value = "querySingleDepartmentIncome",method = RequestMethod.GET)
-    public OrderStatisticsPojo querySingleDepartmentIncome(HttpServletRequest request) {
+    public List<OrderStatisticsPojo> querySingleDepartmentIncome(HttpServletRequest request) {
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
         Department department = deparmentApiService.quertDepartmentInfoByCode(userPojo.getDepartmentCode());
         OrderStatisticsPojo pojo = exOrderService.querySingleDepartmentIncome(department);
-        return pojo;
+        //TODO 由于前段框架原因,此处返回集合对象
+        List<OrderStatisticsPojo> pojos = Lists.newArrayList();
+        pojos.add(pojo);
+        return pojos;
     }
 
     @ResponseBody
