@@ -77,7 +77,7 @@ define(function (require, exports, module) {
                     }
                     $.get('../tmpl/proportion/proportion.tmpl', function (tmpl) {
                         $("#setting_proportion").dialog({
-                            title: "设置代理商规则",
+                            title: "分成规则",
                             tmpl: tmpl,
                             onClose: function () {
                                 $("#setting_proportion").dialog("destroy");

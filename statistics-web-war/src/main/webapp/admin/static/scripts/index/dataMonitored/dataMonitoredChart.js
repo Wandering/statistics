@@ -87,6 +87,10 @@ define(function(require, exports, module) {
             }
         },
         SelectDateHandle: function() {
+
+
+
+
             var that = this;
             $('#recently_7').off('click');
             $('#recently_7').on('click', function(e) {
@@ -105,7 +109,7 @@ define(function(require, exports, module) {
                 that.getFixedTimeData(182);
                 $(this).addClass('btn-primary').siblings().removeClass('btn-primary');
                 that.clearDateRange();
-            })
+            });
             $('#defined').off('click');
             $('#defined').on('click', function(e) {
                 that.getSelectTimeData();
@@ -208,7 +212,6 @@ define(function(require, exports, module) {
         Controller.init({
             url: UrlConfig.getErrorChart,
             handle: function(param) {
-                $('#chartsTxt').text(param.seriesName + ":" + param.data)
                 var numberOrCard = $('#phoneOrVipNumber').val();
                 var selectArea = $('#selectArea option:selected').val();
                 $('#statusType option[value="1"]').attr('selected',true);
@@ -225,6 +228,11 @@ define(function(require, exports, module) {
                     xAxisData.push(bizData[i].date);
                     num.push(bizData[i].number);
                 }
+                console.log(num);
+                console.log(eval(num.join('+')));
+
+                $('#chartsTxt').text("已激活用户总数:"+eval(num.join('+'))+"人");
+
                 return {
                     xAxisData: xAxisData,
                     seriesData: [{
@@ -237,10 +245,6 @@ define(function(require, exports, module) {
             }
         })
     };
-
-
-
-
 
     function getMonitoredList(url) {
         var col = [{
