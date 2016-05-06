@@ -120,6 +120,10 @@ define('static/scripts/index/datatable', ['sea-modules/jquery/dataTables/jquery.
                             aaData: list
                         };
                         fnCallback(finallyData);
+
+
+
+
                     } else if ('0100014' === data.rtnCode || '0100015' === data.rtnCode || '0100022' === data.rtnCode || '0100023' === data.rtnCode) {
                         message({
                             title: '温馨提示',

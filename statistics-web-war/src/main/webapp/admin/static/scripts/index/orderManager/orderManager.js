@@ -17,88 +17,88 @@ define(function (require, exports, module) {
 
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res)
-            if(res.roleType=="1"){
-                $('#table_contentOverview').hide();
+            if(res.roleType!="1"){
+                // 总览
+                var colOverview = [{
+                    data: 'id',
+                    title: ''
+                }, {
+                    data: 'departmentName',
+                    title: '代理商'
+                }, {
+                    data: 'departmentLevel',
+                    title: '代理商层级'
+                }, {
+                    data: 'wechatPrice',
+                    title: '微信售价'
+                }, {
+                    data: 'webPrice',
+                    title: 'web售价'
+                }, {
+                    data: 'salePrice',
+                    title: '出厂价'
+                }, {
+                    data: 'wechatVolume',
+                    title: '微信销量'
+                }, {
+                    data: 'webVolume',
+                    title: 'web销量'
+                }, {
+                    data: 'netIncome',
+                    title: '网上收益'
+                }, {
+                    data: 'notSettled',
+                    title: '未结算'
+                }, {
+                    data: 'settled',
+                    title: '已结算'
+                }];
+                var columnDefsOverview = [{
+                    "bVisible": false,
+                    "aTargets": [0]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [1]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [2]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [3]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [4]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [5]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [6]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [7]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [8]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [9]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [10]
+                }];
+                var TableInstanceOverview = Table({
+                    columns: colOverview,
+                    tableContentId: 'table_contentOverview',
+                    tableId: (+new Date()) + '_table_body',
+                    columnDefs: columnDefsOverview,
+                    sAjaxSource: UrlConfig.querySingleDepartmentIncome
+                });
+                TableInstanceOverview.init();
             }
         });
 
-        // 总览
-        var colOverview = [{
-            data: 'id',
-            title: ''
-        }, {
-            data: 'departmentName',
-            title: '代理商'
-        }, {
-            data: 'departmentLevel',
-            title: '代理商层级'
-        }, {
-            data: 'wechatPrice',
-            title: '微信售价'
-        }, {
-            data: 'webPrice',
-            title: 'web售价'
-        }, {
-            data: 'salePrice',
-            title: '出厂价'
-        }, {
-            data: 'wechatVolume',
-            title: '微信销量'
-        }, {
-            data: 'webVolume',
-            title: 'web销量'
-        }, {
-            data: 'netIncome',
-            title: '网上收益'
-        }, {
-            data: 'notSettled',
-            title: '未结算'
-        }, {
-            data: 'settled',
-            title: '已结算'
-        }];
-        var columnDefsOverview = [{
-            "bVisible": false,
-            "aTargets": [0]
-        }, {
-            "sClass": "center",
-            "aTargets": [1]
-        }, {
-            "sClass": "center",
-            "aTargets": [2]
-        }, {
-            "sClass": "center",
-            "aTargets": [3]
-        }, {
-            "sClass": "center",
-            "aTargets": [4]
-        }, {
-            "sClass": "center",
-            "aTargets": [5]
-        }, {
-            "sClass": "center",
-            "aTargets": [6]
-        }, {
-            "sClass": "center",
-            "aTargets": [7]
-        }, {
-            "sClass": "center",
-            "aTargets": [8]
-        }, {
-            "sClass": "center",
-            "aTargets": [9]
-        }, {
-            "sClass": "center",
-            "aTargets": [10]
-        }];
-        var TableInstanceOverview = Table({
-            columns: colOverview,
-            tableContentId: 'table_contentOverview',
-            tableId: (+new Date()) + '_table_body',
-            columnDefs: columnDefsOverview,
-            sAjaxSource: UrlConfig.querySingleDepartmentIncome
-        });
-        TableInstanceOverview.init();
+
 
 
         $(document).on('click', '#order-tab-btn li', function () {
