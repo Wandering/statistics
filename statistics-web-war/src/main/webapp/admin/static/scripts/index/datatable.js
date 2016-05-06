@@ -139,7 +139,7 @@ define(function (require, exports, module) {
                         message({
                             msg: data.msg,
                             clickHandle: function () {
-                                window.location.href = 'http://setting.jx.xy189.cn/dist/app/login.html';
+                                window.location.href = 'http://agent.zhigaokao.cn/dist/app/login.html';
                             }
                         });
                         $('.modal-header .close').off('click');

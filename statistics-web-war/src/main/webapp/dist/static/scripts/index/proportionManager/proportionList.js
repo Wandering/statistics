@@ -84,9 +84,9 @@ define('static/scripts/index/proportionManager/proportionList', ['sea-modules/bo
                             },
                             render: function () {
                                 $.getJSON('/separateController/findSeparate?token=' + token, function (res) {
-                                    console.log(res)
-                                    $('#proportion-first').val(res.bizData.levelProfits1)
-                                    $('#proportion-second').val(res.bizData.levelProfits2)
+                                    console.log(res);
+                                    $('#proportion-first').val(res.bizData.levelProfits1);
+                                    $('#proportion-second').val(res.bizData.levelProfits2);
                                 });
                             },
                             buttons: [{
