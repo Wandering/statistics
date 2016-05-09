@@ -111,12 +111,20 @@
           sum(errorStatus) as status
         FROM
           zgk_user_account account
+          INNER JOIN zgk_user_info info ON account.id = info.id
           LEFT JOIN zgk_card card ON card.userId = account.id
         WHERE
           1=1
-          <if test="areaCode!=null">
-            AND card.goodsNumber like CONCAT(#{areaCode},'%')
-          </if>
+            <if test="provinceId!=null">
+                AND info.provinceId like CONCAT(#{provinceId},'%')
+            </if>
+            <if test="cityId!=null">
+                AND info.cityId like CONCAT(#{cityId},'%')
+            </if>
+
+            <if test="countyId!=null">
+                AND info.countyId  like CONCAT(#{countyId},'%')
+            </if>
           AND card.activeDate &gt; #{startDate}
           AND card.activeDate &lt; #{endDate}
         group by FROM_UNIXTIME(left(card.activeDate,10),"%Y-%m-%d")
