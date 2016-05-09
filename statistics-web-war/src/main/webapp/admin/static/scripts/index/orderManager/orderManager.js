@@ -17,6 +17,8 @@ define(function (require, exports, module) {
 
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res)
+            alert(res.roleType);
+
             if(res.roleType!="1"){
                 // 总览
                 var colOverview = [{
@@ -97,9 +99,6 @@ define(function (require, exports, module) {
                 TableInstanceOverview.init();
             }
         });
-
-
-
 
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
