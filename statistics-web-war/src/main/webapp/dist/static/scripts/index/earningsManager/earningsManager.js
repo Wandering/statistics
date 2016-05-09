@@ -12,7 +12,22 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         var Table = require('static/scripts/index/datatable');
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
+        function tip(ele, str) {
+            var errorLable = ele.find('p');
+            errorLable.html(str);
+            errorLable.show(500);
+            setTimeout(function () {
+                errorLable.hide(500);
+            }, 2000)
+        }
 
+        function tip2(ele, str) {
+            ele.html(str);
+            ele.show(500);
+            setTimeout(function () {
+                ele.hide(500);
+            }, 2000)
+        }
 
 
 
@@ -357,7 +372,20 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                             text: "确定结算",
                             'class': "btn btn-primary",
                             click: function () {
-                                var money = $('#money').val();
+
+                                var money = $.trim($('#money').val());
+
+                                if (money == "") {
+                                    tip2($('.form-error'), '请输入结算金额');
+                                    return;
+                                }
+
+                                if (!/^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/ig.test(money)) {
+                                    tip2($('.form-error'), '请输入正确的金额');
+                                    return;
+                                }
+
+
                                 $.ajax({
                                     type: 'POST',
                                     url: UrlConfig.settlementByDepartmentCode,
@@ -369,8 +397,15 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                                     },
                                     dataType: 'json',
                                     success: function (data) {
-                                        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
-                                        $("#settlement_dialog").dialog("destroy");
+
+                                        if (data.rtnCode == "0000000") {
+                                            getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
+                                            $("#settlement_dialog").dialog("destroy");
+                                        }
+                                        if (data.rtnCode == "0100015") {
+                                            tip2($('.form-error'), data.msg);
+                                        }
+
 
                                     },
                                     beforeSend: function (xhr) {
