@@ -17,8 +17,6 @@ define(function (require, exports, module) {
 
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res)
-            alert(res.roleType);
-
             if(res.roleType!="1"){
                 // 总览
                 var colOverview = [{
@@ -329,6 +327,7 @@ define(function (require, exports, module) {
                         });
                         return false;
                     }
+
 
                     $.get('../tmpl/orderTmpl/order.html', function (tmpl) {
                         require('dialog');
