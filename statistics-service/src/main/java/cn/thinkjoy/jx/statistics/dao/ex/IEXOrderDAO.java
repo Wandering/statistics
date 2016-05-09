@@ -69,7 +69,7 @@ public interface IEXOrderDAO {
      * @param departmentCode
      * @return
      */
-    Integer getSettledByDepartCode(@Param("departmentCode") long departmentCode);
+    Double getSettledByDepartCode(@Param("departmentCode") long departmentCode);
 
     /**
      * 根据地区查询所有用户总收益
