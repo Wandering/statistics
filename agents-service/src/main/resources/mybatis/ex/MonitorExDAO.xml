@@ -116,14 +116,14 @@
         WHERE
           1=1
             <if test="provinceId!=null">
-                AND info.provinceId like CONCAT(#{provinceId},'%')
+                AND info.provinceId like #{provinceId}
             </if>
             <if test="cityId!=null">
-                AND info.cityId like CONCAT(#{cityId},'%')
+                AND info.cityId like #{cityId}
             </if>
 
             <if test="countyId!=null">
-                AND info.countyId  like CONCAT(#{countyId},'%')
+                AND info.countyId  like #{countyId}
             </if>
           AND card.activeDate &gt; #{startDate}
           AND card.activeDate &lt; #{endDate}
