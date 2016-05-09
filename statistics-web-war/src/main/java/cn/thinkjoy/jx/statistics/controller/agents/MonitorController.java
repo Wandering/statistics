@@ -130,7 +130,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        AgentsInfoUtils.getVIPUserAreaLine(condition);
         return monitorExService.errorChart(condition);
 
     }
