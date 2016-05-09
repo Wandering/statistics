@@ -111,23 +111,23 @@ define(function (require, exports, module) {
             var orderType = $(this).attr('orderType');
             if(orderType=="0"){
                 willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
-                // 全选
-                $('#selectall').on('click', function () {
-                    var that = this;
-                    $('.selNoOutbound[type="checkbox"]').each(function () {
-                        this.checked = that.checked;
-                    });
-                });
-                // 单选
-                window.clickChecked = function () {
-                    var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
-                    var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
-                    if (selNoOutboundLength == selNoOutboundCheckedLength) {
-                        $('#selectall')[0].checked = true;
-                    } else {
-                        $('#selectall')[0].checked = false;
-                    }
-                };
+                //// 全选
+                //$('#selectall').on('click', function () {
+                //    var that = this;
+                //    $('.selNoOutbound[type="checkbox"]').each(function () {
+                //        this.checked = that.checked;
+                //    });
+                //});
+                //// 单选
+                //window.clickChecked = function () {
+                //    var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
+                //    var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
+                //    if (selNoOutboundLength == selNoOutboundCheckedLength) {
+                //        $('#selectall')[0].checked = true;
+                //    } else {
+                //        $('#selectall')[0].checked = false;
+                //    }
+                //};
             }else{
                 willOutputAlready(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState=-1");
             }
@@ -163,9 +163,6 @@ define(function (require, exports, module) {
         function willOutput(url) {
             var col = [{
                 data: 'orderNo',
-                title: '<input type="checkbox" id="selectall">'
-            }, {
-                data: 'orderNo',
                 title: '订单编号'
             }, {
                 data: 'channle',
@@ -185,18 +182,14 @@ define(function (require, exports, module) {
             }, {
                 data: 'createDate',
                 title: '订单时间'
+            },{
+                data: 'funs',
+                title: '操作'
             }];
 
-            var columnDefs = [{
+            var columnDefs = [ {
                 "sClass": "center",
-                "sWidth": "30px",
-                "render": function (data, type, row) {
-                    return '<input class="selNoOutbound" onclick="clickChecked()" type="checkbox"  data-id="' + data + '"  />';
-                },
                 "aTargets": [0]
-            }, {
-                "sClass": "center",
-                "aTargets": [1]
             }, {
                 "sClass": "center",
                 "render": function (data, type, row) {
@@ -208,6 +201,9 @@ define(function (require, exports, module) {
                     }
                     return str;
                 },
+                "aTargets": [1]
+            }, {
+                "sClass": "center",
                 "aTargets": [2]
             }, {
                 "sClass": "center",
@@ -220,15 +216,20 @@ define(function (require, exports, module) {
                 "aTargets": [5]
             }, {
                 "sClass": "center",
-                "aTargets": [6]
-            }, {
-                "sClass": "center",
                 "render": function (data, type, row) {
                     return timeFomate(data);
                 },
-                "aTargets": [7]
-            }];
+                "aTargets": [6]
+            },{
+                "sClass": "center",
+                "aTargets": [7],
+                "render": function (data, type, row) {
 
+                    var orderNo = row.orderNo;
+                    console.log(orderNo);
+                    return '<button type="button" id="'+ orderNo +'" class="btn btn-info"  onclick="settlement(this)">发货</button>';
+                }
+            }];
             var TableInstance = Table({
                 columns: col,
                 tableContentId: 'table_content',
@@ -237,6 +238,61 @@ define(function (require, exports, module) {
                 sAjaxSource: url
             });
             TableInstance.init();
+
+             window.settlement = function(obj) {
+                console.log(obj.getAttribute('id'))
+                 var id = obj.getAttribute('id');
+                 $.get('../tmpl/orderTmpl/order.html', function (tmpl) {
+                     require('dialog');
+                     $("#order_dialog").dialog({
+                         title: "发货",
+                         tmpl: tmpl,
+                         onClose: function () {
+                             $("#order_dialog").dialog("destroy");
+                         },
+                         render: function () {
+
+                         },
+                         buttons: [{
+                             text: "确定",
+                             'class': "btn btn-primary",
+                             click: function () {
+
+                                 $.ajax({
+                                     type: 'POST',
+                                     url: UrlConfig.updateSendGoodsState,
+                                     contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
+                                     data: {
+                                         orderNo: id
+                                     },
+                                     dataType: 'json',
+                                     success: function (data) {
+                                         console.log(data)
+                                         if (data.rtnCode == "0000000") {
+                                             var curSelectedV = $('#orderType option:selected').val();
+                                             var phoneNum = $('#phoneNum').val();
+                                             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
+                                             willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
+                                             $("#order_dialog").dialog("destroy");
+                                         }
+                                     },
+                                     beforeSend: function (xhr) {
+                                     },
+                                     error: function (data) {
+                                         alert(data.msg)
+                                     }
+                                 });
+                             }
+                         }, {
+                             text: "取消",
+                             'class': "btn btn-primary",
+                             click: function () {
+                                 $("#order_dialog").dialog("destroy");
+                             }
+                         }]
+                     });
+                 })
+            };
         }
 
 
@@ -339,75 +395,5 @@ define(function (require, exports, module) {
                 }
             });
         };
-
-
-
-
-
-
-        var ButtonEvent = {
-            delivery: function (elementId) {
-                $('#' + elementId).off('click');
-                $('#' + elementId).on('click', function (e) {
-                    if ($('.selNoOutbound[type="checkbox"]:checked').length == 0) {
-                        message({
-                            title: '温馨提示',
-                            msg: '请至少选择一个发货列表',
-                            type: 'alert'
-                        });
-                        return false;
-                    }
-
-
-                    $.get('../tmpl/orderTmpl/order.html', function (tmpl) {
-                        require('dialog');
-                        $("#order_dialog").dialog({
-                            title: "发货",
-                            tmpl: tmpl,
-                            onClose: function () {
-                                $("#order_dialog").dialog("destroy");
-                            },
-                            render: function () {
-
-                            },
-                            buttons: [{
-                                text: "确定",
-                                'class': "btn btn-primary",
-                                click: function () {
-                                    deliveryDepartment(function (ret) {
-                                        if ('0000000' === ret.rtnCode) {
-                                            var curSelectedV = $('#orderType option:selected').val();
-                                            var phoneNum = $('#phoneNum').val();
-                                            var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
-                                            willOutput(UrlConfig.queryOrderPageByConditions+"?token="+token+"&orderFrom="+curSelectedV + "&orderNoOrPhone="+phoneNum+"&handleState="+orderType);
-                                            $("#order_dialog").dialog("destroy");
-                                        } else {
-                                            $("#order_dialog").dialog("destroy");
-                                            message({
-                                                title: '温馨提示',
-                                                msg: ret.msg,
-                                                type: 'alert',
-                                                clickHandle: function () {
-                                                    window.location.href = 'login.html';
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            }, {
-                                text: "取消",
-                                'class': "btn btn-primary",
-                                click: function () {
-                                    $("#order_dialog").dialog("destroy");
-                                }
-                            }]
-                        });
-                    })
-                });
-            }
-        };
-        require.async('../renderResource', function (resource) {
-            resource(ButtonEvent, token);
-        });
     }
 });
