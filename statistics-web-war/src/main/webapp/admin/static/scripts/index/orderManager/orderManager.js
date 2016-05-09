@@ -182,6 +182,7 @@ define(function (require, exports, module) {
                 data: 'createDate',
                 title: '订单时间'
             }];
+
             var columnDefs = [{
                 "sClass": "center",
                 "sWidth": "30px",
@@ -197,9 +198,9 @@ define(function (require, exports, module) {
                 "render": function (data, type, row) {
                     var str = '';
                     if (data == '0') {
-                        str = '微信售价';
+                        str = '微信';
                     } else {
-                        str = 'web售价';
+                        str = 'web';
                     }
                     return str;
                 },
@@ -274,9 +275,9 @@ define(function (require, exports, module) {
                 "render": function (data, type, row) {
                     var str = '';
                     if (data == '0') {
-                        str = '微信售价';
+                        str = '微信';
                     } else {
-                        str = 'web售价';
+                        str = 'web';
                     }
                     return str;
                 },
