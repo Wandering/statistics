@@ -61,7 +61,7 @@
         <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
             and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
         </if>
-        and t0.`status` = 1
+        and t0.status = 1
     </select>
 
     <!-- 根据部门编号查询未发货的订单个数 -->
@@ -83,6 +83,7 @@
         WHERE
             department_code = #{departmentCode}
         AND channle = #{channel}
+        and status = 1
     </select>
 
     <!-- 根据部门编号 or 用户ID 获取已结算的金额 -->
@@ -168,7 +169,7 @@
         SELECT
             t0.order_no as orderNo,
             t0.user_phone as phoneNum,
-            t0.price/100 as rewardMoney,
+            t0.price as rewardMoney,
             t0.create_time as createDate,
             t0.reward_level as rewardLevel,
             t1.goods_count as goodsCount,

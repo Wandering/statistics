@@ -136,12 +136,15 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 Long.valueOf(department.getId().toString()),
                 0);
         netIncome = netIncome==null?0:netIncome;
-        pojo.setNetIncome(netIncome);
+        // TODO 分成的收益单位为分
+        pojo.setNetIncome(netIncome/100);
 
         // 已结算的金额
         Integer settled = exOrderDAO.getSettledByDepartCode(departmentCode);
-        pojo.setSettled(settled==null?0:settled);
-        pojo.setNotSettled(netIncome-pojo.getSettled());
+        settled = settled==null?0:settled;
+        // TODO 分成的收益单位为分
+        pojo.setSettled(settled/100);
+        pojo.setNotSettled(netIncome-settled);
 
         return pojo;
     }
@@ -184,7 +187,8 @@ public class EXOrderServiceImpl implements IEXOrderService {
             // 已结算的金额
             Integer settled = exOrderDAO.getSettledByDepartCode(pojo.getUserId());
             pojo.setSettled(settled==null?0:settled);
-            pojo.setNotSettled(pojo.getAllIncome()-pojo.getSettled());
+            // TODO 分成的收益单位为分
+            pojo.setNotSettled(pojo.getAllIncome()/100-pojo.getSettled());
 
             // 注册地址
             String registAddress = getUserRegistAddressByUserId(pojo.getUserId());
