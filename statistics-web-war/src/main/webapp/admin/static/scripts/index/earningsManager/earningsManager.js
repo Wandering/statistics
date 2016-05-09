@@ -376,6 +376,7 @@ define(function (require, exports, module) {
                                     beforeSend: function (xhr) {
                                     },
                                     error: function (data) {
+
                                     }
                                 });
                             }

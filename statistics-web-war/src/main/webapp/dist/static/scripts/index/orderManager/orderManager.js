@@ -94,11 +94,12 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                     tableContentId: 'table_contentOverview',
                     tableId: (+new Date()) + '_table_body',
                     columnDefs: columnDefsOverview,
-                    sAjaxSource: UrlConfig.querySingleDepartmentIncome
+                    sAjaxSource: UrlConfig.querySingleDepartmentIncome+'?token=' + token
                 });
                 TableInstanceOverview.init();
             }
         });
+
 
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
