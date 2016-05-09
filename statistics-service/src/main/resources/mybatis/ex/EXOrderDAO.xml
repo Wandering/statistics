@@ -87,7 +87,7 @@
     </select>
 
     <!-- 根据部门编号 or 用户ID 获取已结算的金额 -->
-    <select id="getSettledByDepartCode" parameterType="long" resultType="Integer">
+    <select id="getSettledByDepartCode" parameterType="long" resultType="Double">
         SELECT
             sum(money)
         FROM
