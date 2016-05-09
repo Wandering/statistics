@@ -158,7 +158,9 @@ public class OrderController {
 
         boolean checkResult = exOrderService.checkMoneyIsLegal(
                 departmentCode,
-                type,
+                // TODO 协议 type 1：代理商 2：普通用户
+                // TODO 数据库中存储  0:供货商 1:用户
+                type-1,
                 money);
 
         if(!checkResult){
