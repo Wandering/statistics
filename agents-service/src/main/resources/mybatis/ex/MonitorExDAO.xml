@@ -115,8 +115,8 @@
           LEFT JOIN zgk_card card ON card.userId = account.id
         WHERE
           1=1
-        <if test="condition.whereSql != null">
-            and info.id in (${condition.whereSql})
+        <if test="whereSql != null">
+            and info.id in (${whereSql})
         </if>
             <if test="provinceId!=null">
                 AND info.provinceId like #{provinceId}
