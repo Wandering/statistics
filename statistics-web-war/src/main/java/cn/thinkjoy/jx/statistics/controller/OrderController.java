@@ -102,7 +102,7 @@ public class OrderController {
         }
         Department department = deparmentApiService.quertDepartmentInfoByCode(userPojo.getDepartmentCode());
         OrderStatisticsPojo pojo = exOrderService.querySingleDepartmentIncome(department);
-        //TODO 由于前段框架原因,此处返回集合对象
+        //TODO 由于前端框架原因,此处返回集合对象
         List<OrderStatisticsPojo> pojos = Lists.newArrayList();
         pojos.add(pojo);
         Map<String,Object> map = Maps.newHashMap();
@@ -150,17 +150,21 @@ public class OrderController {
 
         long departmentCode = Long.valueOf(request.getParameter("departmentCode"));
         double money = Double.valueOf(request.getParameter("money"));
-        int type = Integer.parseInt(request.getParameter("type"));
+        // TODO 协议定的是 type 1:代理商 2:普通用户
+        int type = Integer.parseInt(request.getParameter("type")) - 1;
 
         if(money == 0){
             ModelUtil.throwException(ErrorCode.MONEY_NOT_ILLEAGE);
         }
 
+        if(type == 0){
+            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            departmentCode = Long.valueOf(department.getId().toString());
+        }
+
         boolean checkResult = exOrderService.checkMoneyIsLegal(
                 departmentCode,
-                // TODO 协议 type 1：代理商 2：普通用户
-                // TODO 数据库中存储  0:供货商 1:用户
-                type-1,
+                type,
                 money);
 
         if(!checkResult){
@@ -186,6 +190,12 @@ public class OrderController {
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
         int pageSize = Integer.parseInt(HttpUtil.getParameter(request, "pageSize", "10"));
         long departmentCode = Long.valueOf(request.getParameter("departmentCode"));
+
+        // TODO 协议设计不合理,此处应该传部门ID,现做特殊处理
+        if(String.valueOf(departmentCode).length() > 7){
+            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            departmentCode = Long.valueOf(department.getId().toString());
+        }
 
         Map<String, Object> condition = new HashMap<>();
         condition.put("groupOp", "and");
