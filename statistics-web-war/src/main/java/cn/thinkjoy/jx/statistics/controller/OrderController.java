@@ -55,7 +55,8 @@ public class OrderController {
     @ApiDesc(value = "根据条件查询订单信息",owner = "杨国荣")
     @RequestMapping(value = "queryOrderPageByConditions",method = RequestMethod.GET)
     public Map<String,Object> queryOrderPageByConditions(HttpServletRequest request) {
-        UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
+
+        UserPojo userPojo = JSON.parseObject(UserInfoContext.getCurrentUserInfo().toString(),UserPojo.class);
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
@@ -65,11 +66,13 @@ public class OrderController {
         int handleState = Integer.parseInt(request.getParameter("handleState"));
         String orderNoOrPhone = request.getParameter("orderNoOrPhone");
 
+        Long departmentCode = userPojo.getRoleType() == 1 ? -1:userPojo.getDepartmentCode();
+
         Map<String,Object> returnMap = exOrderService.queryOrderPageByConditions(
                 orderFrom,
                 handleState,
                 orderNoOrPhone,
-                userPojo.getDepartmentCode(),
+                departmentCode,
                 currentPageNo,
                 pageSize);
 
@@ -146,7 +149,15 @@ public class OrderController {
         double money = Double.valueOf(request.getParameter("money"));
         int type = Integer.parseInt(request.getParameter("type"));
 
-        // TODO 需要验证输入金额是否合法
+        boolean checkResult = exOrderService.checkMoneyIsLegal(
+                departmentCode,
+                type,
+                money);
+
+        if(!checkResult){
+            ModelUtil.throwException(ErrorCode.MONEY_NOT_ILLEAGE);
+        }
+
         SettlementRecord record = new SettlementRecord();
         record.setDepartmentCode(departmentCode);
         record.setMoney(money);

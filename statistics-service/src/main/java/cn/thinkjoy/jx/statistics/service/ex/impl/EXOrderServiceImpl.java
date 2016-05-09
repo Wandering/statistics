@@ -124,7 +124,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
         // web销量
         Integer webSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
                 departmentCode,
-                Constants.WECHAT);
+                Constants.WEB);
         int webSaleCountTmp = webSaleCount==null?0:webSaleCount;
         pojo.setWebSaleCount(webSaleCountTmp);
 
@@ -189,6 +189,8 @@ public class EXOrderServiceImpl implements IEXOrderService {
             // 注册地址
             String registAddress = getUserRegistAddressByUserId(pojo.getUserId());
             pojo.setRegistAddress(registAddress);
+            // TODO 分成的收益单位为分
+            pojo.setAllIncome(pojo.getAllIncome()/100);
         }
 
         Integer count = exOrderDAO.getCountByAreaCodeAndAccount(
@@ -218,5 +220,22 @@ public class EXOrderServiceImpl implements IEXOrderService {
         pojoPage.setCount(count);
 
         return pojoPage;
+    }
+
+    @Override
+    public boolean checkMoneyIsLegal(long userId,int type,double money) {
+        // 总收益
+        Double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
+                userId,
+                type);
+        if(netIncome == null || netIncome <= 0){
+            return false;
+        }
+        // 已结算的金额
+        Integer settled = exOrderDAO.getSettledByDepartCode(userId);
+        if(settled == null || settled == 0){
+            return money <= netIncome;
+        }
+        return money <= netIncome - settled;
     }
 }

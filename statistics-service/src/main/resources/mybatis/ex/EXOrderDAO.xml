@@ -141,7 +141,7 @@
     <!-- 根据地区查询用户总收益的个数 -->
     <select id="getCountByAreaCodeAndAccount" parameterType="map" resultType="Integer">
     select
-        count(t0.user_id)
+        count(DISTINCT t0.user_id)
     from
         zgk_split_price t0 ,
         zgk_user_info t1
@@ -160,8 +160,7 @@
             and t0.user_phone = #{account}
         </if>
         and type = 1
-        GROUP BY
-        t0.user_id
+
     </select>
 
     <!-- 根据用户ID查询用户收益详情 -->
@@ -169,7 +168,7 @@
         SELECT
             t0.order_no as orderNo,
             t0.user_phone as phoneNum,
-            t0.price as rewardMoney,
+            t0.price/100 as rewardMoney,
             t0.create_time as createDate,
             t0.reward_level as rewardLevel,
             t1.goods_count as goodsCount,

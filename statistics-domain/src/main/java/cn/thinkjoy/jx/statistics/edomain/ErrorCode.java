@@ -9,7 +9,9 @@ public enum ErrorCode {
 
     USER_EXPRIED_RELOGIN("0100008","用户信息已过期，请重新登录"),
 
-    NO_PERMISSION("0100014","对不起,您无权限查看此内容");
+    NO_PERMISSION("0100014","对不起,您无权限查看此内容"),
+
+    MONEY_NOT_ILLEAGE("0100015","输入的金额不能大于未结算的余额");
 
     /** The code. */
     private final String code;
