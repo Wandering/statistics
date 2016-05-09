@@ -252,6 +252,9 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
             var columnDefs = [
                 {
                     "sClass": "center",
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    },
                     "aTargets": [0]
                 },
                 {
@@ -320,6 +323,9 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                 },
                 {
                     "sClass": "center",
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    },
                     "aTargets": [3]
                 },
                 {
@@ -454,10 +460,6 @@ define('static/scripts/index/shareIncome/shareIncome', ['sea-modules/bootstrap/b
                 });
             })
         };
-
-
-
-
 
     }
 });

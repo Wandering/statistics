@@ -15,6 +15,8 @@ define(function (require, exports, module) {
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
 
+
+
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res)
             if(res.roleType!="1"){
@@ -192,6 +194,15 @@ define(function (require, exports, module) {
                 "aTargets": [1]
             }, {
                 "sClass": "center",
+                "render": function (data, type, row) {
+                    var str = '';
+                    if (data == '0') {
+                        str = '微信售价';
+                    } else {
+                        str = 'web售价';
+                    }
+                    return str;
+                },
                 "aTargets": [2]
             }, {
                 "sClass": "center",
@@ -207,6 +218,9 @@ define(function (require, exports, module) {
                 "aTargets": [6]
             }, {
                 "sClass": "center",
+                "render": function (data, type, row) {
+                    return timeFomate(data);
+                },
                 "aTargets": [7]
             }];
 
@@ -257,6 +271,15 @@ define(function (require, exports, module) {
                 "aTargets": [1]
             }, {
                 "sClass": "center",
+                "render": function (data, type, row) {
+                    var str = '';
+                    if (data == '0') {
+                        str = '微信售价';
+                    } else {
+                        str = 'web售价';
+                    }
+                    return str;
+                },
                 "aTargets": [2]
             }, {
                 "sClass": "center",
@@ -272,9 +295,11 @@ define(function (require, exports, module) {
                 "aTargets": [6]
             }, {
                 "sClass": "center",
+                "render": function (data, type, row) {
+                    return timeFomate(data);
+                },
                 "aTargets": [7]
             }];
-
             var TableInstance = Table({
                 columns: col,
                 tableContentId: 'table_content',

@@ -279,6 +279,9 @@ define(function (require, exports, module) {
             var columnDefs = [
                 {
                     "sClass": "center",
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    },
                     "aTargets": [0]
                 },
                 {
@@ -387,8 +390,5 @@ define(function (require, exports, module) {
                 });
             })
         };
-
-
-
     }
 });

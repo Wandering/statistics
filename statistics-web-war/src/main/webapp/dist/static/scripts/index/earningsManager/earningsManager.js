@@ -279,6 +279,9 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
             var columnDefs = [
                 {
                     "sClass": "center",
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    },
                     "aTargets": [0]
                 },
                 {
@@ -387,8 +390,5 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                 });
             })
         };
-
-
-
     }
 });
