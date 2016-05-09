@@ -38,6 +38,12 @@ define(function (require, exports, module) {
             return;
         }
 
+        if(parseInt(proportionFirst) + parseInt(proportionSecond) >= 100){
+            tip($('#proportion-second').parent().parent(), '输入分成比例总和必须小于100');
+            return;
+        }
+
+
         callback(
             [
                 proportionFirst,    // 一级奖励比例

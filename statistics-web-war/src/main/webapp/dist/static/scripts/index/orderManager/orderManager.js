@@ -100,9 +100,6 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
             }
         });
 
-
-
-
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var curSelectedV = $('#orderType option:selected').val();
