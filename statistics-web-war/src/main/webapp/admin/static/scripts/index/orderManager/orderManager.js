@@ -40,10 +40,10 @@ define(function (require, exports, module) {
                     data: 'salePrice',
                     title: '出厂价'
                 }, {
-                    data: 'wechatVolume',
+                    data: 'wechatSaleCount',
                     title: '微信销量'
                 }, {
-                    data: 'webVolume',
+                    data: 'webSaleCount',
                     title: 'web销量'
                 }, {
                     data: 'netIncome',
@@ -90,6 +90,7 @@ define(function (require, exports, module) {
                     "aTargets": [10]
                 }];
                 var TableInstanceOverview = Table({
+                    paging:false,
                     columns: colOverview,
                     tableContentId: 'table_contentOverview',
                     tableId: (+new Date()) + '_table_body',
@@ -99,6 +100,8 @@ define(function (require, exports, module) {
                 TableInstanceOverview.init();
             }
         });
+
+
 
 
         $(document).on('click', '#order-tab-btn li', function () {

@@ -259,13 +259,12 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
 
                         return '<a href="javascript:void(0);" class="btn btn-links"  onclick=\"shareIncome('+ row.departmentCode +')\">结算记录</a>';
                     }
-
                 },
                 {
                     "sClass": "center",
                     "aTargets": [12],
                     "render": function (data, type, row) {
-                        return '<a href="javascript:void(0);" class="btn btn-links" departmentCode="'+ row.departmentCode +'" departmentName="'+ row.departmentName +'" wechatPrice="'+ row.wechatPrice +'" webPrice="'+ row.webPrice +'" wechatSaleCount="'+ row.wechatSaleCount +'" webSaleCount="'+ row.webSaleCount +'" notSettled="'+ row.notSettled +'"  onclick=\"settlement(this)\">结算</a>';
+                        return '<a href="javascript:void(0);" class="btn btn-info" departmentCode="'+ row.departmentCode +'" departmentName="'+ row.departmentName +'" wechatPrice="'+ row.wechatPrice +'" webPrice="'+ row.webPrice +'" wechatSaleCount="'+ row.wechatSaleCount +'" webSaleCount="'+ row.webSaleCount +'" notSettled="'+ row.notSettled +'"  onclick=\"settlement(this)\">结算</a>';
                     }
                 }
             ];

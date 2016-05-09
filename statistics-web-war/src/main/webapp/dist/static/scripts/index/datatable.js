@@ -29,10 +29,9 @@ define('static/scripts/index/datatable', ['sea-modules/jquery/dataTables/jquery.
         if (options.sInfoEmpty) {
             this.sInfoEmpty = '';
         } else {
-            this.sInfoEmpty = "没有数据";
+            this.sInfoEmpty = '';
         }
     }
-
     Table.prototype = {
         constructor: Table,
         /**
