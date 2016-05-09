@@ -17,6 +17,8 @@ define(function (require, exports, module) {
 
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res)
+            alert(res.roleType);
+
             if(res.roleType!="1"){
                 // 总览
                 var colOverview = [{
