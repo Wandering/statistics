@@ -149,6 +149,10 @@ public class OrderController {
         double money = Double.valueOf(request.getParameter("money"));
         int type = Integer.parseInt(request.getParameter("type"));
 
+        if(money == 0){
+            ModelUtil.throwException(ErrorCode.MONEY_NOT_ILLEAGE);
+        }
+
         boolean checkResult = exOrderService.checkMoneyIsLegal(
                 departmentCode,
                 type,
