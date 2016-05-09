@@ -376,6 +376,7 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                                     beforeSend: function (xhr) {
                                     },
                                     error: function (data) {
+
                                     }
                                 });
                             }
