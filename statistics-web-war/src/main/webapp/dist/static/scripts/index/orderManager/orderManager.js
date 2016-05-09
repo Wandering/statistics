@@ -17,8 +17,6 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
 
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res)
-            alert(res.roleType);
-
             if(res.roleType!="1"){
                 // 总览
                 var colOverview = [{
@@ -329,6 +327,7 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                         });
                         return false;
                     }
+
 
                     $.get('../tmpl/orderTmpl/order.html', function (tmpl) {
                         require('sea-modules/jquery/dialog/jquery.dialog');
