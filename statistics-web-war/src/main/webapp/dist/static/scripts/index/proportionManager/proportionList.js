@@ -77,16 +77,16 @@ define('static/scripts/index/proportionManager/proportionList', ['sea-modules/bo
                     }
                     $.get('../tmpl/proportion/proportion.tmpl', function (tmpl) {
                         $("#setting_proportion").dialog({
-                            title: "设置代理商规则",
+                            title: "分成规则",
                             tmpl: tmpl,
                             onClose: function () {
                                 $("#setting_proportion").dialog("destroy");
                             },
                             render: function () {
                                 $.getJSON('/separateController/findSeparate?token=' + token, function (res) {
-                                    console.log(res)
-                                    $('#proportion-first').val(res.bizData.levelProfits1)
-                                    $('#proportion-second').val(res.bizData.levelProfits2)
+                                    console.log(res);
+                                    $('#proportion-first').val(res.bizData.levelProfits1);
+                                    $('#proportion-second').val(res.bizData.levelProfits2);
                                 });
                             },
                             buttons: [{

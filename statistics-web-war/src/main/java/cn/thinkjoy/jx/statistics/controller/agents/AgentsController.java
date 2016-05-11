@@ -1,10 +1,7 @@
 package cn.thinkjoy.jx.statistics.controller.agents;
 
-import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
-import cn.thinkjoy.agents.service.ex.common.IBaseExService;
-import cn.thinkjoy.common.domain.view.BizData4Page;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;

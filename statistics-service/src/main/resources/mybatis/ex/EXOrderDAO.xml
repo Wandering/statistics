@@ -61,7 +61,7 @@
         <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
             and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
         </if>
-        and t0.`status` = 1
+        and t0.status = 1
     </select>
 
     <!-- 根据部门编号查询未发货的订单个数 -->
@@ -83,16 +83,18 @@
         WHERE
             department_code = #{departmentCode}
         AND channle = #{channel}
+        and status = 1
     </select>
 
     <!-- 根据部门编号 or 用户ID 获取已结算的金额 -->
-    <select id="getSettledByDepartCode" parameterType="long" resultType="Integer">
+    <select id="getSettledByDepartCode" parameterType="map" resultType="Double">
         SELECT
             sum(money)
         FROM
             zgk_settlement_record
         WHERE
             departmentCode = #{departmentCode}
+            and type = #{type}
     </select>
 
     <!-- 根据地区查询所有用户总收益 -->
@@ -141,7 +143,7 @@
     <!-- 根据地区查询用户总收益的个数 -->
     <select id="getCountByAreaCodeAndAccount" parameterType="map" resultType="Integer">
     select
-        count(t0.user_id)
+        count(DISTINCT t0.user_id)
     from
         zgk_split_price t0 ,
         zgk_user_info t1
@@ -160,31 +162,29 @@
             and t0.user_phone = #{account}
         </if>
         and type = 1
-        GROUP BY
-        t0.user_id
+
     </select>
 
     <!-- 根据用户ID查询用户收益详情 -->
     <select id="queryUserIncomeDetailByUserId" parameterType="map" resultType="OrderDetailPojo">
         SELECT
-            t0.order_no as orderNo,
-            t0.user_phone as phoneNum,
-            t0.price as rewardMoney,
-            t0.create_time as createDate,
-            t0.reward_level as rewardLevel,
-            t1.goods_count as goodsCount,
-            t2.name as userName
+            t0.order_no AS orderNo,
+            t0.user_phone AS phoneNum,
+            t0.price AS rewardMoney,
+            t0.create_time AS createDate,
+            t0.reward_level AS rewardLevel,
+            t1.goods_count AS goodsCount,
+            t2. NAME AS userName
         FROM
-            zgk_split_price t0 ,
-            zgk_order t1,
-            zgk_user_info t2
+            zgk_split_price t0
+        LEFT JOIN zgk_order t1 ON t0.order_no = t1.order_no
+        LEFT JOIN zgk_user_info t2 on t1.user_id = t2.id
         WHERE
-            t0.order_no = t1.order_no
-        and t1.user_id = t2.id
-        and t0.type = 1
+            t0.type = 1
         AND t0.user_id = #{userId}
-        ORDER BY t0.create_time desc
-        limit #{index},#{pageSize}
+        ORDER BY
+            t0.create_time DESC
+            limit #{index},#{pageSize}
     </select>
 
     <!-- 根据用户ID获取用户收益详情总个数 -->

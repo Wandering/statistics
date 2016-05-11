@@ -130,7 +130,10 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
+        if(AgentsInfoUtils.getUserWhereSql()!=null) {
+            condition.put("whereSql", AgentsInfoUtils.getMonitorWhereSql());
+        }
+        AgentsInfoUtils.getVIPUserAreaLine(condition);
         return monitorExService.errorChart(condition);
 
     }

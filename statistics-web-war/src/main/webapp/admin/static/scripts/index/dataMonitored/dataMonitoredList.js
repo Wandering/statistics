@@ -14,20 +14,8 @@ define(function (require, exports, module) {
         var token = $.cookie('bizData');
         var UrlConfig = require('../common/urlConfig');
 
-        require.async(['../common/businessTable', './columsCommon1'], function(businessTable, tableModel) {
-            businessTable({
-                dateDay: dateDay,
-                url: {
-                    areaUrl: UrlConfig.getMonitorsList
-                },
-                tableModel: tableModel()
-            });
-        });
+        getMonitoredList(UrlConfig.getMonitorsList);
 
-
-
-
-        //getMonitoredList(UrlConfig.getMonitorsList);
         function getMonitoredList(url) {
             var col = [{
                 data: 'index',
@@ -115,7 +103,5 @@ define(function (require, exports, module) {
             var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
             getMonitoredList(link);
         });
-
-
     }
 });

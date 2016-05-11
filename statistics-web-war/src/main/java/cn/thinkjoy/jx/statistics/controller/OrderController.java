@@ -23,6 +23,8 @@ import cn.thinkjoy.zgk.zgksystem.domain.Department;
 import cn.thinkjoy.zgk.zgksystem.edomain.UserRoleEnum;
 import cn.thinkjoy.zgk.zgksystem.pojo.UserPojo;
 import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,7 +56,8 @@ public class OrderController {
     @ApiDesc(value = "根据条件查询订单信息",owner = "杨国荣")
     @RequestMapping(value = "queryOrderPageByConditions",method = RequestMethod.GET)
     public Map<String,Object> queryOrderPageByConditions(HttpServletRequest request) {
-        UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
+
+        UserPojo userPojo = JSON.parseObject(UserInfoContext.getCurrentUserInfo().toString(),UserPojo.class);
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
@@ -64,11 +67,13 @@ public class OrderController {
         int handleState = Integer.parseInt(request.getParameter("handleState"));
         String orderNoOrPhone = request.getParameter("orderNoOrPhone");
 
+        Long departmentCode = userPojo.getRoleType() == 1 ? -1:userPojo.getDepartmentCode();
+
         Map<String,Object> returnMap = exOrderService.queryOrderPageByConditions(
                 orderFrom,
                 handleState,
                 orderNoOrPhone,
-                userPojo.getDepartmentCode(),
+                departmentCode,
                 currentPageNo,
                 pageSize);
 
@@ -90,14 +95,19 @@ public class OrderController {
     @ResponseBody
     @ApiDesc(value = "单个部门收益总览",owner = "杨国荣")
     @RequestMapping(value = "querySingleDepartmentIncome",method = RequestMethod.GET)
-    public OrderStatisticsPojo querySingleDepartmentIncome(HttpServletRequest request) {
+    public Map<String,Object> querySingleDepartmentIncome(HttpServletRequest request) {
         UserPojo userPojo = (UserPojo) HttpUtil.getSession(request,"user");
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
         Department department = deparmentApiService.quertDepartmentInfoByCode(userPojo.getDepartmentCode());
         OrderStatisticsPojo pojo = exOrderService.querySingleDepartmentIncome(department);
-        return pojo;
+        //TODO 由于前端框架原因,此处返回集合对象
+        List<OrderStatisticsPojo> pojos = Lists.newArrayList();
+        pojos.add(pojo);
+        Map<String,Object> map = Maps.newHashMap();
+        map.put("list",pojos);
+        return map;
     }
 
     @ResponseBody
@@ -140,9 +150,27 @@ public class OrderController {
 
         long departmentCode = Long.valueOf(request.getParameter("departmentCode"));
         double money = Double.valueOf(request.getParameter("money"));
-        int type = Integer.parseInt(request.getParameter("type"));
+        // TODO 协议定的是 type 1:代理商 2:普通用户
+        int type = Integer.parseInt(request.getParameter("type")) - 1;
 
-        // TODO 需要验证输入金额是否合法
+        if(money == 0){
+            ModelUtil.throwException(ErrorCode.MONEY_NOT_ILLEAGE);
+        }
+
+        if(type == 0){
+            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            departmentCode = Long.valueOf(department.getId().toString());
+        }
+
+        boolean checkResult = exOrderService.checkMoneyIsLegal(
+                departmentCode,
+                type,
+                money);
+
+        if(!checkResult){
+            ModelUtil.throwException(ErrorCode.MONEY_NOT_ILLEAGE);
+        }
+
         SettlementRecord record = new SettlementRecord();
         record.setDepartmentCode(departmentCode);
         record.setMoney(money);
@@ -162,6 +190,12 @@ public class OrderController {
         int currentPageNo = Integer.parseInt(HttpUtil.getParameter(request, "currentPageNo", "1"));
         int pageSize = Integer.parseInt(HttpUtil.getParameter(request, "pageSize", "10"));
         long departmentCode = Long.valueOf(request.getParameter("departmentCode"));
+
+        // TODO 协议设计不合理,此处应该传部门ID,现做特殊处理
+        if(String.valueOf(departmentCode).length() > 7){
+            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            departmentCode = Long.valueOf(department.getId().toString());
+        }
 
         Map<String, Object> condition = new HashMap<>();
         condition.put("groupOp", "and");

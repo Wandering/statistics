@@ -84,7 +84,7 @@ define('static/scripts/index/resource/resource_list', ['sea-modules/bootstrap/bo
             var clickHandle = null;
             if ('0100014' === data.rtnCode || '0100015' === data.rtnCode) {
                 clickHandle = function() {
-                    window.location.href = 'http://setting.jx.xy189.cn/dist/app/login.html';
+                    window.location.href = 'http://agent.zhigaokao.cn/dist/app/login.html';
                 }
             }
             message({

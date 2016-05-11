@@ -158,7 +158,7 @@ define(function(require, exports, module) {
                                                 msg: data.msg,
                                                 type: 'alert',
                                                 clickHandle: function() {
-                                                    window.location.href = 'http://setting.jx.xy189.cn/dist/app/login.html';
+                                                    window.location.href = 'http://agent.zhigaokao.cn/dist/app/login.html';
                                                 }
                                             });
                                         }

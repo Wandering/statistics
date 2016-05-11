@@ -12,6 +12,24 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
         var Table = require('static/scripts/index/datatable');
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
+        function tip(ele, str) {
+            var errorLable = ele.find('p');
+            errorLable.html(str);
+            errorLable.show(500);
+            setTimeout(function () {
+                errorLable.hide(500);
+            }, 2000)
+        }
+
+        function tip2(ele, str) {
+            ele.html(str);
+            ele.show(500);
+            setTimeout(function () {
+                ele.hide(500);
+            }, 2000)
+        }
+
+
 
 
         var Area = {
@@ -241,13 +259,12 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
 
                         return '<a href="javascript:void(0);" class="btn btn-links"  onclick=\"shareIncome('+ row.departmentCode +')\">结算记录</a>';
                     }
-
                 },
                 {
                     "sClass": "center",
                     "aTargets": [12],
                     "render": function (data, type, row) {
-                        return '<a href="javascript:void(0);" class="btn btn-links" departmentCode="'+ row.departmentCode +'" departmentName="'+ row.departmentName +'" wechatPrice="'+ row.wechatPrice +'" webPrice="'+ row.webPrice +'" wechatSaleCount="'+ row.wechatSaleCount +'" webSaleCount="'+ row.webSaleCount +'" notSettled="'+ row.notSettled +'"  onclick=\"settlement(this)\">结算</a>';
+                        return '<a href="javascript:void(0);" class="btn btn-info" departmentCode="'+ row.departmentCode +'" departmentName="'+ row.departmentName +'" wechatPrice="'+ row.wechatPrice +'" webPrice="'+ row.webPrice +'" wechatSaleCount="'+ row.wechatSaleCount +'" webSaleCount="'+ row.webSaleCount +'" notSettled="'+ row.notSettled +'"  onclick=\"settlement(this)\">结算</a>';
                     }
                 }
             ];
@@ -276,6 +293,9 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
             var columnDefs = [
                 {
                     "sClass": "center",
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    },
                     "aTargets": [0]
                 },
                 {
@@ -351,7 +371,20 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                             text: "确定结算",
                             'class': "btn btn-primary",
                             click: function () {
-                                var money = $('#money').val();
+
+                                var money = $.trim($('#money').val());
+
+                                if (money == "") {
+                                    tip2($('.form-error'), '请输入结算金额');
+                                    return;
+                                }
+
+                                if (!/^(([1-9]+)|([0-9]+\.[0-9]{1,2}))$/ig.test(money)) {
+                                    tip2($('.form-error'), '请输入正确的金额');
+                                    return;
+                                }
+
+
                                 $.ajax({
                                     type: 'POST',
                                     url: UrlConfig.settlementByDepartmentCode,
@@ -363,13 +396,21 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                                     },
                                     dataType: 'json',
                                     success: function (data) {
-                                        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
-                                        $("#settlement_dialog").dialog("destroy");
+
+                                        if (data.rtnCode == "0000000") {
+                                            getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&account=&token=" + token);
+                                            $("#settlement_dialog").dialog("destroy");
+                                        }
+                                        if (data.rtnCode == "0100015") {
+                                            tip2($('.form-error'), data.msg);
+                                        }
+
 
                                     },
                                     beforeSend: function (xhr) {
                                     },
                                     error: function (data) {
+
                                     }
                                 });
                             }
@@ -384,8 +425,5 @@ define('static/scripts/index/earningsManager/earningsManager', ['sea-modules/boo
                 });
             })
         };
-
-
-
     }
 });

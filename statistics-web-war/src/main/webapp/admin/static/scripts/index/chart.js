@@ -67,6 +67,7 @@ define(function(require, exports, module) {
 					y2: 50
 				}
 			}
+
 		},
 		createChart: function() {
 			var that = this;
