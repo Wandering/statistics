@@ -9,6 +9,7 @@ package cn.thinkjoy.agents.service.ex.impl;
 import cn.thinkjoy.agents.dao.ex.IAreaExDAO;
 import cn.thinkjoy.agents.service.ex.IAreaExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
+import cn.thinkjoy.jx.statistics.pojo.AreaPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Map;
 @Service("AreaExServiceImpl")
 @Scope("prototype")
 public class AreaExServiceImpl implements IAreaExService {
+
     @Autowired
     private IAreaExDAO areaExDAO;
 
@@ -36,5 +38,20 @@ public class AreaExServiceImpl implements IAreaExService {
     @Override
     public List<Map<String, Object>> getFlowNextArea(String nextArea) {
         return AgentsInfoUtils.getFlowNextArea(nextArea);
+    }
+
+    @Override
+    public List<AreaPojo> getAllProvince() {
+        return areaExDAO.getAllProvince();
+    }
+
+    @Override
+    public List<AreaPojo> getAllCity() {
+        return areaExDAO.getAllCity();
+    }
+
+    @Override
+    public List<AreaPojo> getAllCounty() {
+        return areaExDAO.getAllCounty();
     }
 }

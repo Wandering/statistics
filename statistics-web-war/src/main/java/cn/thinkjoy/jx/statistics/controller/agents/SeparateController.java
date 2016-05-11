@@ -61,6 +61,9 @@ public class SeparateController {
     @RequestMapping(value = "updateSeparate",method = RequestMethod.GET)
     public Map<String,Object> updateSeparate(HttpServletRequest request,@RequestParam(value = "levelProfits1",required = true)Integer levelProfits1,
                                @RequestParam(value = "levelProfits2",required = true)Integer levelProfits2){
+        if (levelProfits1+levelProfits2>=100){
+            throw new BizException(cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.INSERT_ERROR.getCode(), cn.thinkjoy.zgk.zgksystem.common.ERRORCODE.INSERT_ERROR.getMessage());
+        }
         Cookie[] cookies=request.getCookies();
         String token = "";
         for (Cookie cookie:cookies){

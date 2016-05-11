@@ -33,9 +33,15 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
         getGoodsMange: '/admin/agents?token=' + token + '&isOutput=false', //未出库
 
         /**
-         * 异常模块
+         * 默认异常模块
          */
         getMonitorsList: '/admin/monitors?token=' + token,
+
+
+        /**
+         * 异常模块
+         */
+        getFindCard: '/admin/findCard',
 
 
         /**
@@ -54,11 +60,80 @@ define('static/scripts/index/common/urlConfig', ['sea-modules/jquery/cookie/jque
          *  根据条件查询订单信息
          *
          */
-        queryOrderPageByConditions:'http://172.16.160.226:8082/statistics/order/queryOrderPageByConditions' //
+        queryOrderPageByConditions:'/statistics/order/queryOrderPageByConditions', //
+
+        /**
+         *  收益总览
+         *
+         */
+        queryAllDepartmentIncome:'/statistics/order/queryAllDepartmentIncome', //
+        /**
+         *  个单位收益总览
+         *
+         */
+        querySingleDepartmentIncome:'/statistics/order/querySingleDepartmentIncome', //
+        /**
+         *  省份
+         *
+         */
+        findProvinceList:'/admin/getAllAreaInfo',//
+        /**
+         *  市
+         *
+         */
+        findCityList:'/system/dataDictionary/findCityList',//
+        /**
+         *  区县
+         *
+         */
+        findCountyList:'/system/dataDictionary/findCountyList', //
+
+        /**
+         *  分享收益
+         *
+         */
+        queryAllUserIncome:'/statistics/order/queryAllUserIncome', //
 
 
-        // 172.16.160.226:8081   父系统
-        // 172.16.160.226:8082   子系统
+        /**
+         *  分成
+         *
+         */
+        findSeparate:'/separateController/findSeparate', //
+        /**
+         *  修改状态为发货
+         *
+         */
+        updateSendGoodsState:'/statistics/order/updateSendGoodsState', //
+
+        /**
+         *  获取结算记录
+         *
+         */
+        querySettlementRecordsByDepartmentCode:'/statistics/order/querySettlementRecordsByDepartmentCode', //
+
+
+        /**
+         *  确定结算
+         *
+         */
+        settlementByDepartmentCode:'/statistics/order/settlementByDepartmentCode', //
+
+
+
+        /**
+         *  获取收益详情
+         *
+         */
+        queryUserIncomeDetailByUserId:'/statistics/order/queryUserIncomeDetailByUserId', //
+
+        /**
+         *  省市区
+         *
+         */
+        getAllAreaInfo:'/admin/getAllAreaInfo' //
+
+
 
 
     };

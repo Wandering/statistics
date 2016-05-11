@@ -1,46 +1,8 @@
 /**
  * Created by pdeng on 16/3/24.
  */
-define('static/scripts/index/dataMonitored/dataMonitoredList', ['static/scripts/index/common/urlConfig', 'static/scripts/index/common/businessChart', 'sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable'], function (require, exports, module) {
-    var UrlConfig = require('static/scripts/index/common/urlConfig');
-        var moduleChart = require('static/scripts/index/common/businessChart');
-        moduleChart({
-            url: UrlConfig.getErrorChart,
-            handle: function(param) {
-                var numberOrCard = $('#phoneOrVipNumber').val();
-                var selectArea = $('#selectArea').val();
-                var statusType = $('#statusType').val();
-                var activityStatus = $('#activityStatusSelect').val();
-                var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
-                getMonitoredList(link);
-            },
-
-            legendData: ['已激活用户状态监控'],
-            data: function(bizData) {
-                console.log(bizData)
-                var xAxisData = [],
-                    num = [];
-                for (var i = 0; i < bizData.length; i++) {
-                    xAxisData.push(bizData[i].dateDay);
-                    num.push(bizData[i].num);
-                }
-
-                return {
-                    xAxisData: xAxisData,
-                    seriesData: [{
-                        name: '已激活用户状态监控',
-                        type: 'line',
-                        barMaxWidth: 30,
-                        data: num
-                    }]
-                };
-            }
-        });
-
-
-
-
-    module.exports = function () {
+define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
+    module.exports = function (dateDay) {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
@@ -51,7 +13,9 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['static/scripts/
         var Table = require('static/scripts/index/datatable');
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
+
         getMonitoredList(UrlConfig.getMonitorsList);
+
         function getMonitoredList(url) {
             var col = [{
                 data: 'index',
@@ -139,21 +103,5 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['static/scripts/
             var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
             getMonitoredList(link);
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 });

@@ -196,6 +196,36 @@ define(function (require, exports, module) {
                 } catch (e) {
                 }
             },
+            /**
+             * ==================================
+             * 订单管理	agentIncome
+             * ==================================
+             */
+            agentIncome: function () {
+                $('#page_0').html('');
+                Nav.changeSection('agentIncome');
+                try {
+                    require.async(['./earningsManager/earningsManager.js'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
+            /**
+             * ==================================
+             * 	分享收益 shareIncome
+             * ==================================
+             */
+            shareIncome: function () {
+                $('#page_0').html('');
+                Nav.changeSection('shareIncome');
+                try {
+                    require.async(['./shareIncome/shareIncome.js'], function (module) {
+                        module();
+                    });
+                } catch (e) {
+                }
+            },
 
 
 

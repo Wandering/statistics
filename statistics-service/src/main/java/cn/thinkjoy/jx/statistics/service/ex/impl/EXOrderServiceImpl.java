@@ -20,6 +20,7 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -55,12 +56,9 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 orderNoOrPhone,
                 departmentCode);
 
-        Page<OrderDetailPojo> detailPojoPage = new Page<>();
-        detailPojoPage.setList(detailPojos);
-        detailPojoPage.setCount(detailPojoCount);
-
         Map<String, Object> returnMap = Maps.newHashMap();
-        returnMap.put("page",detailPojoPage);
+        returnMap.put("count",detailPojoCount);
+        returnMap.put("list",detailPojos);
         returnMap.put("message",convertMessage(departmentCode));
         return returnMap;
     }
@@ -117,6 +115,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
         OrderStatisticsPojo pojo = ObjectConvertUtil.convertToOrderStatisticsPojo(department);
 
         long departmentCode = department.getDepartmentCode();
+        long departmentId = Long.valueOf(department.getId().toString());
         // 微信销量
         Integer wechatSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
                 departmentCode,
@@ -127,20 +126,26 @@ public class EXOrderServiceImpl implements IEXOrderService {
         // web销量
         Integer webSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
                 departmentCode,
-                Constants.WECHAT);
+                Constants.WEB);
         int webSaleCountTmp = webSaleCount==null?0:webSaleCount;
         pojo.setWebSaleCount(webSaleCountTmp);
 
         // 网上总收益
-        double netIncome =
-                wechatSaleCountTmp*department.getWechatPrice() +
-                        webSaleCountTmp*department.getWebPrice();
-        pojo.setNetIncome(netIncome);
+//        double netIncome =
+//                wechatSaleCountTmp*department.getWechatPrice() +
+//                        webSaleCountTmp*department.getWebPrice();
+        Double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
+                departmentId,
+                0);
+        // TODO 分成的收益单位为分
+        netIncome = netIncome==null?0:netIncome;
+        pojo.setNetIncome(netIncome/100);
 
         // 已结算的金额
-        Integer settled = exOrderDAO.getSettledByDepartCode(departmentCode);
-        pojo.setSettled(settled==null?0:settled);
-        pojo.setNotSettled(netIncome-pojo.getSettled());
+        Double settled = exOrderDAO.getSettledByDepartCode(departmentId,0);
+        settled = settled==null?0:settled;
+        pojo.setSettled(settled);
+        pojo.setNotSettled((netIncome-settled*100)/100);
 
         return pojo;
     }
@@ -181,13 +186,17 @@ public class EXOrderServiceImpl implements IEXOrderService {
 
         for(IncomeStatisticsPojo pojo : pojos){
             // 已结算的金额
-            Integer settled = exOrderDAO.getSettledByDepartCode(pojo.getUserId());
-            pojo.setSettled(settled==null?0:settled);
-            pojo.setNotSettled(pojo.getAllIncome()-pojo.getSettled());
+            Double settled = exOrderDAO.getSettledByDepartCode(pojo.getUserId(),1);
+            settled = settled==null?0:settled;
+            pojo.setSettled(settled);
+            // TODO 分成的收益单位为分
+            pojo.setNotSettled((pojo.getAllIncome()-settled*100)/100);
 
             // 注册地址
             String registAddress = getUserRegistAddressByUserId(pojo.getUserId());
             pojo.setRegistAddress(registAddress);
+            // TODO 分成的收益单位为分
+            pojo.setAllIncome(pojo.getAllIncome()/100);
         }
 
         Integer count = exOrderDAO.getCountByAreaCodeAndAccount(
@@ -210,12 +219,34 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 (currentPageNo-1)*pageSize,
                 pageSize);
 
-        Integer count = exOrderDAO.getUserIncomeCountByUserId(userId);
+        // TODO 由于分成单位是分,所以此处要转换成元
+        for(OrderDetailPojo pojo : pojos){
+            pojo.setRewardMoney(pojo.getRewardMoney()/100);
+        }
+
+        Integer count = exOrderDAO.getUserIncomeDetailCountByUserId(userId);
 
         Page<OrderDetailPojo> pojoPage = new Page<>();
         pojoPage.setList(pojos);
         pojoPage.setCount(count);
 
         return pojoPage;
+    }
+
+    @Override
+    public boolean checkMoneyIsLegal(long userId,int type,double money) {
+        // 总收益
+        Double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
+                userId,
+                type);
+        if(netIncome == null || netIncome <= 0){
+            return false;
+        }
+        // 已结算的金额
+        Double settled = exOrderDAO.getSettledByDepartCode(userId,type);
+        if(settled == null || settled == 0){
+            return money <= netIncome/100;
+        }
+        return money <= (netIncome - settled*100)/100;
     }
 }

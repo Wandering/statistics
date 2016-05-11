@@ -103,7 +103,7 @@
                             <li class="divider"></li>
 
                             <li>
-                                <a href="#" id="logout"><i class="fa fa-power-off"></i> 登出</a>
+                                <a href="#" id="logout"><i class="fa fa-power-off"></i>退出</a>
                             </li>
                         </ul>
                     </li>
@@ -441,7 +441,7 @@
             <div class="tile-body transparent rounded-corners">
                 <div class="form-button" id="form_button">
                 </div>
-                <div class="table-responsive" id="table_content">
+                <div class="table-responsive" id="table_content_proportion">
                 </div>
             </div>
         </div>
@@ -453,6 +453,9 @@
 <script type="text/html" id="orderManager">
     <div class="tile-body transparent rounded-corners">
         <section class="tile transparent grid pd30">
+            <div class="table-responsive">
+                <div id="table_contentOverview"></div>
+            </div>
             <form class="form-inline">
                 <p class="color-white">订单来源查询：</p>
                 <div class="form-group">
@@ -477,6 +480,7 @@
                 </ul>
             </div>
             <div class="table-responsive" id="orderContent">
+                <div class="tables-t"><div class="btns" id="form_button"></div></div>
                 <div id="table_content"></div>
             </div>
         </section>
@@ -497,49 +501,152 @@
 
 
 
+
+
 <!--data-monitored数据监控-->
 <script type="text/html" id="dataMonitored">
-    <div class="tile-body transparent rounded-corners">
-        <section class="tile transparent grid pd30">
-            <form class="form-inline">
-                <p class="color-white">用户数据明细：</p>
-                <div class="form-group">
-                    <input type="email" class="form-control input-sm form-w180" id="phoneOrVipNumber"
-                           placeholder="输入用户VIP卡号／手机号">
-                </div>
-                <div class="form-group">
-                    <select id="selectArea" class="form-control input-sm form-w180"></select>
-                </div>
-                <div class="form-group">
-                    <select id="statusType" class="form-control input-sm form-w180">
-                        <option value="">状态</option>
-                        <option value="0">正常</option>
-                        <option value="1">异常</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <select id="activityStatusSelect" class="form-control input-sm form-w180">
-                        <option value="">激活时间</option>
-                        <option value="1">已激活</option>
-                        <option value="0">未激活</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <div class="btn btn-sm btn-primary" id="monitoredSearch">查询</div>
-                </div>
-            </form>
-            <div id="tab-btn">
-                <ul class="nav nav-tabs">
-                    <li role="presentation" class="active" roleType="1"><a href="#" class="tab-sm">未出库</a></li>
-                    <li role="presentation" roleType="2"><a href="#" class="tab-sm">已出库</a></li>
-                </ul>
-            </div>
-            <div class="table-responsive" id="dataMonitoredContent">
 
+    <div class="tile-body transparent rounded-corners">
+
+        <section class="tile transparent grid pd30">
+            <div class="form-inline" id="">
+                <div class="control-group date-condition">
+                    <div class="col-xs-12">
+                        <label class="control-label">时间</label>
+                        <button type="button" class="btn btn-default btn-primary" id="recently_7">最近7日</button>
+                        <button type="button" class="btn btn-default" id="recently_30">最近30日</button>
+                        <button type="button" class="btn btn-default" id="recently_182">最近半年</button>
+                    </div>
+                    <div class="col-xs-12">
+                        <label class="control-label">开始时间:</label>
+                        <input size="16" type="text" readonly class="form_date" id="start_date">
+                    </div>
+                    <div class="col-xs-12">
+                        <label class="control-label">结束时间:</label>
+                        <input size="16" type="text" readonly class="form_date" id="end_date">
+                    </div>
+                    <button type="button" class="btn btn-default" id="defined">自定义时间查看</button>
+                    <div id="date_error_tip" style="margin-left:10px;color:#fff"></div>
+                </div>
+            </div>
+            <div class="chart-content">
+                <div class="chart" id="myChart"></div>
+                <p id="chartsTxt" class="chartsTxt"></p>
+            </div>
+        </section>
+
+        <section class="tile transparent grid pd30">
+            <div class="table-responsive" >
+                <form class="form-inline">
+                    <p class="color-white">用户数据明细：</p>
+                    <div class="form-group">
+                        <input type="email" class="form-control input-sm form-w180" id="phoneOrVipNumber"
+                               placeholder="输入用户VIP卡号／手机号">
+                    </div>
+                    <div class="form-group">
+                        <select id="selectArea" class="form-control input-sm form-w180"></select>
+                    </div>
+                    <div class="form-group">
+                        <select id="statusType" class="form-control input-sm form-w180">
+                            <option value="">状态</option>
+                            <option value="0">正常</option>
+                            <option value="1">异常</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select id="activityStatusSelect" class="form-control input-sm form-w180">
+                            <option value="">激活时间</option>
+                            <option value="1">已激活</option>
+                            <option value="0">未激活</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="btn btn-sm btn-primary" id="monitoredSearch">查询</div>
+                    </div>
+                </form>
+                <div id="dataMonitoredContent">
+
+                </div>
             </div>
         </section>
     </div>
 </script>
+
+
+
+<!--代理商收益-->
+<script type="text/html" id="agentIncome">
+    <div class="tile-body transparent rounded-corners">
+        <section class="tile transparent grid pd30">
+            <form class="form-inline">
+                <p class="color-white">代理商收益：</p>
+
+                <div class="form-group">
+                    <select id="agentIncome-select-province" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="agentIncome-select-city" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="agentIncome-select-district" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="btn btn-sm btn-primary" id="earningsManagerSearch">查询</div>
+                </div>
+            </form>
+            <div class="table-responsive" id="">
+                <div class="tables-t"><div class="btns" id="form_button"></div></div>
+                <div id="earningsManagerContent"></div>
+            </div>
+        </section>
+    </div>
+</script>
+
+
+
+
+
+<!--分享收益-->
+<script type="text/html" id="shareIncome">
+    <div class="tile-body transparent rounded-corners">
+        <section class="tile transparent grid pd30">
+            <form class="form-inline">
+                <p class="color-white">分享收益：</p>
+                <div class="form-group">
+                    <select id="share-select-province" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="share-select-city" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <select id="share-select-district" class="form-control input-sm form-w180">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control input-sm form-w180" id="account-txt" placeholder="输入账号查询">
+                </div>
+                <div class="form-group">
+                    <div class="btn btn-sm btn-primary" id="shareManagerSearch">查询</div>
+                </div>
+            </form>
+            <div class="table-responsive" id="shareManagerContent">
+            </div>
+        </section>
+    </div>
+</script>
+
+
+
+
+
+
+
+
 
 <script type="text/javascript" src="../static/sea.js"></script>
 <script type="text/javascript" src="../lib/echarts/echarts-all.min.js"></script>

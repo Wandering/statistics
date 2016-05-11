@@ -74,4 +74,14 @@ public interface IEXOrderService {
      * @return
      */
     Page<OrderDetailPojo> queryUserIncomeDetailByUserId(long userId, int currentPageNo, int pageSize);
+
+    /**
+     * 检测用户后台结算金额是否合法
+     *
+     * @param userId
+     * @param type 0:代理商 1:普通用户
+     * @param money
+     * @return
+     */
+    boolean checkMoneyIsLegal(long userId,int type,double money);
 }

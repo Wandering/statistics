@@ -29,10 +29,9 @@ define('static/scripts/index/datatable', ['sea-modules/jquery/dataTables/jquery.
         if (options.sInfoEmpty) {
             this.sInfoEmpty = '';
         } else {
-            this.sInfoEmpty = "没有数据";
+            this.sInfoEmpty = '';
         }
     }
-
     Table.prototype = {
         constructor: Table,
         /**
@@ -120,6 +119,10 @@ define('static/scripts/index/datatable', ['sea-modules/jquery/dataTables/jquery.
                             aaData: list
                         };
                         fnCallback(finallyData);
+
+
+
+
                     } else if ('0100014' === data.rtnCode || '0100015' === data.rtnCode || '0100022' === data.rtnCode || '0100023' === data.rtnCode) {
                         message({
                             title: '温馨提示',
@@ -139,7 +142,7 @@ define('static/scripts/index/datatable', ['sea-modules/jquery/dataTables/jquery.
                         message({
                             msg: data.msg,
                             clickHandle: function () {
-                                window.location.href = 'http://setting.jx.xy189.cn/dist/app/login.html';
+                                window.location.href = 'http://agent.zhigaokao.cn/dist/app/login.html';
                             }
                         });
                         $('.modal-header .close').off('click');

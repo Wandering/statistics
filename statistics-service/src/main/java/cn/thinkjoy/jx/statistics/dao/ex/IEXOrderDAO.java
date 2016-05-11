@@ -67,9 +67,11 @@ public interface IEXOrderDAO {
      * 根据部门编号 or 用户ID 获取已结算的金额
      *
      * @param departmentCode
+     * @param type
      * @return
      */
-    Integer getSettledByDepartCode(@Param("departmentCode") long departmentCode);
+    Double getSettledByDepartCode(@Param("departmentCode") long departmentCode,
+                                  @Param("type") int type);
 
     /**
      * 根据地区查询所有用户总收益
@@ -117,5 +119,15 @@ public interface IEXOrderDAO {
      * @param userId
      * @return
      */
-    Integer getUserIncomeCountByUserId(@Param("userId") long userId);
+    Integer getUserIncomeDetailCountByUserId(@Param("userId") long userId);
+
+    /**
+     * 根据用户ID和类型获取用户总收益
+     *
+     * @param userId
+     * @param type 0:代理商  1:普通用户
+     * @return
+     */
+    Double getAllIncomeByUserIdAndType(@Param("userId") long userId,
+                                       @Param("type") long type);
 }

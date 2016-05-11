@@ -4,6 +4,7 @@ define(function (require, exports, module) {
         require('bootstrap');
         require('cookie');
         require('dialog');
+        var UrlConfig = require('../common/urlConfig');
         var message = require('../message');
         var Table = require('../datatable');
 
@@ -26,10 +27,10 @@ define(function (require, exports, module) {
         }];
         var TableInstance = Table({
             columns: col,
-            tableContentId: 'table_content',
+            tableContentId: 'table_content_proportion',
             tableId: (+new Date()) + '_table_body',
             columnDefs: columnDefs,
-            sAjaxSource: '/separateController/findSeparate?token=' + token
+            sAjaxSource: UrlConfig.findSeparate+'?token=' + token
         });
         TableInstance.init();
         var tableObj = TableInstance.dataTable;
@@ -76,16 +77,16 @@ define(function (require, exports, module) {
                     }
                     $.get('../tmpl/proportion/proportion.tmpl', function (tmpl) {
                         $("#setting_proportion").dialog({
-                            title: "设置代理商规则",
+                            title: "分成规则",
                             tmpl: tmpl,
                             onClose: function () {
                                 $("#setting_proportion").dialog("destroy");
                             },
                             render: function () {
                                 $.getJSON('/separateController/findSeparate?token=' + token, function (res) {
-                                    console.log(res)
-                                    $('#proportion-first').val(res.bizData.levelProfits1)
-                                    $('#proportion-second').val(res.bizData.levelProfits2)
+                                    console.log(res);
+                                    $('#proportion-first').val(res.bizData.levelProfits1);
+                                    $('#proportion-second').val(res.bizData.levelProfits2);
                                 });
                             },
                             buttons: [{

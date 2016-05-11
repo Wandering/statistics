@@ -36,4 +36,16 @@
     <select id="getAgentsAreas" resultType="java.lang.String">
         SELECT areaCode  FROM zgk_system.k12system_department  department WHERE department.areaCode like #{areaCode} GROUP BY areaCode
     </select>
+
+    <select id="getAllProvince" resultType="AreaPojo">
+        select id as areaId,name as areaName from zgk_province
+    </select>
+
+    <select id="getAllCity" resultType="AreaPojo">
+        select id as areaId,name as areaName,provinceId as parentId from zgk_city
+    </select>
+
+    <select id="getAllCounty" resultType="AreaPojo">
+        select id as areaId,name as areaName,cityId as parentId from zgk_county
+    </select>
 </mapper>
