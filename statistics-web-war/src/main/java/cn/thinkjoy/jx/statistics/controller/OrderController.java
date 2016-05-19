@@ -100,7 +100,7 @@ public class OrderController {
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
-        Department department = deparmentApiService.quertDepartmentInfoByCode(userPojo.getDepartmentCode());
+        Department department = deparmentApiService.queryDepartmentInfoByCode(userPojo.getDepartmentCode());
         OrderStatisticsPojo pojo = exOrderService.querySingleDepartmentIncome(department);
         //TODO 由于前端框架原因,此处返回集合对象
         List<OrderStatisticsPojo> pojos = Lists.newArrayList();
@@ -158,7 +158,7 @@ public class OrderController {
         }
 
         if(type == 0){
-            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            Department department = deparmentApiService.queryDepartmentInfoByCode(departmentCode);
             departmentCode = Long.valueOf(department.getId().toString());
         }
 
@@ -193,7 +193,7 @@ public class OrderController {
 
         // TODO 协议设计不合理,此处应该传部门ID,现做特殊处理
         if(String.valueOf(departmentCode).length() > 7){
-            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            Department department = deparmentApiService.queryDepartmentInfoByCode(departmentCode);
             departmentCode = Long.valueOf(department.getId().toString());
         }
 

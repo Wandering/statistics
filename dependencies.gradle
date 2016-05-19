@@ -32,7 +32,7 @@ allprojects {
 
     microschoolCoreVersion = "1.6.2-SNAPSHOT"
 
-    k12systemVersion = "0.0.21-SNAPSHOT"
+    k12systemVersion = "0.0.24-SNAPSHOT"
 
     springTestVersion = "4.1.0.RELEASE"
 

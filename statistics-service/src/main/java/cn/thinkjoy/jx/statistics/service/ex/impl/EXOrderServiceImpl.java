@@ -22,7 +22,6 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -120,7 +119,7 @@ public class EXOrderServiceImpl implements IEXOrderService {
         long departmentId = Long.valueOf(department.getId().toString());
 
         // [1]根据departmentCode查出代理商代理产品的种类和价格
-        List<DepartmentProductRelation> relations = deparmentApiService.queryProductPriceByCode(departmentCode);
+        List<DepartmentProductRelation> relations = deparmentApiService.queryProductPriceByDepartmentCode(departmentCode);
         List<ProductSaleDetailPojo> saleDetailPojos = Lists.newArrayList();
 
         for(DepartmentProductRelation relation : relations){
@@ -149,6 +148,8 @@ public class EXOrderServiceImpl implements IEXOrderService {
 
             saleDetailPojos.add(saleDetailPojo);
         }
+
+        statisticsPojo.setProductSales(saleDetailPojos);
 
         // [3]根据departmentId查询收益详情(总收益,已结算的收益)
         Double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
