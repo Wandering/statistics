@@ -83,6 +83,7 @@
         WHERE
             department_code = #{departmentCode}
         AND channle = #{channel}
+        and product_type = #{productType}
         and status = 1
     </select>
 

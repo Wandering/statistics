@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
      */
     @ResponseBody
     @RequestMapping(value = "/agents")
+    @Deprecated
     public Object queryPage(@RequestParam(required = false)String cardNumber,
                             @RequestParam(required = false)String area,
                             @RequestParam(required =false,defaultValue = "false")Boolean isOutput,
@@ -80,7 +82,9 @@ public class AgentsController extends BaseCommonController <ICardExService>{
      */
     @ResponseBody
     @RequestMapping(value = "/output")
-    public Object output(@RequestParam("area")String flow,@RequestParam(value = "outputList",required = false)String idlist,@RequestParam(value = "rows",required = false)Integer rows){
+    public Object output(@RequestParam("area")String flow,
+                         @RequestParam(value = "outputList",required = false)String idlist,
+                         @RequestParam(value = "rows",required = false)Integer rows){
         Map<String,Object> condition=new HashMap<>();
         condition.put("flow",flow);
         if(idlist!=null){

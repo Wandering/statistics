@@ -21,9 +21,6 @@ public class ObjectConvertUtil {
         pojo.setDepartmentCode(department.getDepartmentCode());
         pojo.setDepartmentLevel(getDepartmentLevel(department.getRoleType()));
         pojo.setDepartmentName(department.getDepartmentName());
-        pojo.setSalePrice(department.getSalePrice());
-        pojo.setWebPrice(department.getWebPrice());
-        pojo.setWechatPrice(department.getWechatPrice());
         return pojo;
     }
 
