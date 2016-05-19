@@ -4529,6 +4529,10 @@ body #content .menu-list-content {
     color: #666;
 }
 
-
-
-
+.active-date{
+    position: relative;
+    top: 9px;
+    left: 2px;
+    margin-left: 15px;
+    color: #fff;
+}

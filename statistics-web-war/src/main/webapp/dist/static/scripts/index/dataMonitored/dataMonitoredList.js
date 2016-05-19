@@ -1,7 +1,7 @@
 /**
  * Created by pdeng on 16/3/24.
  */
-define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig'], function (require, exports, module) {
+define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/common/ajax', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN'], function (require, exports, module) {
     module.exports = function (dateDay) {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
@@ -13,6 +13,44 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
         var Table = require('static/scripts/index/datatable');
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
+
+        require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker');
+        require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN');
+        $('#active_start_date').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        }).on('changeDate', function(evl) {
+            var startDate = $('#active_start_date').val();
+            $('#active_end_date').datetimepicker('setStartDate', startDate);
+            setTimeout(function() {
+                var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+                $('#active_end_date').datetimepicker('setEndDate', endDate);
+            }, 100);
+        });
+        $('#active_end_date').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        }).on('changeDate', function(evl) {
+            var endDate = $('#active_end_date').val();
+            $('#active_start_date').datetimepicker('setEndDate', endDate);
+            setTimeout(function() {
+                var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+                $('#active_start_date').datetimepicker('setStartDate', startDate);
+            }, 100);
+        });
+
+
+
 
         getMonitoredList(UrlConfig.getMonitorsList);
 
