@@ -1,10 +1,13 @@
 package cn.thinkjoy.jx.statistics.controller.agents;
 
+import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
+import cn.thinkjoy.domain.agents.Card;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +26,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class AgentsController extends BaseCommonController <ICardExService>{
+
     @Autowired
     private ICardExService cardExService;
+
+    @Autowired
+    private ICardService cardService;
 
     /**
      *  获取当前用户货物信息
@@ -105,31 +111,27 @@ public class AgentsController extends BaseCommonController <ICardExService>{
 
     /**
      * 出库操作
+     *
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/outPutCardNumber")
     public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
-        Map<String,Object> condition=new HashMap<>();
-        condition.put("rows",rows);
-        List<Map<String,Object>> maps=cardExService.outPutCardNumber(condition);
-        Map<String,Object> resultMap=new HashMap<>();
-        String start=null;
-        String end=null;
-        if(maps.size()>0){
-            start=maps.get(0).get("cardNumber").toString();
-        }
-        if(maps.size()>1){
-            end=maps.get(maps.size()-1).get("cardNumber").toString();
-        }
-        if(start!=null && end==null){
-            end=maps.get(0).get("cardNumber").toString();
-        }
-        resultMap.put("start",start);
-        resultMap.put("end",end);
-        resultMap.put("count",maps.size());
+
+        Map<String,Object> queryMap = Maps.newHashMap();
+        queryMap.put("status",0);
+        Card card = (Card) cardService.queryOne(queryMap,"cardNumber",SqlOrderEnum.DESC);
+        // 卡号生成规则:库存最大卡号依次向后累加
+        String prefix = "GK";
+        String number = StringUtils.replace(card.getCardNumber(),prefix,"");
+
+        Map<String,Object> resultMap = Maps.newHashMap();
+        resultMap.put("start",prefix+(Long.valueOf(number)+1));
+        resultMap.put("end",prefix+(Long.valueOf(number)+rows+1));
+        resultMap.put("count",rows);
         return resultMap;
     }
+
 
     @Override
     protected Map<String, Object> getSelector() {
