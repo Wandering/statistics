@@ -6,7 +6,7 @@ import cn.thinkjoy.zgk.zgksystem.domain.Department;
 /**
  * Created by yangguorong on 16/4/19.
  *
- *
+ * 对象转换
  */
 public class ObjectConvertUtil {
 
