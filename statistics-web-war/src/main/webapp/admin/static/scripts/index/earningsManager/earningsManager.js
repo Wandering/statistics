@@ -163,25 +163,25 @@ define(function (require, exports, module) {
                     title: '代理商等级'
                 },
                 {
-                    data: 'salePrice',
+                    data: 'productName',
+                    title: '种类'
+                },
+                {
+                    data: 'pickupPrice',
                     title: '出厂价'
                 },
                 {
-                    data: 'wechatPrice',
-                    title: '微信售价'
+                    data: 'salePrice',
+                    title: '售价'
                 },
-                {
-                    data: 'webPrice',
-                    title: 'web售价'
-                },
-                {
-                    data: 'wechatSaleCount',
-                    title: '微信销量'
-                },
-
                 {
                     data: 'webSaleCount',
                     title: 'web销量'
+                },
+
+                {
+                    data: 'wechatSaleCount',
+                    title: '微信销量'
                 },
 
                 {
@@ -209,51 +209,88 @@ define(function (require, exports, module) {
             ];
             var columnDefs = [
                 {
-                    "sClass": "center",
+                    "bVisible": false,
+                    "sClass": "center line35",
                     "aTargets": [0]
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [1]
                 },
                 {
-                    "sClass": "center",
+                    "bVisible": false,
+                    "sClass": "center line35",
                     "aTargets": [2]
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [3]
+                    "aTargets": [3],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].productName + '</div>';
+                        }
+                        return listHtml;
+                    }
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [4]
+                    "aTargets": [4],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].pickupPrice + '</div>';
+                        }
+                        return listHtml;
+                    }
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [5]
+                    "aTargets": [5],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].salePrice + '</div>';
+                        }
+                        return listHtml;
+                    }
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [6]
+                    "aTargets": [6],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].webSaleCount + '</div>';
+                        }
+                        return listHtml;
+                    }
                 },
                 {
                     "sClass": "center",
-                    "aTargets": [7]
+                    "aTargets": [7],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].wechatSaleCount + '</div>';
+                        }
+                        return listHtml;
+                    }
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [8]
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [9]
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [10]
                 },
                 {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [11],
                     "render": function (data, type, row) {
 

@@ -4536,3 +4536,7 @@ body #content .menu-list-content {
     margin-left: 15px;
     color: #fff;
 }
+
+body #content .tile table.table-custom>tbody>tr>td.line35{
+    line-height:35px;
+}

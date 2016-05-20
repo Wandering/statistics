@@ -50,10 +50,8 @@ define(function (require, exports, module) {
                 $('#start_date').datetimepicker('setStartDate', startDate);
             }, 100);
         });
-
-
         $.getJSON(UrlConfig.checkLogin, function (res) {
-            console.log(res)
+            console.log(res.roleType)
             if (res.roleType != "1") {
                 // 总览
                 var colOverview = [{
@@ -262,9 +260,7 @@ define(function (require, exports, module) {
                 "sClass": "center",
                 "aTargets": [7],
                 "render": function (data, type, row) {
-
                     var orderNo = row.orderNo;
-                    console.log(orderNo);
                     return '<button type="button" id="' + orderNo + '" class="btn btn-info"  onclick="settlement(this)">发货</button>';
                 }
             }];
