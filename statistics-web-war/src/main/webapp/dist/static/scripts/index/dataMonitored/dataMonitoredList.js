@@ -14,6 +14,44 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
         var token = $.cookie('bizData');
         var UrlConfig = require('static/scripts/index/common/urlConfig');
 
+        //require('datetimepicker');
+        //require('datetimepickerCN');
+        //$('#active_start_date').datetimepicker({
+        //    language: 'zh-CN',
+        //    format: 'yyyy-mm-dd',
+        //    weekStart: 1,
+        //    autoclose: true,
+        //    startView: 2,
+        //    minView: 2,
+        //    forceParse: 0
+        //}).on('changeDate', function(evl) {
+        //    var startDate = $('#active_start_date').val();
+        //    $('#active_end_date').datetimepicker('setStartDate', startDate);
+        //    setTimeout(function() {
+        //        var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+        //        $('#active_end_date').datetimepicker('setEndDate', endDate);
+        //    }, 100);
+        //});
+        //$('#active_end_date').datetimepicker({
+        //    language: 'zh-CN',
+        //    format: 'yyyy-mm-dd',
+        //    weekStart: 1,
+        //    autoclose: true,
+        //    startView: 2,
+        //    minView: 2,
+        //    forceParse: 0
+        //}).on('changeDate', function(evl) {
+        //    var endDate = $('#active_end_date').val();
+        //    $('#active_start_date').datetimepicker('setEndDate', endDate);
+        //    setTimeout(function() {
+        //        var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+        //        $('#active_start_date').datetimepicker('setStartDate', startDate);
+        //    }, 100);
+        //});
+
+
+
+
         getMonitoredList(UrlConfig.getMonitorsList);
 
         function getMonitoredList(url) {

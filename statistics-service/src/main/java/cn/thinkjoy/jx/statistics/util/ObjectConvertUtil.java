@@ -6,7 +6,7 @@ import cn.thinkjoy.zgk.zgksystem.domain.Department;
 /**
  * Created by yangguorong on 16/4/19.
  *
- *
+ * 对象转换
  */
 public class ObjectConvertUtil {
 
@@ -21,9 +21,6 @@ public class ObjectConvertUtil {
         pojo.setDepartmentCode(department.getDepartmentCode());
         pojo.setDepartmentLevel(getDepartmentLevel(department.getRoleType()));
         pojo.setDepartmentName(department.getDepartmentName());
-        pojo.setSalePrice(department.getSalePrice());
-        pojo.setWebPrice(department.getWebPrice());
-        pojo.setWechatPrice(department.getWechatPrice());
         return pojo;
     }
 

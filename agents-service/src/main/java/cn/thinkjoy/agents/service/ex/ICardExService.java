@@ -11,4 +11,5 @@ public interface ICardExService extends IBaseExService {
     public boolean goodsOutput(Map<String, Object> condition);
     public List<Map<String, Object>> outPutCardNumber(Map<String, Object> condition);
     public boolean hasAgentsArea(String goodsNumber);
+
 }

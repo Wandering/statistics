@@ -336,10 +336,13 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
                                         tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
                                         return;
                                     }
-                                    $.getJSON('/admin/outPutCardNumber?rows=' + outboundBatchNum, function (res) {
+                                    var  warehouseType = $('#dep_type_batch').find('option:selected').val();
+                                    if(warehouseType==""){
+                                        tip($('#dep_type_batch').parent().parent(), '请选择种类');
+                                        return;
+                                    }
+                                    $.getJSON('/admin/outPutCardNumber?rows=' + outboundBatchNum + '&productType='+warehouseType, function (res) {
                                         console.log(res)
-
-
                                         if (res.rtnCode == "0000000") {
                                             $('#card-interval').show();
                                             var cardStart = res.bizData.start,

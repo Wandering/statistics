@@ -7,22 +7,25 @@ import cn.thinkjoy.jx.statistics.edomain.ErrorCode;
 import cn.thinkjoy.jx.statistics.pojo.IncomeStatisticsPojo;
 import cn.thinkjoy.jx.statistics.pojo.OrderDetailPojo;
 import cn.thinkjoy.jx.statistics.pojo.OrderStatisticsPojo;
+import cn.thinkjoy.jx.statistics.pojo.ProductSaleDetailPojo;
 import cn.thinkjoy.jx.statistics.service.IUserInfoService;
 import cn.thinkjoy.jx.statistics.service.ex.IEXOrderService;
 import cn.thinkjoy.jx.statistics.util.Constants;
-import cn.thinkjoy.jx.statistics.util.ModelUtil;
+import cn.thinkjoy.agents.util.ModelUtil;
 import cn.thinkjoy.jx.statistics.util.ObjectConvertUtil;
 import cn.thinkjoy.zgk.zgksystem.DeparmentApiService;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
+import cn.thinkjoy.zgk.zgksystem.domain.DepartmentProductRelation;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
+
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by yangguorong on 16/4/18.
@@ -112,42 +115,59 @@ public class EXOrderServiceImpl implements IEXOrderService {
     @Override
     public OrderStatisticsPojo querySingleDepartmentIncome(Department department) {
 
-        OrderStatisticsPojo pojo = ObjectConvertUtil.convertToOrderStatisticsPojo(department);
+        OrderStatisticsPojo statisticsPojo = ObjectConvertUtil.convertToOrderStatisticsPojo(department);
 
         long departmentCode = department.getDepartmentCode();
         long departmentId = Long.valueOf(department.getId().toString());
-        // 微信销量
-        Integer wechatSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
-                departmentCode,
-                Constants.WECHAT);
-        int wechatSaleCountTmp = wechatSaleCount==null?0:wechatSaleCount;
-        pojo.setWechatSaleCount(wechatSaleCountTmp);
 
-        // web销量
-        Integer webSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
-                departmentCode,
-                Constants.WEB);
-        int webSaleCountTmp = webSaleCount==null?0:webSaleCount;
-        pojo.setWebSaleCount(webSaleCountTmp);
+        // [1]根据departmentCode查出代理商代理产品的种类和价格
+        List<DepartmentProductRelation> relations = deparmentApiService.queryProductPriceByDepartmentCode(departmentCode);
+        List<ProductSaleDetailPojo> saleDetailPojos = Lists.newArrayList();
 
-        // 网上总收益
-//        double netIncome =
-//                wechatSaleCountTmp*department.getWechatPrice() +
-//                        webSaleCountTmp*department.getWebPrice();
+        for(DepartmentProductRelation relation : relations){
+            ProductSaleDetailPojo saleDetailPojo = new ProductSaleDetailPojo();
+            saleDetailPojo.setProductName(relation.getProductName());
+            saleDetailPojo.setPickupPrice(relation.getPickupPrice());
+            saleDetailPojo.setSalePrice(relation.getSalePrice());
+
+            // [2]根据departmentCode和产品类型查出产品的销量
+
+            // 微信销量
+            Integer wechatSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
+                    departmentCode,
+                    Constants.WECHAT,
+                    relation.getProductType());
+            int wechatSaleCountTmp = wechatSaleCount==null?0:wechatSaleCount;
+            saleDetailPojo.setWechatSaleCount(wechatSaleCountTmp);
+
+            // web销量
+            Integer webSaleCount = exOrderDAO.getGoodsCountByChannelAndDepartCode(
+                    departmentCode,
+                    Constants.WEB,
+                    relation.getProductType());
+            int webSaleCountTmp = webSaleCount==null?0:webSaleCount;
+            saleDetailPojo.setWebSaleCount(webSaleCountTmp);
+
+            saleDetailPojos.add(saleDetailPojo);
+        }
+
+        statisticsPojo.setProductSales(saleDetailPojos);
+
+        // [3]根据departmentId查询收益详情(总收益,已结算的收益)
         Double netIncome = exOrderDAO.getAllIncomeByUserIdAndType(
                 departmentId,
                 0);
         // TODO 分成的收益单位为分
         netIncome = netIncome==null?0:netIncome;
-        pojo.setNetIncome(netIncome/100);
+        statisticsPojo.setNetIncome(netIncome/100);
 
         // 已结算的金额
         Double settled = exOrderDAO.getSettledByDepartCode(departmentId,0);
         settled = settled==null?0:settled;
-        pojo.setSettled(settled);
-        pojo.setNotSettled((netIncome-settled*100)/100);
+        statisticsPojo.setSettled(settled);
+        statisticsPojo.setNotSettled((netIncome-settled*100)/100);
 
-        return pojo;
+        return statisticsPojo;
     }
 
     // TODO 去除缓存强依赖

@@ -54,14 +54,14 @@ public interface IEXOrderDAO {
     /**
      * 根据部门编号和订单来源查询货物销售个数
      *
-     * TODO 由于业务原因,暂时用付款渠道代替
-     *
      * @param departmentCode
-     * @param channel
+     * @param channel 订单来源 0:微信  1:web
+     * @param productType
      * @return
      */
     Integer getGoodsCountByChannelAndDepartCode(@Param("departmentCode") long departmentCode,
-                                                @Param("channel") int channel);
+                                                @Param("channel") int channel,
+                                                @Param("productType") int productType);
 
     /**
      * 根据部门编号 or 用户ID 获取已结算的金额

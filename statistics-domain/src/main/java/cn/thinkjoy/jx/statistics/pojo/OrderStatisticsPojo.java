@@ -1,6 +1,7 @@
 package cn.thinkjoy.jx.statistics.pojo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by yangguorong on 16/4/15.
@@ -25,31 +26,6 @@ public class OrderStatisticsPojo implements Serializable {
     private String departmentLevel;
 
     /**
-     * web售价
-     */
-    private double webPrice;
-
-    /**
-     * 微信售价
-     */
-    private double wechatPrice;
-
-    /**
-     * 出厂价
-     */
-    private double salePrice;
-
-    /**
-     * web销量
-     */
-    private int webSaleCount;
-
-    /**
-     * 微信销量
-     */
-    private int wechatSaleCount;
-
-    /**
      * 网上收益
      */
     private double netIncome;
@@ -63,6 +39,11 @@ public class OrderStatisticsPojo implements Serializable {
      * 已结算
      */
     private double settled;
+
+    /**
+     * 产品销售详情
+     */
+    private List<ProductSaleDetailPojo> productSales;
 
     public String getDepartmentName() {
         return departmentName;
@@ -88,46 +69,6 @@ public class OrderStatisticsPojo implements Serializable {
         this.departmentLevel = departmentLevel;
     }
 
-    public double getWebPrice() {
-        return webPrice;
-    }
-
-    public void setWebPrice(double webPrice) {
-        this.webPrice = webPrice;
-    }
-
-    public double getWechatPrice() {
-        return wechatPrice;
-    }
-
-    public void setWechatPrice(double wechatPrice) {
-        this.wechatPrice = wechatPrice;
-    }
-
-    public double getSalePrice() {
-        return salePrice;
-    }
-
-    public void setSalePrice(double salePrice) {
-        this.salePrice = salePrice;
-    }
-
-    public int getWebSaleCount() {
-        return webSaleCount;
-    }
-
-    public void setWebSaleCount(int webSaleCount) {
-        this.webSaleCount = webSaleCount;
-    }
-
-    public int getWechatSaleCount() {
-        return wechatSaleCount;
-    }
-
-    public void setWechatSaleCount(int wechatSaleCount) {
-        this.wechatSaleCount = wechatSaleCount;
-    }
-
     public double getNetIncome() {
         return netIncome;
     }
@@ -150,5 +91,26 @@ public class OrderStatisticsPojo implements Serializable {
 
     public void setSettled(double settled) {
         this.settled = settled;
+    }
+
+    public List<ProductSaleDetailPojo> getProductSales() {
+        return productSales;
+    }
+
+    public void setProductSales(List<ProductSaleDetailPojo> productSales) {
+        this.productSales = productSales;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderStatisticsPojo{" +
+                "departmentName='" + departmentName + '\'' +
+                ", departmentCode=" + departmentCode +
+                ", departmentLevel='" + departmentLevel + '\'' +
+                ", netIncome=" + netIncome +
+                ", notSettled=" + notSettled +
+                ", settled=" + settled +
+                ", productSales=" + productSales +
+                '}';
     }
 }

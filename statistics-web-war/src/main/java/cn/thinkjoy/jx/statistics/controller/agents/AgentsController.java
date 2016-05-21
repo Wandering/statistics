@@ -1,14 +1,20 @@
 package cn.thinkjoy.jx.statistics.controller.agents;
 
+import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.restful.apigen.annotation.ApiDesc;
+import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
+import cn.thinkjoy.domain.agents.Card;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
+import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,8 +29,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/admin")
 public class AgentsController extends BaseCommonController <ICardExService>{
+
     @Autowired
     private ICardExService cardExService;
+
+    @Autowired
+    private ICardService cardService;
 
     /**
      *  获取当前用户货物信息
@@ -37,6 +47,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
      */
     @ResponseBody
     @RequestMapping(value = "/agents")
+    @Deprecated
     public Object queryPage(@RequestParam(required = false)String cardNumber,
                             @RequestParam(required = false)String area,
                             @RequestParam(required =false,defaultValue = "false")Boolean isOutput,
@@ -78,9 +89,12 @@ public class AgentsController extends BaseCommonController <ICardExService>{
      * 出库操作
      * @return
      */
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/output")
-    public Object output(@RequestParam("area")String flow,@RequestParam(value = "outputList",required = false)String idlist,@RequestParam(value = "rows",required = false)Integer rows){
+    public Object output(@RequestParam("area")String flow,
+                         @RequestParam(value = "outputList",required = false)String idlist,
+                         @RequestParam(value = "rows",required = false)Integer rows){
         Map<String,Object> condition=new HashMap<>();
         condition.put("flow",flow);
         if(idlist!=null){
@@ -126,6 +140,39 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         resultMap.put("count",maps.size());
         return resultMap;
     }
+
+//    @ResponseBody
+//    @ApiDesc(value = "出库检测",owner = "杨国荣")
+//    @RequestMapping(value = "/outPutCardNumber",method = RequestMethod.GET)
+//    public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
+//
+//        Map<String,Object> queryMap = Maps.newHashMap();
+//        queryMap.put("status",0);
+//        Card card = (Card) cardService.queryOne(queryMap,"cardNumber",SqlOrderEnum.DESC);
+//        // 卡号生成规则:库存最大卡号依次向后累加
+//        String prefix = "GK";
+//        String number = StringUtils.replace(card.getCardNumber(),prefix,"");
+//
+//        Map<String,Object> resultMap = Maps.newHashMap();
+//        resultMap.put("start",prefix+(Long.valueOf(number)+1));
+//        resultMap.put("end",prefix+(Long.valueOf(number)+rows+1));
+//        resultMap.put("count",rows);
+//        return resultMap;
+//    }
+
+
+//    @ResponseBody
+//    @ApiDesc(value = "批量出库操作",owner = "杨国荣")
+//    @RequestMapping(value = "/batchOutPutCardNumber",method = RequestMethod.GET)
+//    public Object batchOutPutCardNumber(@RequestParam(value = "rows") int rows,
+//                                        @RequestParam(value = "area") String area,
+//                                        @RequestParam(value = "productType") int productType){
+//
+//        cardExService.batchOutPutCardNumber();
+//
+//        return ObjectFactory.getSingle();
+//    }
+
 
     @Override
     protected Map<String, Object> getSelector() {
