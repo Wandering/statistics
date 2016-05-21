@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.util;
+package cn.thinkjoy.agents.util;
 
 import cn.thinkjoy.common.domain.CreateBaseDomain;
 import cn.thinkjoy.common.exception.BizException;

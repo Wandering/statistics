@@ -16,7 +16,7 @@ import cn.thinkjoy.jx.statistics.pojo.OrderStatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IOrderService;
 import cn.thinkjoy.jx.statistics.service.ISettlementRecordService;
 import cn.thinkjoy.jx.statistics.service.ex.IEXOrderService;
-import cn.thinkjoy.jx.statistics.util.ModelUtil;
+import cn.thinkjoy.agents.util.ModelUtil;
 import cn.thinkjoy.zgk.zgksystem.DeparmentApiService;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;

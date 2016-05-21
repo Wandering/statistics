@@ -4,6 +4,8 @@ import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.common.exception.BizException;
+import cn.thinkjoy.common.restful.apigen.annotation.ApiDesc;
+import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.domain.agents.Card;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
@@ -12,6 +14,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -86,6 +89,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
      * 出库操作
      * @return
      */
+    @Deprecated
     @ResponseBody
     @RequestMapping(value = "/output")
     public Object output(@RequestParam("area")String flow,
@@ -111,26 +115,63 @@ public class AgentsController extends BaseCommonController <ICardExService>{
 
     /**
      * 出库操作
-     *
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/outPutCardNumber")
     public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
-
-        Map<String,Object> queryMap = Maps.newHashMap();
-        queryMap.put("status",0);
-        Card card = (Card) cardService.queryOne(queryMap,"cardNumber",SqlOrderEnum.DESC);
-        // 卡号生成规则:库存最大卡号依次向后累加
-        String prefix = "GK";
-        String number = StringUtils.replace(card.getCardNumber(),prefix,"");
-
-        Map<String,Object> resultMap = Maps.newHashMap();
-        resultMap.put("start",prefix+(Long.valueOf(number)+1));
-        resultMap.put("end",prefix+(Long.valueOf(number)+rows+1));
-        resultMap.put("count",rows);
+        Map<String,Object> condition=new HashMap<>();
+        condition.put("rows",rows);
+        List<Map<String,Object>> maps=cardExService.outPutCardNumber(condition);
+        Map<String,Object> resultMap=new HashMap<>();
+        String start=null;
+        String end=null;
+        if(maps.size()>0){
+            start=maps.get(0).get("cardNumber").toString();
+        }
+        if(maps.size()>1){
+            end=maps.get(maps.size()-1).get("cardNumber").toString();
+        }
+        if(start!=null && end==null){
+            end=maps.get(0).get("cardNumber").toString();
+        }
+        resultMap.put("start",start);
+        resultMap.put("end",end);
+        resultMap.put("count",maps.size());
         return resultMap;
     }
+
+//    @ResponseBody
+//    @ApiDesc(value = "出库检测",owner = "杨国荣")
+//    @RequestMapping(value = "/outPutCardNumber",method = RequestMethod.GET)
+//    public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
+//
+//        Map<String,Object> queryMap = Maps.newHashMap();
+//        queryMap.put("status",0);
+//        Card card = (Card) cardService.queryOne(queryMap,"cardNumber",SqlOrderEnum.DESC);
+//        // 卡号生成规则:库存最大卡号依次向后累加
+//        String prefix = "GK";
+//        String number = StringUtils.replace(card.getCardNumber(),prefix,"");
+//
+//        Map<String,Object> resultMap = Maps.newHashMap();
+//        resultMap.put("start",prefix+(Long.valueOf(number)+1));
+//        resultMap.put("end",prefix+(Long.valueOf(number)+rows+1));
+//        resultMap.put("count",rows);
+//        return resultMap;
+//    }
+
+
+//    @ResponseBody
+//    @ApiDesc(value = "批量出库操作",owner = "杨国荣")
+//    @RequestMapping(value = "/batchOutPutCardNumber",method = RequestMethod.GET)
+//    public Object batchOutPutCardNumber(@RequestParam(value = "rows") int rows,
+//                                        @RequestParam(value = "area") String area,
+//                                        @RequestParam(value = "productType") int productType){
+//
+//        cardExService.batchOutPutCardNumber();
+//
+//        return ObjectFactory.getSingle();
+//    }
 
 
     @Override

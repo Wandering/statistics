@@ -11,7 +11,7 @@ import cn.thinkjoy.jx.statistics.pojo.ProductSaleDetailPojo;
 import cn.thinkjoy.jx.statistics.service.IUserInfoService;
 import cn.thinkjoy.jx.statistics.service.ex.IEXOrderService;
 import cn.thinkjoy.jx.statistics.util.Constants;
-import cn.thinkjoy.jx.statistics.util.ModelUtil;
+import cn.thinkjoy.agents.util.ModelUtil;
 import cn.thinkjoy.jx.statistics.util.ObjectConvertUtil;
 import cn.thinkjoy.zgk.zgksystem.DeparmentApiService;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
