@@ -16,44 +16,42 @@ define(function (require, exports, module) {
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
 
-        require('datetimepicker');
-        require('datetimepickerCN');
-        $('#start_date').datetimepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        }).on('changeDate', function (evl) {
-            var startDate = $('#start_date').val();
-            $('#end_date').datetimepicker('setStartDate', startDate);
-            setTimeout(function () {
-                var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
-                $('#end_date').datetimepicker('setEndDate', endDate);
-            }, 100);
-        });
-        $('#end_date').datetimepicker({
-            language: 'zh-CN',
-            format: 'yyyy-mm-dd',
-            weekStart: 1,
-            autoclose: true,
-            startView: 2,
-            minView: 2,
-            forceParse: 0
-        }).on('changeDate', function (evl) {
-            var endDate = $('#end_date').val();
-            $('#start_date').datetimepicker('setEndDate', endDate);
-            setTimeout(function () {
-                var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
-                $('#start_date').datetimepicker('setStartDate', startDate);
-            }, 100);
-        });
-
-
+        //require('datetimepicker');
+        //require('datetimepickerCN');
+        //$('#start_date').datetimepicker({
+        //    language: 'zh-CN',
+        //    format: 'yyyy-mm-dd',
+        //    weekStart: 1,
+        //    autoclose: true,
+        //    startView: 2,
+        //    minView: 2,
+        //    forceParse: 0
+        //}).on('changeDate', function (evl) {
+        //    var startDate = $('#start_date').val();
+        //    $('#end_date').datetimepicker('setStartDate', startDate);
+        //    setTimeout(function () {
+        //        var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+        //        $('#end_date').datetimepicker('setEndDate', endDate);
+        //    }, 100);
+        //});
+        //$('#end_date').datetimepicker({
+        //    language: 'zh-CN',
+        //    format: 'yyyy-mm-dd',
+        //    weekStart: 1,
+        //    autoclose: true,
+        //    startView: 2,
+        //    minView: 2,
+        //    forceParse: 0
+        //}).on('changeDate', function (evl) {
+        //    var endDate = $('#end_date').val();
+        //    $('#start_date').datetimepicker('setEndDate', endDate);
+        //    setTimeout(function () {
+        //        var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+        //        $('#start_date').datetimepicker('setStartDate', startDate);
+        //    }, 100);
+        //});
         $.getJSON(UrlConfig.checkLogin, function (res) {
-            console.log(res)
+            console.log(res.roleType)
             if (res.roleType != "1") {
                 // 总览
                 var colOverview = [{
@@ -66,13 +64,13 @@ define(function (require, exports, module) {
                     data: 'departmentLevel',
                     title: '代理商层级'
                 }, {
-                    data: 'wechatPrice',
-                    title: '微信售价'
-                }, {
-                    data: 'webPrice',
-                    title: 'web售价'
+                    data: 'productName',
+                    title: '种类'
                 }, {
                     data: 'salePrice',
+                    title: '售价'
+                }, {
+                    data: 'pickupPrice',
                     title: '出厂价'
                 }, {
                     data: 'wechatSaleCount',
@@ -92,36 +90,73 @@ define(function (require, exports, module) {
                 }];
                 var columnDefsOverview = [{
                     "bVisible": false,
-                    "aTargets": [0]
+                    "aTargets": [0],
+                    "sClass": "center line35"
+                }, {
+                    "aTargets": [1],
+                    "sClass": "center line35"
+                }, {
+                    "aTargets": [2],
+                    "sClass": "center line35"
                 }, {
                     "sClass": "center",
-                    "aTargets": [1]
+                    "aTargets": [3],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].productName + '</div>';
+                        }
+                        return listHtml;
+                    }
+
                 }, {
                     "sClass": "center",
-                    "aTargets": [2]
+                    "aTargets": [4],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].salePrice + '</div>';
+                        }
+                        return listHtml;
+                    }
                 }, {
                     "sClass": "center",
-                    "aTargets": [3]
+                    "aTargets": [5],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].pickupPrice + '</div>';
+                        }
+                        return listHtml;
+                    }
                 }, {
                     "sClass": "center",
-                    "aTargets": [4]
+                    "aTargets": [6],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].wechatSaleCount + '</div>';
+                        }
+                        return listHtml;
+                    }
                 }, {
                     "sClass": "center",
-                    "aTargets": [5]
+                    "aTargets": [7],
+                    "render": function (data, type, row) {
+                        var listHtml = '';
+                        for (var i = 0; i < row.productSales.length; i++) {
+                            listHtml += '<div>' + row.productSales[i].webSaleCount + '</div>';
+                        }
+                        return listHtml;
+                    }
                 }, {
-                    "sClass": "center",
-                    "aTargets": [6]
-                }, {
-                    "sClass": "center",
-                    "aTargets": [7]
-                }, {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [8]
                 }, {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [9]
                 }, {
-                    "sClass": "center",
+                    "sClass": "center line35",
                     "aTargets": [10]
                 }];
                 var TableInstanceOverview = Table({
@@ -262,9 +297,7 @@ define(function (require, exports, module) {
                 "sClass": "center",
                 "aTargets": [7],
                 "render": function (data, type, row) {
-
                     var orderNo = row.orderNo;
-                    console.log(orderNo);
                     return '<button type="button" id="' + orderNo + '" class="btn btn-info"  onclick="settlement(this)">发货</button>';
                 }
             }];
