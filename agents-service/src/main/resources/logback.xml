@@ -75,7 +75,7 @@
     </logger>
 
     <!-- 这里平时的level为WARN，跟踪问题时才设置为DEBUG -->
-    <!--<logger name="cn.thinkjoy.jx.statistics" level="WARN">-->
+    <!--<logger name="cn.thinkjoy.agents.dao" level="DEBUG">-->
         <!--<appender-ref ref="DEBUG-FILE-APPENDER"/>-->
         <!--<appender-ref ref="WARN-FILE-APPENDER" />-->
     <!--</logger>-->
