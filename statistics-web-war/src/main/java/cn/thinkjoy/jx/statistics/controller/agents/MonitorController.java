@@ -39,18 +39,18 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
 
     @ResponseBody
     @RequestMapping(value = "/monitors")
-    public Object queryPage(@RequestParam(required = false)String queryParam,
-                            @RequestParam(required = false)String area,
-                            @RequestParam(required =false)Integer status,
-                            @RequestParam(required =false)String startDate,
-                            @RequestParam(required =false)String endDate,
-                            @RequestParam(required =false)String activityStatus,
-                            @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
-                            @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
+    public Object queryPage(@RequestParam(required = false) String queryParam,
+                            @RequestParam(required = false) String area,
+                            @RequestParam(required = false) Integer status,
+                            @RequestParam(required = false) String startDate,
+                            @RequestParam(required = false) String endDate,
+                            @RequestParam(required = false) String activityStatus,
+                            @RequestParam(required = false,defaultValue = "-1") Integer productType,
+                            @RequestParam(required = false,defaultValue = "1",value = "currentPageNo") Integer page,
+                            @RequestParam(required = false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
-        if(StringUtils.isNotEmpty(queryParam)){
-            condition.put("queryParam",queryParam);
-        }
+        condition.put("queryParam",queryParam);
+
         if(StringUtils.isNotEmpty(area) && (!"00".equals(area))){
                 //用户地址处理逻辑
             condition.put("area",area);
@@ -65,21 +65,7 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                 condition.put("errorStatus2", status);
             }
         }
-        if(StringUtils.isNotEmpty(startDate)){
-            if(StringUtils.isEmpty(endDate)){
-                throw new BizException("error","截止时间不能为空");
-            }
-            try {
-//                condition.put("activeDateStart", DateUtils.parseDateFromHeader(startDate).getTime());
-//                condition.put("activeDateEnd", DateUtils.parseDateFromHeader(endDate).getTime());
-                DateFormat dateFormat=new SimpleDateFormat("yy-MM-dd");
-                condition.put("activeDateStart", dateFormat.parse(startDate).getTime());
-                condition.put("activeDateEnd", dateFormat.parse(endDate).getTime());
-            } catch (ParseException e) {
-                throw new BizException("error","不是标准的时间格式");
-            }
 
-        }
         if(StringUtils.isNotEmpty(activityStatus)){
             Integer activityStatusInt=Integer.parseInt(activityStatus);
            switch (activityStatusInt){
@@ -93,6 +79,9 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
                    break;
            }
         }
+        condition.put("productType",productType);
+        condition.put("activeDateStart",startDate);
+        condition.put("activeDateEnd", endDate);
         return doPage(page,rows,condition);
     }
 

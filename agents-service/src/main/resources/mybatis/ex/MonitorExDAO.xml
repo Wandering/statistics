@@ -14,43 +14,50 @@
         account,
         info.provinceId,
         cityId,
-        countyId
+        countyId,
+        productType
         FROM
         zgk_user_account account
         INNER JOIN zgk_user_info info ON account.id = info.id
         LEFT JOIN zgk_card card ON card.userId = account.id
         <where>
             <!--标记当前用户查询范围-->
-            <if test="condition.whereSql != null">
+            <if test="condition.whereSql != null and condition.whereSql != ''">
                 and info.id in (${condition.whereSql})
             </if>
-            <if test="condition.queryParam!=null">
-                AND (account.account=#{condition.queryParam} OR  card.cardNumber=#{condition.queryParam})
+            <if test="condition.queryParam != null and condition.queryParam != ''">
+                AND (account.account=#{condition.queryParam} OR card.cardNumber=#{condition.queryParam})
             </if>
-            <if test="condition.provinceId!=null">
+            <if test="condition.provinceId!=null and condition.provinceId != ''">
                 AND info.provinceId like #{condition.provinceId}
             </if>
-            <if test="condition.cityId!=null">
+            <if test="condition.cityId!=null and condition.cityId != ''">
                 AND info.cityId like #{condition.cityId}
             </if>
-            <if test="condition.countyId!=null">
+            <if test="condition.countyId!=null and condition.countyId != ''">
                 AND info.countyId like #{condition.countyId}
             </if>
-            <if test="condition.activeDateStart!=null and condition.activeDateEnd!=null">
-                AND (card.activeDate &gt; #{condition.activeDateStart} AND card.activeDate &lt;  #{condition.activeDateEnd})
+            <if test="condition.activeDateStart!=null and condition.activeDateStart!=''">
+                AND card.activeDate &gt; #{condition.activeDateStart}
             </if>
-            <if test="condition.errorStatus!=null">
+            <if test="condition.activeDateEnd!=null and condition.activeDateEnd!=''">
+                AND card.activeDate &lt;  #{condition.activeDateEnd}
+            </if>
+            <if test="condition.errorStatus!=null and condition.errorStatus!=''">
                 AND card.errorStatus=#{condition.errorStatus}
             </if>
-            <if test="condition.errorStatus2!=null">
+            <if test="condition.errorStatus2!=null and condition.errorStatus2!='' ">
                 AND (card.errorStatus=#{condition.errorStatus2} OR card.errorStatus IS NULL)
             </if>
             <!--激活查询-->
-            <if test="condition.status!=null">
+            <if test="condition.status!=null and condition.status!=''">
                 and card.status = #{condition.status}
             </if>
-            <if test="condition.status2!=null">
+            <if test="condition.status2!=null and condition.status2!=''">
                 and (card.status IS NULL or card.status = #{condition.status2})
+            </if>
+            <if test="condition.productType != -1">
+                and card.productType = #{condition.productType})
             </if>
         </where>
         <if test="orderBy!=null">
@@ -70,37 +77,43 @@
         INNER JOIN zgk_user_info info ON account.id = info.id
         LEFT JOIN zgk_card card ON card.userId = account.id
         <where>
-            <if test="whereSql != null">
+
+            <if test="whereSql != null and whereSql != ''">
                 and account.id in (${whereSql})
             </if>
-            <if test="queryParam!=null">
-                AND (account.account=#{queryParam} OR  card.cardNumber=#{queryParam})
+            <if test="queryParam != null and queryParam != ''">
+                AND (account.account=#{queryParam} OR card.cardNumber=#{queryParam})
             </if>
-            <if test="provinceId!=null">
+            <if test="provinceId!=null and provinceId != ''">
                 AND info.provinceId like #{provinceId}
             </if>
-            <if test="cityId!=null">
+            <if test="cityId!=null and cityId != ''">
                 AND info.cityId like #{cityId}
             </if>
-
-            <if test="countyId!=null">
-                AND info.countyId  like #{countyId}
+            <if test="countyId!=null and countyId != ''">
+                AND info.countyId like #{countyId}
             </if>
-            <if test="activeDateStart!=null and activeDateEnd!=null">
-                AND (card.activeDate &gt;= #{activeDateStart} AND card.activeDate &lt;=  #{activeDateEnd})
+            <if test="activeDateStart!=null and activeDateStart!=''">
+                AND card.activeDate &gt; #{activeDateStart}
             </if>
-            <if test="errorStatus!=null">
+            <if test="activeDateEnd!=null and activeDateEnd!=''">
+                AND card.activeDate &lt;  #{activeDateEnd}
+            </if>
+            <if test="errorStatus!=null and errorStatus!=''">
                 AND card.errorStatus=#{errorStatus}
             </if>
-            <if test="errorStatus2!=null">
-                AND card.errorStatus IS NULL
+            <if test="errorStatus2!=null and errorStatus2!='' ">
+                AND (card.errorStatus=#{errorStatus2} OR card.errorStatus IS NULL)
             </if>
             <!--激活查询-->
-            <if test="status!=null">
+            <if test="status!=null and status!=''">
                 and card.status = #{status}
             </if>
-            <if test="status2!=null">
+            <if test="status2!=null and status2!=''">
                 and (card.status IS NULL or card.status = #{status2})
+            </if>
+            <if test="productType != -1">
+                and card.productType = #{productType})
             </if>
         </where>
     </select>

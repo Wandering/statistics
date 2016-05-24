@@ -20,7 +20,8 @@
         outputDate1 as outputDate1 ,
         outputDate2 as outputDate2 ,
         outputDate3 as outputDate3 ,
-        activeDate as activeDate
+        activeDate as activeDate,
+        productType as productType
     </sql>
 
     <select id="outPutCardNumber" resultType="java.util.Map">
@@ -34,13 +35,18 @@
                 and id in (${condition.whereSql})
             </if>
             <!--未出库查询-->
-                and goodsNumber=#{condition.userArea}
-                and status=0
+            and productType = #{productType}
+            <!-- 当卡类型为金榜登科时,忽略以前库里边的存量卡 -->
+            <if test="productType == 1">
+                and creator != 1
+            </if>
+            and goodsNumber = #{condition.userArea}
+            and status=0
         </where>
         <if test="condition.orderBy!=null">
             ORDER BY ${condition.orderBy} ${condition.sortBy}
         </if>
-            limit  ${condition.rows}
+            limit ${condition.rows}
         </if>
     </select>
 
@@ -99,6 +105,9 @@
                 </if>
                 <if test="selector.activeDate!=null">
                     , activeDate
+                </if>
+                <if test="selector.productType!=null">
+                    , productType
                 </if>
             </trim>
         </if>
@@ -201,6 +210,7 @@
             <if test="cardNumber != null">
                 and cardNumber = #{cardNumber}
             </if>
+            and productType = #{productType}
             and status=0
         </where>
             <if test="orderBy!=null">

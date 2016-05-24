@@ -94,6 +94,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
     @RequestMapping(value = "/output")
     public Object output(@RequestParam("area")String flow,
                          @RequestParam(value = "outputList",required = false)String idlist,
+                         @RequestParam(value = "productType",required = false)Integer productType,
                          @RequestParam(value = "rows",required = false)Integer rows){
         Map<String,Object> condition=new HashMap<>();
         condition.put("flow",flow);
@@ -119,9 +120,11 @@ public class AgentsController extends BaseCommonController <ICardExService>{
      */
     @ResponseBody
     @RequestMapping(value = "/outPutCardNumber")
-    public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
+    public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows,
+                                   @RequestParam(value = "productType")Integer productType){
         Map<String,Object> condition=new HashMap<>();
         condition.put("rows",rows);
+        condition.put("productType",productType);
         List<Map<String,Object>> maps=cardExService.outPutCardNumber(condition);
         Map<String,Object> resultMap=new HashMap<>();
         String start=null;
@@ -141,38 +144,6 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         return resultMap;
     }
 
-//    @ResponseBody
-//    @ApiDesc(value = "出库检测",owner = "杨国荣")
-//    @RequestMapping(value = "/outPutCardNumber",method = RequestMethod.GET)
-//    public Object outPutCardNumber(@RequestParam(value = "rows")Integer rows){
-//
-//        Map<String,Object> queryMap = Maps.newHashMap();
-//        queryMap.put("status",0);
-//        Card card = (Card) cardService.queryOne(queryMap,"cardNumber",SqlOrderEnum.DESC);
-//        // 卡号生成规则:库存最大卡号依次向后累加
-//        String prefix = "GK";
-//        String number = StringUtils.replace(card.getCardNumber(),prefix,"");
-//
-//        Map<String,Object> resultMap = Maps.newHashMap();
-//        resultMap.put("start",prefix+(Long.valueOf(number)+1));
-//        resultMap.put("end",prefix+(Long.valueOf(number)+rows+1));
-//        resultMap.put("count",rows);
-//        return resultMap;
-//    }
-
-
-//    @ResponseBody
-//    @ApiDesc(value = "批量出库操作",owner = "杨国荣")
-//    @RequestMapping(value = "/batchOutPutCardNumber",method = RequestMethod.GET)
-//    public Object batchOutPutCardNumber(@RequestParam(value = "rows") int rows,
-//                                        @RequestParam(value = "area") String area,
-//                                        @RequestParam(value = "productType") int productType){
-//
-//        cardExService.batchOutPutCardNumber();
-//
-//        return ObjectFactory.getSingle();
-//    }
-
 
     @Override
     protected Map<String, Object> getSelector() {
@@ -185,6 +156,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         selector.put("outputDate2","outputDate2");
         selector.put("outputDate3","outputDate3");
         selector.put("activeDate","activeDate");
+        selector.put("productType","productType");
         return selector;
     }
 
