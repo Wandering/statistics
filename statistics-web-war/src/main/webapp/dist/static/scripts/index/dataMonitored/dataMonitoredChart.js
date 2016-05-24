@@ -220,13 +220,14 @@ define('static/scripts/index/dataMonitored/dataMonitoredChart', ['sea-modules/bo
                 var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=1&activityStatus=1&startDate='+param.name + "&endDate="+endDate;
                 getMonitoredList(link);
             },
+
             legendData: [],
             data: function(bizData) {
                 var xAxisData = [],
                     num = [];
                 for (var i = 0; i < bizData.length; i++) {
                     xAxisData.push(bizData[i].date);
-                    num.push(bizData[i].number);
+                    num.push(bizData[i].status);
                 }
                 console.log(num);
                 console.log(eval(num.join('+')));
@@ -236,7 +237,7 @@ define('static/scripts/index/dataMonitored/dataMonitoredChart', ['sea-modules/bo
                 return {
                     xAxisData: xAxisData,
                     seriesData: [{
-                        name: '已激活用户总数',
+                        name: '异常数据',
                         type: 'line',
                         barMaxWidth: 30,
                         data: num

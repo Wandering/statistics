@@ -1,7 +1,7 @@
 /**
  * Created by pdeng on 16/3/23.
  */
-define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/goodsManager/outbound_from', 'static/scripts/index/goodsManager/outbound_batch_from', 'static/scripts/index/goodsManager/outbound_flow_area'], function (require, exports, module) {
+define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/goodsManager/outbound_from', 'static/scripts/index/goodsManager/outbound_batch_from', 'static/scripts/index/goodsManager/outbound_flow_area'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
@@ -16,6 +16,67 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             $('#tab-btn li[roletype="2"]').remove();
             willOutput(UrlConfig.getGoodsMange);
         }
+
+
+        require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker');
+        require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN');
+        $('#goods_start_date').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        }).on('changeDate', function(evl) {
+            var startDate = $('#goods_start_date').val();
+            $('#goods_end_date').datetimepicker('setStartDate', startDate);
+            setTimeout(function() {
+                var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+                $('#goods_end_date').datetimepicker('setEndDate', endDate);
+            }, 100);
+        });
+        $('#goods_end_date').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        }).on('changeDate', function(evl) {
+            var endDate = $('#goods_end_date').val();
+            $('#goods_start_date').datetimepicker('setEndDate', endDate);
+            setTimeout(function() {
+                var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+                $('#goods_start_date').datetimepicker('setStartDate', startDate);
+            }, 100);
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
@@ -174,13 +235,15 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             $('.selNoOutbound[type="checkbox"]:checked').each(function () {
                 selNoOutboundArr.push($(this).attr('data-id'));
             });
+            var productType =  $('#dep_type_batch option:selected').val();
             $.ajax({
                 type: 'post',
                 url: '/admin/output?token=' + token,
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     area: formArry[0] || '',
-                    outputList: selNoOutboundArr.join(",")
+                    outputList: selNoOutboundArr.join(","),
+                    productType : productType
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -196,13 +259,15 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
         };
         var productionBatchDepartment = function (formArry, succCallback, id) {
             var outboundBatchNum = parseInt($('#outbound_batch_num').val());
+            var productType =  $('#dep_type_batch option:selected').val();
             $.ajax({
                 type: 'post',
                 url: '/admin/output?token=' + token,
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     area: formArry[0] || '',
-                    rows: outboundBatchNum
+                    rows: outboundBatchNum,
+                    productType:productType
                 },
                 dataType: 'json',
                 success: function (data) {

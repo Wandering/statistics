@@ -1,7 +1,7 @@
 /**
  * Created by pdeng on 16/3/23.
  */
-define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/tools', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/jquery/dialog/jquery.dialog'], function (require, exports, module) {
+define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/tools', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN', 'sea-modules/jquery/dialog/jquery.dialog'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
@@ -16,40 +16,40 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
 
-        //require('datetimepicker');
-        //require('datetimepickerCN');
-        //$('#start_date').datetimepicker({
-        //    language: 'zh-CN',
-        //    format: 'yyyy-mm-dd',
-        //    weekStart: 1,
-        //    autoclose: true,
-        //    startView: 2,
-        //    minView: 2,
-        //    forceParse: 0
-        //}).on('changeDate', function (evl) {
-        //    var startDate = $('#start_date').val();
-        //    $('#end_date').datetimepicker('setStartDate', startDate);
-        //    setTimeout(function () {
-        //        var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
-        //        $('#end_date').datetimepicker('setEndDate', endDate);
-        //    }, 100);
-        //});
-        //$('#end_date').datetimepicker({
-        //    language: 'zh-CN',
-        //    format: 'yyyy-mm-dd',
-        //    weekStart: 1,
-        //    autoclose: true,
-        //    startView: 2,
-        //    minView: 2,
-        //    forceParse: 0
-        //}).on('changeDate', function (evl) {
-        //    var endDate = $('#end_date').val();
-        //    $('#start_date').datetimepicker('setEndDate', endDate);
-        //    setTimeout(function () {
-        //        var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
-        //        $('#start_date').datetimepicker('setStartDate', startDate);
-        //    }, 100);
-        //});
+        require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker');
+        require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN');
+        $('#start_date').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        }).on('changeDate', function (evl) {
+            var startDate = $('#start_date').val();
+            $('#end_date').datetimepicker('setStartDate', startDate);
+            setTimeout(function () {
+                var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+                $('#end_date').datetimepicker('setEndDate', endDate);
+            }, 100);
+        });
+        $('#end_date').datetimepicker({
+            language: 'zh-CN',
+            format: 'yyyy-mm-dd',
+            weekStart: 1,
+            autoclose: true,
+            startView: 2,
+            minView: 2,
+            forceParse: 0
+        }).on('changeDate', function (evl) {
+            var endDate = $('#end_date').val();
+            $('#start_date').datetimepicker('setEndDate', endDate);
+            setTimeout(function () {
+                var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
+                $('#start_date').datetimepicker('setStartDate', startDate);
+            }, 100);
+        });
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res.roleType)
             if (res.roleType != "1") {
@@ -175,38 +175,29 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var curSelectedV = $('#orderType option:selected').val();
+            var orderTypePriceV = $('#orderTypePrice option:selected').val();
             var phoneNum = $('#phoneNum').val();
+            var start_date = $('#start_date').val();
+            var end_date = $('#end_date').val();
             var orderType = $(this).attr('orderType');
             if (orderType == "0") {
-                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType);
-                //// 全选
-                //$('#selectall').on('click', function () {
-                //    var that = this;
-                //    $('.selNoOutbound[type="checkbox"]').each(function () {
-                //        this.checked = that.checked;
-                //    });
-                //});
-                //// 单选
-                //window.clickChecked = function () {
-                //    var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
-                //    var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
-                //    if (selNoOutboundLength == selNoOutboundCheckedLength) {
-                //        $('#selectall')[0].checked = true;
-                //    } else {
-                //        $('#selectall')[0].checked = false;
-                //    }
-                //};
+                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType+"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
             } else {
-                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=-1");
+                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState="+orderType+"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
             }
         });
-        $('#order-tab-btn li:eq(0)').click();
+
+        willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=-1&orderNoOrPhone=&handleState=0&startDate=-1&endDate=-1&productType=-1");
+
         $(document).on('click', '#orderSearch', function () {
             var curSelectedV = $('#orderType option:selected').val();
+            var orderTypePriceV = $('#orderTypePrice option:selected').val();
             var phoneNum = $('#phoneNum').val();
+            var start_date = $('#start_date').val();
+            var end_date = $('#end_date').val();
             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
             if (orderType == "0") {
-                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType);
+                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
                 // 全选
                 $('#selectall').on('click', function () {
                     var that = this;
@@ -225,7 +216,7 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                     }
                 };
             } else {
-                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType);
+                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
             }
         });
 
@@ -341,9 +332,12 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                                         console.log(data)
                                         if (data.rtnCode == "0000000") {
                                             var curSelectedV = $('#orderType option:selected').val();
+                                            var orderTypePriceV = $('#orderTypePrice option:selected').val();
                                             var phoneNum = $('#phoneNum').val();
+                                            var start_date = $('#start_date').val();
+                                            var end_date = $('#end_date').val();
                                             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
-                                            willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType);
+                                            willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
                                             $("#order_dialog").dialog("destroy");
                                         }
                                     },

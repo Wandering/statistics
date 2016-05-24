@@ -147,37 +147,7 @@ define(function (require, exports, module) {
         });
 
 
-
-
-        $.getJSON(UrlConfig.checkLogin, function (res) {
-            var areaCode = '';
-            var areaType = '';
-                console.log(res)
-            var roleType = res.roleType;
-            switch (roleType) {
-                case 1:
-                    areaCode = '-1';
-                    areaType = '-1';
-                    break;
-                case 2:
-                    areaCode = res.areaCode + "0000";
-                    areaType = '1';
-                    break;
-                case 3:
-                    areaCode = res.areaCode + "00";
-                    areaType = '2';
-                    break;
-                case 4:
-                    areaCode = res.areaCode;
-                    areaType = '3';
-                    break;
-                default:
-            }
-            getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode="+ areaCode +"&areaType="+ areaType +"&token=" + token);
-        })
-
-
-
+        getRecordList(UrlConfig.queryAllDepartmentIncome + "?areaCode=-1&areaType=-1&token=" + token);
         function getRecordList(url) {
             var col = [
                 {
