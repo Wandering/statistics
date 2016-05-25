@@ -198,23 +198,6 @@ define(function (require, exports, module) {
             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
             if (orderType == "0") {
                 willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
-                // 全选
-                $('#selectall').on('click', function () {
-                    var that = this;
-                    $('.selNoOutbound[type="checkbox"]').each(function () {
-                        this.checked = that.checked;
-                    });
-                });
-                // 单选
-                window.clickChecked = function () {
-                    var selNoOutboundLength = $('.selNoOutbound[type="checkbox"]').length;
-                    var selNoOutboundCheckedLength = $('.selNoOutbound[type="checkbox"]:checked').length;
-                    if (selNoOutboundLength == selNoOutboundCheckedLength) {
-                        $('#selectall')[0].checked = true;
-                    } else {
-                        $('#selectall')[0].checked = false;
-                    }
-                };
             } else {
                 willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
             }
