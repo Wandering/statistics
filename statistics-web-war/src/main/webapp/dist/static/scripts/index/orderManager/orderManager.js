@@ -50,6 +50,14 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                 $('#start_date').datetimepicker('setStartDate', startDate);
             }, 100);
         });
+
+
+
+
+
+
+
+
         $.getJSON(UrlConfig.checkLogin, function (res) {
             console.log(res.roleType)
             if (res.roleType != "1") {
@@ -172,23 +180,36 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
         });
 
 
+
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
+            var orderType = $(this).attr('orderType');
             var curSelectedV = $('#orderType option:selected').val();
             var orderTypePriceV = $('#orderTypePrice option:selected').val();
             var phoneNum = $('#phoneNum').val();
             var start_date = $('#start_date').val();
             var end_date = $('#end_date').val();
-            var orderType = $(this).attr('orderType');
+            var timesStartDate = "";
+            if(start_date!=""){
+                timesStartDate = Date.parse(new Date(start_date)) / 1000;
+            }else{
+                timesStartDate = "-1";
+            }
+            var timesEndDate = "";
+            if(start_date!=""){
+                timesEndDate = Date.parse(new Date(end_date)) / 1000;
+            }else{
+                timesEndDate = "-1";
+            }
             if (orderType == "0") {
-                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType+"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
+                alert(76)
+                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType+"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
             } else {
-                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState="+orderType+"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
+                alert(23)
+                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState="+orderType+"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
             }
         });
-
         willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=-1&orderNoOrPhone=&handleState=0&startDate=-1&endDate=-1&productType=-1");
-
         $(document).on('click', '#orderSearch', function () {
             var curSelectedV = $('#orderType option:selected').val();
             var orderTypePriceV = $('#orderTypePrice option:selected').val();
@@ -196,10 +217,22 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
             var start_date = $('#start_date').val();
             var end_date = $('#end_date').val();
             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
+            var timesStartDate = "";
+            if(start_date!=""){
+                timesStartDate = Date.parse(new Date(start_date)) / 1000;
+            }else{
+                timesStartDate = "-1";
+            }
+            var timesEndDate = "";
+            if(start_date!=""){
+                timesEndDate = Date.parse(new Date(end_date)) / 1000;
+            }else{
+                timesEndDate = "-1";
+            }
             if (orderType == "0") {
-                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
+                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
             } else {
-                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
+                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
             }
         });
 
@@ -212,8 +245,14 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                     data: 'orderNo',
                     title: '订单编号'
                 }, {
-                    data: 'channle',
+                    data: 'productType',
                     title: '种类'
+                }, {
+                    data: 'handleState',
+                    title: '状态'
+                }, {
+                    data: 'channle',
+                    title: '来源'
                 }, {
                     data: 'userName',
                     title: '用户名称'
@@ -242,34 +281,59 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                 "aTargets": [1]
             }, {
                 "sClass": "center",
+                "aTargets": [2],
+                "render": function (data, type, row) {
+                    var listHtml = '';
+                    for (var i = 0; i < row.products.length; i++) {
+                        listHtml += '<div>' + row.products[i].productName + '</div>';
+                    }
+                    return listHtml;
+                }
+            }, {
+                "sClass": "center",
+                "aTargets": [3],
                 "render": function (data, type, row) {
                     var str = '';
-                    if (data == '0') {
+                    if (row.handleState == '0') {
+                        str = '未发货';
+                    } else {
+                        str = '已发货';
+                    }
+                    return str;
+                }
+            }, {
+                "sClass": "center",
+                "aTargets": [4],
+                "render": function (data, type, row) {
+                    var str = '';
+                    if (row.channle == '0') {
                         str = '微信';
                     } else {
                         str = 'web';
                     }
                     return str;
-                },
-                "aTargets": [2]
-            }, {
-                "sClass": "center",
-                "aTargets": [3]
-            }, {
-                "sClass": "center",
-                "aTargets": [4]
+                }
             }, {
                 "sClass": "center",
                 "aTargets": [5]
             }, {
                 "sClass": "center",
-                "render": function (data, type, row) {
-                    return timeFomate(data);
-                },
                 "aTargets": [6]
             }, {
                 "sClass": "center",
-                "aTargets": [7],
+                "aTargets": [7]
+            }, {
+                "sClass": "center",
+                "aTargets": [8]
+            }, {
+                "sClass": "center",
+                "aTargets": [9],
+                "render": function (data, type, row) {
+                    return timeFomate(data);
+                }
+            }, {
+                "sClass": "center",
+                "aTargets": [10],
                 "render": function (data, type, row) {
                     var orderNo = row.orderNo;
                     return '<button type="button" id="' + orderNo + '" class="btn btn-info"  onclick="settlement(this)">发货</button>';
@@ -320,7 +384,19 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                                             var start_date = $('#start_date').val();
                                             var end_date = $('#end_date').val();
                                             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
-                                            willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ start_date +"&endDate="+ end_date +"&productType="+orderTypePriceV);
+                                            var timesStartDate = "";
+                                            if(start_date!=""){
+                                                timesStartDate = Date.parse(new Date(start_date)) / 1000;
+                                            }else{
+                                                timesStartDate = "";
+                                            }
+                                            var timesEndDate = "";
+                                            if(start_date!=""){
+                                                timesEndDate = Date.parse(new Date(end_date)) / 1000;
+                                            }else{
+                                                timesEndDate = "";
+                                            }
+                                            willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
                                             $("#order_dialog").dialog("destroy");
                                         }
                                     },
