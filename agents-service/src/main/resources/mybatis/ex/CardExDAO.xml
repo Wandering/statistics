@@ -246,7 +246,9 @@
             <if test="productType == 1">
                 and creator != 1
             </if>
-            and productType = #{productType}
+            <if test="productType != null and productType != -1">
+                and productType = #{productType}
+            </if>
             and status=0
         </where>
             <if test="orderBy!=null">

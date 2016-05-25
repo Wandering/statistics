@@ -57,7 +57,7 @@
                 and (card.status IS NULL or card.status = #{condition.status2})
             </if>
             <if test="condition.productType != -1">
-                and card.productType = #{condition.productType})
+                and card.productType = #{condition.productType}
             </if>
         </where>
         <if test="orderBy!=null">
@@ -113,7 +113,7 @@
                 and (card.status IS NULL or card.status = #{status2})
             </if>
             <if test="productType != -1">
-                and card.productType = #{productType})
+                and card.productType = #{productType}
             </if>
         </where>
     </select>

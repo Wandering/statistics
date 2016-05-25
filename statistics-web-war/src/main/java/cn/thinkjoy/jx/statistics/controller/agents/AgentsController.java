@@ -121,10 +121,11 @@ public class AgentsController extends BaseCommonController <ICardExService>{
     @RequestMapping(value = "/output")
     public Object output(@RequestParam("area")String flow,
                          @RequestParam(value = "outputList",required = false)String idlist,
-                         @RequestParam(value = "productType",required = false)Integer productType,
+                         @RequestParam(value = "productType",required = false,defaultValue = "-1")Integer productType,
                          @RequestParam(value = "rows",required = false)Integer rows){
         Map<String,Object> condition=new HashMap<>();
         condition.put("flow",flow);
+        condition.put("productType",productType);
         if(idlist!=null){
 
             condition.put("idlist",idlist);
