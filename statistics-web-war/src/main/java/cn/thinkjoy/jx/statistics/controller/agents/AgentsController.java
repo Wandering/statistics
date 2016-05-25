@@ -11,7 +11,6 @@ import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.domain.agents.Card;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
-import cn.thinkjoy.jx.statistics.util.MD5Util;
 import cn.thinkjoy.jx.statistics.util.RandomCodeUtil;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -195,7 +194,7 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         for(int i=1;i<=count;i++){
             Card card = new Card();
             ModelUtil.initBuild(card);
-            card.setCardNumber(String.valueOf(Long.valueOf(number)+i));
+            card.setCardNumber(prefix+(Long.valueOf(number)+i));
             card.setPassword(RandomCodeUtil.generateCharCode(10).toLowerCase());
             card.setCardType("1");
             card.setProductType(productType);
