@@ -3,6 +3,7 @@ package cn.thinkjoy.jx.statistics.controller.agents;
 import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
+import cn.thinkjoy.agents.service.ex.common.UserInfoContext;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.restful.apigen.annotation.ApiDesc;
 import cn.thinkjoy.common.utils.ObjectFactory;
@@ -48,30 +49,53 @@ public class AgentsController extends BaseCommonController <ICardExService>{
     @ResponseBody
     @RequestMapping(value = "/agents")
     @Deprecated
-    public Object queryPage(@RequestParam(required = false)String cardNumber,
-                            @RequestParam(required = false)String area,
-                            @RequestParam(required =false,defaultValue = "false")Boolean isOutput,
-                            @RequestParam(required=false,defaultValue = "1",value = "currentPageNo") Integer page,
-                            @RequestParam(required=false,defaultValue = "10",value = "pageSize") Integer rows){
+    public Object queryPage(@RequestParam(required = false) String cardNumber,
+                            @RequestParam(required = false) String area,
+                            @RequestParam(required = false,defaultValue = "-1") long startDate,
+                            @RequestParam(required = false,defaultValue = "-1") long endDate,
+                            @RequestParam(required = false,defaultValue = "-1") int productType,
+                            @RequestParam(required = false,defaultValue = "false") Boolean isOutput,
+                            @RequestParam(required = false,defaultValue = "1",value = "currentPageNo") Integer page,
+                            @RequestParam(required = false,defaultValue = "10",value = "pageSize") Integer rows){
         Map<String,Object> condition=new HashMap<>();
-        if(StringUtils.isNotEmpty(cardNumber)){
-            condition.put("cardNumber",cardNumber);
-        }
+        condition.put("cardNumber",cardNumber);
+        condition.put("productType",productType);
+        condition.put("startDate",startDate);
+        condition.put("endDate",endDate);
+
         if(isOutput){
             condition.put("output",isOutput);
             if(StringUtils.isNotEmpty(area)){
-//                condition.put("flow",area);
                 condition.put("flowlist",areaToList(area));
             }
         }else {
             condition.put("notoutput",isOutput);
         }
+
+        Map<String,Object> userInfo = UserInfoContext.getCurrentUserInfo();
+        int roleType = Integer.valueOf(userInfo.get("roleType").toString());
+        switch (roleType){
+            case 1:
+                condition.put("queryDte","outputDate1");
+                break;
+            case 2:
+                condition.put("queryDte","outputDate2");
+                break;
+            case 3:
+                condition.put("queryDte","outputDate3");
+                break;
+            default:
+                condition.put("queryDte","outputDate1");
+                break;
+        }
+
         Map<String,Object> dataMap=doPage(page,rows,condition);
         if(isOutput){
             if(dataMap.containsKey("list") && dataMap.get("list")!=null) {
                 AgentsInfoUtils.setFlow((List<Map<String,Object>>)dataMap.get("list"));
             }
         }
+
         return dataMap;
     }
 

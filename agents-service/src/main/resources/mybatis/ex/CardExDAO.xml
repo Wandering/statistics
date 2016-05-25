@@ -51,7 +51,6 @@
     </select>
 
     <select id="queryPage" resultType="java.util.Map">
-
         SELECT
         <if test="selector!=null">
             <trim prefixOverrides=",">
@@ -123,10 +122,22 @@
             <!--未出库查询-->
             <if test="condition.notoutput!=null">
                 and goodsNumber=#{condition.userArea}
+                <if test="condition.startDate != -1">
+                    and createDate &gt; #{condition.startDate}
+                </if>
+                <if test="condition.endDate != -1">
+                    and createDate &lt; #{condition.endDate}
+                </if>
             </if>
             <!--已出库查询-->
             <if test="condition.output!=null">
                 and goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
+                <if test="condition.startDate != -1">
+                    and ${condition.queryDte} &gt; #{condition.startDate}
+                </if>
+                <if test="condition.endDate != -1">
+                    and ${condition.queryDte} &lt; #{condition.endDate}
+                </if>
             </if>
             <!--流向地查询-->
             <if test="condition.flowlist!=null">
@@ -136,9 +147,14 @@
                 </foreach>
             </if>
             <!--卡号查询-->
-            <if test="condition.cardNumber!=null">
+            <if test="condition.cardNumber!=null and condition.cardNumber!=''">
                 and cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
             </if>
+            <!-- 卡片类型 -->
+            <if test="condition.productType != -1">
+                and productType = #{condition.productType}
+            </if>
+
         </where>
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
