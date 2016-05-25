@@ -28,10 +28,10 @@ define(function (require, exports, module) {
             startView: 2,
             minView: 2,
             forceParse: 0
-        }).on('changeDate', function(evl) {
+        }).on('changeDate', function (evl) {
             var startDate = $('#goods_start_date').val();
             $('#goods_end_date').datetimepicker('setStartDate', startDate);
-            setTimeout(function() {
+            setTimeout(function () {
                 var endDate = Tool.timeFormat(new Date(+new Date(startDate) + 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
                 $('#goods_end_date').datetimepicker('setEndDate', endDate);
             }, 100);
@@ -44,39 +44,14 @@ define(function (require, exports, module) {
             startView: 2,
             minView: 2,
             forceParse: 0
-        }).on('changeDate', function(evl) {
+        }).on('changeDate', function (evl) {
             var endDate = $('#goods_end_date').val();
             $('#goods_start_date').datetimepicker('setEndDate', endDate);
-            setTimeout(function() {
+            setTimeout(function () {
                 var startDate = Tool.timeFormat(new Date(+new Date(endDate) - 365 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd');
                 $('#goods_start_date').datetimepicker('setStartDate', startDate);
             }, 100);
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         $(document).on('click', '#tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
@@ -127,8 +102,27 @@ define(function (require, exports, module) {
                 $('.form-error').text('您输入的卡号不正确').fadeIn(1000).fadeOut(1000);
                 return false
             }
+            var start_date = $('#goods_start_date').val();
+            var end_date = $('#goods_end_date').val();
+
+            var timesStartDate = "";
+            if (start_date != "") {
+                timesStartDate = Date.parse(new Date(start_date));
+            } else {
+                timesStartDate = "-1";
+            }
+            var timesEndDate = "";
+            if (start_date != "") {
+                timesEndDate = Date.parse(new Date(end_date));
+            } else {
+                timesEndDate = "-1";
+            }
+
+            var goodsSelectTypePriceV = $('#goodsSelectTypePrice option:selected').val();
+
             var foo = $(this).attr('data-type');
-            foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber);
+            console.log(foo);
+            foo == '1' ? alreadyOutput('/admin/agents?token=' + token + '&isOutput=true&cardNumber=' + cardNumber + '&startDate=' + timesStartDate + '&endDate=' + timesEndDate + '&productType=' + goodsSelectTypePriceV) : willOutput('/admin/agents?token=' + token + '&isOutput=false&cardNumber=' + cardNumber + '&startDate=' + timesStartDate + '&endDate=' + timesEndDate + '&productType=' + goodsSelectTypePriceV);
         });
         function willOutput(url) {
             var col = [{
@@ -141,8 +135,8 @@ define(function (require, exports, module) {
                 data: 'cardNumber',
                 title: 'VIP卡号'
             }, {
-                data: 'goodsStatus',
-                title: '状态'
+                data: 'productType',
+                title: '种类'
             }, {
                 data: 'inputDate',
                 title: '入库日期'
@@ -163,7 +157,24 @@ define(function (require, exports, module) {
                 "aTargets": [2]
             }, {
                 "sClass": "center",
-                "aTargets": [3]
+                "aTargets": [3],
+                "render": function (data, type, row) {
+                    var str = '';
+                    var productType = row.productType;
+                    switch (productType) {
+                        case 1 :
+                            str = '金榜登科';
+                            break;
+                        case 2 :
+                            str = '状元及第';
+                            break;
+                        case 3 :
+                            str = '金榜题名';
+                            break;
+                        default:
+                    }
+                    return str;
+                }
             }, {
                 "render": function (data, type, row) {
                     return timeFomate(data);
@@ -183,44 +194,76 @@ define(function (require, exports, module) {
         }
 
         function alreadyOutput(url) {
-            var col = [{
-                data: 'cardNumber',
-                title: 'VIP卡号'
-            }, {
-                data: 'flow',
-                title: '流向地'
-            }, {
-                data: 'activeDate',
-                title: '激活日期'
-            }, {
-                data: 'outputDate',
-                title: '出库日期'
-            }];
-            var columnDefs = [{
-                "sClass": "center",
-                "aTargets": [0]
-            }, {
-                "sClass": "center",
-                "aTargets": [1]
-            }, {
-                "sClass": "center",
-                "render": function (data, type, row) {
-                    var str = '';
-                    if (data == '0' || data == null) {
-                        str = '未激活';
-                    } else {
-                        str = timeFomate(data);
+            var col = [
+                {
+                    data: 'index',
+                    title: '编号'
+                },
+                {
+                    data: 'cardNumber',
+                    title: 'VIP卡号'
+                }, {
+                    data: 'productType',
+                    title: '种类'
+                }, {
+                    data: 'outputDate',
+                    title: '出库日期'
+                }, {
+                    data: 'flow',
+                    title: '流向地'
+                }, {
+                    data: 'activeDate',
+                    title: '激活日期'
+                }];
+            var columnDefs = [
+                {
+                    "sClass": "center",
+                    "aTargets": [0]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [1]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [2],
+                    "render": function (data, type, row) {
+                        var str = '';
+                        var productType = row.productType;
+                        switch (productType) {
+                            case 1 :
+                                str = '金榜登科';
+                                break;
+                            case 2 :
+                                str = '状元及第';
+                                break;
+                            case 3 :
+                                str = '金榜题名';
+                                break;
+                            default:
+                        }
+                        return str;
                     }
-                    return str;
-                },
-                "aTargets": [2]
-            }, {
-                "render": function (data, type, row) {
-                    return timeFomate(data);
-                },
-                "sClass": "center",
-                "aTargets": [3]
-            }];
+                }, {
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    },
+                    "sClass": "center",
+                    "aTargets": [3]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [4]
+                }, {
+                    "sClass": "center",
+                    "render": function (data, type, row) {
+                        var str = '';
+                        if (data == '0' || data == null) {
+                            str = '未激活';
+                        } else {
+                            str = timeFomate(data);
+                        }
+                        return str;
+                    },
+                    "aTargets": [5]
+                }];
             var TableInstance = Table({
                 columns: col,
                 tableContentId: 'table_content',
@@ -235,15 +278,14 @@ define(function (require, exports, module) {
             $('.selNoOutbound[type="checkbox"]:checked').each(function () {
                 selNoOutboundArr.push($(this).attr('data-id'));
             });
-            var productType =  $('#dep_type_batch option:selected').val();
+            var productType = $('#dep_type_batch option:selected').val();
             $.ajax({
                 type: 'post',
                 url: '/admin/output?token=' + token,
                 contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
                 data: {
                     area: formArry[0] || '',
-                    outputList: selNoOutboundArr.join(","),
-                    productType : productType
+                    outputList: selNoOutboundArr.join(",")
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -259,7 +301,7 @@ define(function (require, exports, module) {
         };
         var productionBatchDepartment = function (formArry, succCallback, id) {
             var outboundBatchNum = parseInt($('#outbound_batch_num').val());
-            var productType =  $('#dep_type_batch option:selected').val();
+            var productType = $('#dep_type_batch option:selected').val();
             $.ajax({
                 type: 'post',
                 url: '/admin/output?token=' + token,
@@ -267,7 +309,7 @@ define(function (require, exports, module) {
                 data: {
                     area: formArry[0] || '',
                     rows: outboundBatchNum,
-                    productType:productType
+                    productType: productType
                 },
                 dataType: 'json',
                 success: function (data) {
@@ -308,8 +350,6 @@ define(function (require, exports, module) {
                 }
             });
         };
-
-
 
 
         var ButtonEvent = {
@@ -401,12 +441,12 @@ define(function (require, exports, module) {
                                         tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
                                         return;
                                     }
-                                    var  warehouseType = $('#dep_type_batch').find('option:selected').val();
-                                    if(warehouseType==""){
+                                    var warehouseType = $('#dep_type_batch').find('option:selected').val();
+                                    if (warehouseType == "") {
                                         tip($('#dep_type_batch').parent().parent(), '请选择种类');
                                         return;
                                     }
-                                    $.getJSON('/admin/outPutCardNumber?rows=' + outboundBatchNum + '&productType='+warehouseType, function (res) {
+                                    $.getJSON('/admin/outPutCardNumber?rows=' + outboundBatchNum + '&productType=' + warehouseType, function (res) {
                                         console.log(res)
                                         if (res.rtnCode == "0000000") {
                                             $('#card-interval').show();

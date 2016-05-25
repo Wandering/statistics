@@ -15,7 +15,6 @@ define(function (require, exports, module) {
         var token = $.cookie('bizData');
         var cookieJson = JSON.parse($.cookie('userInfo'));
 
-
         require('datetimepicker');
         require('datetimepickerCN');
         $('#start_date').datetimepicker({
@@ -50,12 +49,6 @@ define(function (require, exports, module) {
                 $('#start_date').datetimepicker('setStartDate', startDate);
             }, 100);
         });
-
-
-
-
-
-
 
 
         $.getJSON(UrlConfig.checkLogin, function (res) {
@@ -180,7 +173,6 @@ define(function (require, exports, module) {
         });
 
 
-
         $(document).on('click', '#order-tab-btn li', function () {
             $(this).addClass('active').siblings().removeClass('active');
             var orderType = $(this).attr('orderType');
@@ -190,23 +182,21 @@ define(function (require, exports, module) {
             var start_date = $('#start_date').val();
             var end_date = $('#end_date').val();
             var timesStartDate = "";
-            if(start_date!=""){
-                timesStartDate = Date.parse(new Date(start_date)) / 1000;
-            }else{
+            if (start_date != "") {
+                timesStartDate = Date.parse(new Date(start_date));
+            } else {
                 timesStartDate = "-1";
             }
             var timesEndDate = "";
-            if(start_date!=""){
-                timesEndDate = Date.parse(new Date(end_date)) / 1000;
-            }else{
+            if (start_date != "") {
+                timesEndDate = Date.parse(new Date(end_date));
+            } else {
                 timesEndDate = "-1";
             }
             if (orderType == "0") {
-                alert(76)
-                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType+"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
+                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType + "&startDate=" + timesStartDate + "&endDate=" + timesEndDate + "&productType=" + orderTypePriceV);
             } else {
-                alert(23)
-                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState="+orderType+"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
+                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType + "&startDate=" + timesStartDate + "&endDate=" + timesEndDate + "&productType=" + orderTypePriceV);
             }
         });
         willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=-1&orderNoOrPhone=&handleState=0&startDate=-1&endDate=-1&productType=-1");
@@ -218,21 +208,21 @@ define(function (require, exports, module) {
             var end_date = $('#end_date').val();
             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
             var timesStartDate = "";
-            if(start_date!=""){
-                timesStartDate = Date.parse(new Date(start_date)) / 1000;
-            }else{
+            if (start_date != "") {
+                timesStartDate = Date.parse(new Date(start_date));
+            } else {
                 timesStartDate = "-1";
             }
             var timesEndDate = "";
-            if(start_date!=""){
-                timesEndDate = Date.parse(new Date(end_date)) / 1000;
-            }else{
+            if (start_date != "") {
+                timesEndDate = Date.parse(new Date(end_date));
+            } else {
                 timesEndDate = "-1";
             }
             if (orderType == "0") {
-                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
+                willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType + "&startDate=" + timesStartDate + "&endDate=" + timesEndDate + "&productType=" + orderTypePriceV);
             } else {
-                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
+                willOutputAlready(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType + "&startDate=" + timesStartDate + "&endDate=" + timesEndDate + "&productType=" + orderTypePriceV);
             }
         });
 
@@ -273,72 +263,83 @@ define(function (require, exports, module) {
                     title: '操作'
                 }];
 
-            var columnDefs = [{
-                "sClass": "center",
-                "aTargets": [0]
-            }, {
-                "sClass": "center",
-                "aTargets": [1]
-            }, {
-                "sClass": "center",
-                "aTargets": [2],
-                "render": function (data, type, row) {
-                    var listHtml = '';
-                    for (var i = 0; i < row.products.length; i++) {
-                        listHtml += '<div>' + row.products[i].productName + '</div>';
+            var columnDefs = [
+                {
+                    "sClass": "center",
+                    "aTargets": [0]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [1]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [2],
+                    "render": function (data, type, row) {
+                        var str = '';
+                        var productType = row.productType;
+                        switch (productType) {
+                            case 1 :
+                                str = '金榜登科';
+                                break;
+                            case 2 :
+                                str = '状元及第';
+                                break;
+                            case 3 :
+                                str = '金榜题名';
+                                break;
+                            default:
+                        }
+                        return str;
                     }
-                    return listHtml;
-                }
-            }, {
-                "sClass": "center",
-                "aTargets": [3],
-                "render": function (data, type, row) {
-                    var str = '';
-                    if (row.handleState == '0') {
-                        str = '未发货';
-                    } else {
-                        str = '已发货';
+                }, {
+                    "sClass": "center",
+                    "aTargets": [3],
+                    "render": function (data, type, row) {
+                        var str = '';
+                        if (row.handleState == '0') {
+                            str = '未发货';
+                        } else {
+                            str = '已发货';
+                        }
+                        return str;
                     }
-                    return str;
-                }
-            }, {
-                "sClass": "center",
-                "aTargets": [4],
-                "render": function (data, type, row) {
-                    var str = '';
-                    if (row.channle == '0') {
-                        str = '微信';
-                    } else {
-                        str = 'web';
+                }, {
+                    "sClass": "center",
+                    "aTargets": [4],
+                    "render": function (data, type, row) {
+                        var str = '';
+                        if (row.channle == '0') {
+                            str = '微信';
+                        } else {
+                            str = 'web';
+                        }
+                        return str;
                     }
-                    return str;
-                }
-            }, {
-                "sClass": "center",
-                "aTargets": [5]
-            }, {
-                "sClass": "center",
-                "aTargets": [6]
-            }, {
-                "sClass": "center",
-                "aTargets": [7]
-            }, {
-                "sClass": "center",
-                "aTargets": [8]
-            }, {
-                "sClass": "center",
-                "aTargets": [9],
-                "render": function (data, type, row) {
-                    return timeFomate(data);
-                }
-            }, {
-                "sClass": "center",
-                "aTargets": [10],
-                "render": function (data, type, row) {
-                    var orderNo = row.orderNo;
-                    return '<button type="button" id="' + orderNo + '" class="btn btn-info"  onclick="settlement(this)">发货</button>';
-                }
-            }];
+                }, {
+                    "sClass": "center",
+                    "aTargets": [5]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [6]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [7]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [8]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [9],
+                    "render": function (data, type, row) {
+                        return timeFomate(data);
+                    }
+                }, {
+                    "sClass": "center",
+                    "aTargets": [10],
+                    "render": function (data, type, row) {
+                        var orderNo = row.orderNo;
+                        return '<button type="button" id="' + orderNo + '" class="btn btn-info"  onclick="settlement(this)">发货</button>';
+                    }
+                }];
             var TableInstance = Table({
                 columns: col,
                 tableContentId: 'table_content',
@@ -385,18 +386,18 @@ define(function (require, exports, module) {
                                             var end_date = $('#end_date').val();
                                             var orderType = $('.nav-tabs li[class="active"]').attr('ordertype');
                                             var timesStartDate = "";
-                                            if(start_date!=""){
-                                                timesStartDate = Date.parse(new Date(start_date)) / 1000;
-                                            }else{
-                                                timesStartDate = "";
+                                            if (start_date != "") {
+                                                timesStartDate = Date.parse(new Date(start_date));
+                                            } else {
+                                                timesStartDate = "-1";
                                             }
                                             var timesEndDate = "";
-                                            if(start_date!=""){
-                                                timesEndDate = Date.parse(new Date(end_date)) / 1000;
-                                            }else{
-                                                timesEndDate = "";
+                                            if (start_date != "") {
+                                                timesEndDate = Date.parse(new Date(end_date));
+                                            } else {
+                                                timesEndDate = "-1";
                                             }
-                                            willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType +"&startDate="+ timesStartDate +"&endDate="+ timesEndDate +"&productType="+orderTypePriceV);
+                                            willOutput(UrlConfig.queryOrderPageByConditions + "?token=" + token + "&orderFrom=" + curSelectedV + "&orderNoOrPhone=" + phoneNum + "&handleState=" + orderType + "&startDate=" + timesStartDate + "&endDate=" + timesEndDate + "&productType=" + orderTypePriceV);
                                             $("#order_dialog").dialog("destroy");
                                         }
                                     },
@@ -429,8 +430,14 @@ define(function (require, exports, module) {
                     data: 'orderNo',
                     title: '订单编号'
                 }, {
+                    data: 'productType',
+                    title: '种类'
+                }, {
+                    data: 'handleState',
+                    title: '状态'
+                }, {
                     data: 'channle',
-                    title: '订单来源'
+                    title: '来源'
                 }, {
                     data: 'userName',
                     title: '用户名称'
@@ -456,22 +463,48 @@ define(function (require, exports, module) {
                     "aTargets": [1]
                 }, {
                     "sClass": "center",
+                    "aTargets": [2],
                     "render": function (data, type, row) {
                         var str = '';
-                        if (data == '0') {
+                        var productType = row.productType;
+                        switch (productType) {
+                            case 1 :
+                                str = '金榜登科';
+                                break;
+                            case 2 :
+                                str = '状元及第';
+                                break;
+                            case 3 :
+                                str = '金榜题名';
+                                break;
+                            default:
+                        }
+                        return str;
+                    }
+                }, {
+                    "sClass": "center",
+                    "aTargets": [3],
+                    "render": function (data, type, row) {
+                        var str = '';
+                        if (row.handleState == '0') {
+                            str = '未发货';
+                        } else {
+                            str = '已发货';
+                        }
+                        return str;
+                    }
+                }, {
+                    "sClass": "center",
+                    "aTargets": [4],
+                    "render": function (data, type, row) {
+                        var str = '';
+                        if (row.channle == '0') {
                             str = '微信';
                         } else {
                             str = 'web';
                         }
                         return str;
-                    },
-                    "aTargets": [2]
-                }, {
-                    "sClass": "center",
-                    "aTargets": [3]
-                }, {
-                    "sClass": "center",
-                    "aTargets": [4]
+                    }
                 }, {
                     "sClass": "center",
                     "aTargets": [5]
@@ -480,10 +513,16 @@ define(function (require, exports, module) {
                     "aTargets": [6]
                 }, {
                     "sClass": "center",
+                    "aTargets": [7]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [8]
+                }, {
+                    "sClass": "center",
+                    "aTargets": [9],
                     "render": function (data, type, row) {
                         return timeFomate(data);
-                    },
-                    "aTargets": [7]
+                    }
                 }];
             var TableInstance = Table({
                 columns: col,

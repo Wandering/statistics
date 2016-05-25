@@ -63,26 +63,56 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
                 title: '用户手机号'
 
             }, {
-                data: 'errorStatus',
-                title: '状态'
-            }, {
                 data: 'cardNumber',
                 title: 'VIP卡号'
+            }, {
+                data: 'productType',
+                title: '种类'
+            }, {
+                data: 'errorStatus',
+                title: '状态'
             }, {
                 data: 'area',
                 title: '用户注册地'
             }, {
-                data: 'activeDate',
-                title: '激活日期'
-            }, {
                 data: 'cardArea',
                 title: 'vip卡来源地'
+            }, {
+                data: 'activeDate',
+                title: '激活日期'
             }];
             var columnDefs = [{
                 "sClass": "center",
                 "aTargets": [0]
             }, {
                 "sClass": "center",
+                "aTargets": [1]
+            }, {
+                "sClass": "center",
+                "aTargets": [2]
+            }, {
+                "sClass": "center",
+                "aTargets": [3],
+                "render": function (data, type, row) {
+                    var str = '';
+                    var productType = row.productType;
+                    switch (productType) {
+                        case 1 :
+                            str = '金榜登科';
+                            break;
+                        case 2 :
+                            str = '状元及第';
+                            break;
+                        case 3 :
+                            str = '金榜题名';
+                            break;
+                        default:
+                    }
+                    return str;
+                }
+            },{
+                "sClass": "center",
+                "aTargets": [4],
                 "render": function (data, type, row) {
                     var str = '';
                     if (data == '1') {
@@ -91,14 +121,13 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
                         str = '正常'
                     }
                     return str;
-                },
-                "aTargets": [2]
+                }
             }, {
                 "sClass": "center",
-                "aTargets": [1]
+                "aTargets": [5]
             }, {
                 "sClass": "center",
-                "aTargets": [4]
+                "aTargets": [6]
             }, {
                 "sClass": "center",
                 "render": function (data, type, row) {
@@ -110,7 +139,7 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
                     }
                     return str;
                 },
-                "aTargets": [5]
+                "aTargets": [7]
             }];
             var TableInstance = Table({
                 columns: col,
@@ -138,7 +167,23 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
             var selectArea = $('#selectArea').val();
             var statusType = $('#statusType').val();
             var activityStatus = $('#activityStatusSelect').val();
-            var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus;
+            var productType = $('#orderTypePrice option:selected').val();
+            var start_date = $('#active_start_date').val();
+            var end_date = $('#active_end_date').val();
+
+            var timesStartDate = "";
+            if (start_date != "") {
+                timesStartDate = Date.parse(new Date(start_date));
+            } else {
+                timesStartDate = "-1";
+            }
+            var timesEndDate = "";
+            if (start_date != "") {
+                timesEndDate = Date.parse(new Date(end_date));
+            } else {
+                timesEndDate = "-1";
+            }
+            var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=' + statusType + '&activityStatus=' + activityStatus + '&productType='+productType + '&startDate=' + timesStartDate + '&endDate=' + timesEndDate ;
             getMonitoredList(link);
         });
     }
