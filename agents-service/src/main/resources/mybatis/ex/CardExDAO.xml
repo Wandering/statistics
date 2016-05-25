@@ -35,9 +35,9 @@
                 and id in (${condition.whereSql})
             </if>
             <!--未出库查询-->
-            and productType = #{productType}
+            and productType = #{condition.productType}
             <!-- 当卡类型为金榜登科时,忽略以前库里边的存量卡 -->
-            <if test="productType == 1">
+            <if test="condition.productType == 1">
                 and creator != 1
             </if>
             and goodsNumber = #{condition.userArea}
