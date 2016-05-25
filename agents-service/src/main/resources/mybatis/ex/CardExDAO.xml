@@ -175,10 +175,22 @@
             <!--未出库查询-->
             <if test="notoutput!=null">
                 and goodsNumber=#{userArea}
+                <if test="startDate != -1">
+                    and createDate &gt; #{startDate}
+                </if>
+                <if test="endDate != -1">
+                    and createDate &lt; #{endDate}
+                </if>
             </if>
             <!--已出库查询-->
             <if test="output!=null">
                 and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
+                <if test="startDate != -1">
+                    and ${queryDte} &gt; #{startDate}
+                </if>
+                <if test="endDate != -1">
+                    and ${queryDte} &lt; #{endDate}
+                </if>
             </if>
             <!--流向地查询-->
             <if test="flowlist!=null">
@@ -188,8 +200,12 @@
                 </foreach>
             </if>
             <!--卡号查询-->
-            <if test="cardNumber!=null">
+            <if test="cardNumber!=null and cardNumber!=''">
                 and cardNumber LIKE CONCAT('%', #{cardNumber} , '%')
+            </if>
+            <!-- 卡片类型 -->
+            <if test="productType != -1">
+                and productType = #{productType}
             </if>
         </where>
     </select>
@@ -225,6 +241,10 @@
             </if>
             <if test="cardNumber != null">
                 and cardNumber = #{cardNumber}
+            </if>
+            <!-- 当卡类型为金榜登科时,忽略以前库里边的存量卡 -->
+            <if test="productType == 1">
+                and creator != 1
             </if>
             and productType = #{productType}
             and status=0
@@ -301,5 +321,34 @@
         activeDate as activeDate
         FROM zgk_card cc
         WHERE cc.cardNumber=#{cardNumber}
+    </select>
+
+    <!-- 批量插入卡片 -->
+    <select id="batchCreateCard" parameterType="map">
+        INSERT INTO zgk_card (
+        cardNumber,
+        password,
+        status,
+        cardType,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        productType
+        ) VALUES
+        <foreach collection="cards" item="item" index="index" separator=",">
+            (
+            #{item.cardNumber},
+            #{item.password},
+            #{item.status},
+            #{item.cardType},
+            #{item.creator},
+            #{item.createDate},
+            #{item.lastModifier},
+            #{item.lastModDate},
+            #{item.productType}
+            )
+        </foreach>
+
     </select>
 </mapper>

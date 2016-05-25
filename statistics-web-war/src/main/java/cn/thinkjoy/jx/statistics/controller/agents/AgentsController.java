@@ -4,12 +4,16 @@ import cn.thinkjoy.agents.service.ICardService;
 import cn.thinkjoy.agents.service.ex.ICardExService;
 import cn.thinkjoy.agents.service.ex.common.AgentsInfoUtils;
 import cn.thinkjoy.agents.service.ex.common.UserInfoContext;
+import cn.thinkjoy.agents.util.ModelUtil;
 import cn.thinkjoy.common.exception.BizException;
 import cn.thinkjoy.common.restful.apigen.annotation.ApiDesc;
 import cn.thinkjoy.common.utils.ObjectFactory;
 import cn.thinkjoy.common.utils.SqlOrderEnum;
 import cn.thinkjoy.domain.agents.Card;
 import cn.thinkjoy.jx.statistics.controller.agents.common.BaseCommonController;
+import cn.thinkjoy.jx.statistics.util.MD5Util;
+import cn.thinkjoy.jx.statistics.util.RandomCodeUtil;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -168,6 +172,38 @@ public class AgentsController extends BaseCommonController <ICardExService>{
         return resultMap;
     }
 
+    @ResponseBody
+    @ApiDesc(value = "批量生成卡片",owner = "杨国荣")
+    @RequestMapping(value = "/batchCreateCard",method = RequestMethod.GET)
+    public Object batchCreateCard(@RequestParam(value = "count") Integer count,
+                                   @RequestParam(value = "productType") Integer productType){
+        /**
+         * productType:套餐类型
+         *   1:金榜登科  GK6
+         *   2:状元及第  GK8
+         *   3:金榜题名  GK7
+         */
+        Map<String,Object> queryMap = Maps.newHashMap();
+        queryMap.put("status",0);
+        queryMap.put("productType",productType);
+        Card tempCard = (Card) cardService.queryOne(queryMap,"cardNumber",SqlOrderEnum.DESC);
+        // 卡号生成规则:库存最大卡号依次向后累加
+        String prefix = "GK";
+        String number = StringUtils.replace(tempCard.getCardNumber(),prefix,"");
+
+        List<Card> cards = Lists.newArrayList();
+        for(int i=1;i<=count;i++){
+            Card card = new Card();
+            ModelUtil.initBuild(card);
+            card.setCardNumber(String.valueOf(Long.valueOf(number)+i));
+            card.setPassword(RandomCodeUtil.generateCharCode(10).toLowerCase());
+            card.setCardType("1");
+            card.setProductType(productType);
+            cards.add(card);
+        }
+        cardExService.batchCreateCard(cards);
+        return ObjectFactory.getSingle();
+    }
 
     @Override
     protected Map<String, Object> getSelector() {

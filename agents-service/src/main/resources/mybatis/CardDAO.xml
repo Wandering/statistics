@@ -41,7 +41,8 @@ selectList
         outputDate1 as outputDate1 ,
         outputDate2 as outputDate2 ,
         outputDate3 as outputDate3 ,
-        activeDate as activeDate 
+        activeDate as activeDate,
+        productType as  productType
     </sql>
     <insert id="insert" parameterType="Card">
         INSERT INTO zgk_card (
@@ -60,7 +61,8 @@ selectList
         outputDate1,
         outputDate2,
         outputDate3,
-        activeDate
+        activeDate,
+        productType
         ) VALUES (
         #{goodsNumber},
         #{cardNumber},
@@ -77,7 +79,8 @@ selectList
         #{outputDate1},
         #{outputDate2},
         #{outputDate3},
-        #{activeDate}
+        #{activeDate},
+        #{productType}
         )
             <selectKey resultType="java.lang.Long" keyProperty="id">
                 SELECT LAST_INSERT_ID() AS ID

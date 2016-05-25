@@ -13,7 +13,8 @@
             t0.goods_count as goodsCount ,
             t0.handle_state as handleState ,
             t1.name as userName ,
-            t2.account as phoneNum
+            t2.account as phoneNum,
+            t0.product_type as productType
         from
             zgk_order t0 ,
             zgk_user_info t1 ,
@@ -29,6 +30,15 @@
         </if>
         <if test="departmentCode != -1">
             and t0.department_code = #{departmentCode}
+        </if>
+        <if test="productType != -1">
+            and t0.product_type = #{productType}
+        </if>
+        <if test="startDate != -1">
+            and t0.create_date &gt; #{startDate}
+        </if>
+        <if test="endDate != -1">
+            and t0.create_date &lt; #{endDate}
         </if>
         <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
             and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
