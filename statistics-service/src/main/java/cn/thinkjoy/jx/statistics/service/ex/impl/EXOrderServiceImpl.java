@@ -43,7 +43,16 @@ public class EXOrderServiceImpl implements IEXOrderService {
     private IUserInfoService userInfoService;
 
     @Override
-    public Map<String, Object> queryOrderPageByConditions(int orderFrom, int handleState, String orderNoOrPhone,long departmentCode, int currentPageNo, int pageSize) {
+    public Map<String, Object> queryOrderPageByConditions(
+            int orderFrom,
+            int handleState,
+            String orderNoOrPhone,
+            long departmentCode,
+            int currentPageNo,
+            int pageSize,
+            long startDate,
+            long endDate,
+            int productType) {
 
         List<OrderDetailPojo> detailPojos = exOrderDAO.queryOrderListByConditions(
                 orderFrom,
@@ -51,13 +60,19 @@ public class EXOrderServiceImpl implements IEXOrderService {
                 orderNoOrPhone,
                 departmentCode,
                 (currentPageNo-1)*pageSize,
-                pageSize);
+                pageSize,
+                startDate,
+                endDate,
+                productType);
 
         int detailPojoCount = exOrderDAO.getOrderCountByConditions(
                 orderFrom,
                 handleState,
                 orderNoOrPhone,
-                departmentCode);
+                departmentCode,
+                startDate,
+                endDate,
+                productType);
 
         Map<String, Object> returnMap = Maps.newHashMap();
         returnMap.put("count",detailPojoCount);

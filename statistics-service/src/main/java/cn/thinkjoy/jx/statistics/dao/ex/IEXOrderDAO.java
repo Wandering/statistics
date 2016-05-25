@@ -27,7 +27,10 @@ public interface IEXOrderDAO {
                                                      @Param("orderNoOrPhone") String orderNoOrPhone,
                                                      @Param("departmentCode") long departmentCode,
                                                      @Param("index") int index,
-                                                     @Param("pageSize") int pageSize);
+                                                     @Param("pageSize") int pageSize,
+                                                     @Param("startDate") long startDate,
+                                                     @Param("endDate") long endDate,
+                                                     @Param("productType") int productType);
 
     /**
      * 根据条件查询订单数量
@@ -41,7 +44,10 @@ public interface IEXOrderDAO {
     Integer getOrderCountByConditions(@Param("orderFrom") int orderFrom,
                                       @Param("handleState") int handleState,
                                       @Param("orderNoOrPhone") String orderNoOrPhone,
-                                      @Param("departmentCode") long departmentCode);
+                                      @Param("departmentCode") long departmentCode,
+                                      @Param("startDate") long startDate,
+                                      @Param("endDate") long endDate,
+                                      @Param("productType") int productType);
 
     /**
      * 根据部门编号查询未发货的订单个数

@@ -100,4 +100,8 @@ public class CardExServiceImpl extends BaseExService implements ICardExService {
         condition.put("sortBy", "asc");
     }
 
+    @Override
+    public void batchCreateCard(List<Card> cards) {
+        cardExDAO.batchCreateCard(cards);
+    }
 }

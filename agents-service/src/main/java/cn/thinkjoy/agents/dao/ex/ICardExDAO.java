@@ -26,4 +26,11 @@ public interface ICardExDAO extends BaseCommonExDAO{
         public int hasAgentsArea(String goodsNumber);
 
         Card getCardById(@Param("cardNumber")String cardNumber);
+
+    /**
+     * 批量生成卡片
+     *
+     * @param cards
+     */
+    void batchCreateCard(@Param("cards") List<Card> cards);
 }

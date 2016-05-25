@@ -66,6 +66,9 @@ public class OrderController {
         int orderFrom = Integer.parseInt(request.getParameter("orderFrom"));
         int handleState = Integer.parseInt(request.getParameter("handleState"));
         String orderNoOrPhone = request.getParameter("orderNoOrPhone");
+        long startDate = Long.valueOf(HttpUtil.getParameter(request, "startDate", "-1"));
+        long endDate = Long.valueOf(HttpUtil.getParameter(request, "endDate", "-1"));
+        int productType = Integer.parseInt(HttpUtil.getParameter(request, "productType", "-1"));
 
         Long departmentCode = userPojo.getRoleType() == 1 ? -1:userPojo.getDepartmentCode();
 
@@ -75,7 +78,10 @@ public class OrderController {
                 orderNoOrPhone,
                 departmentCode,
                 currentPageNo,
-                pageSize);
+                pageSize,
+                startDate,
+                endDate,
+                productType);
 
         return returnMap;
     }
