@@ -4080,6 +4080,7 @@ input:focus {
 .form-w100 {
     width: 110px;
 }
+
 .form-w180 {
     display: inline-block;
     width: 180px;
@@ -4107,7 +4108,8 @@ input:focus {
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
-.chartsTxt{
+
+.chartsTxt {
     margin: 0 0 10px;
     position: relative;
     top: -30px;
@@ -4147,7 +4149,7 @@ input:focus {
 .chart {
     height: 100%;
     width: 100%;
-    padding:0 0 40px;
+    padding: 0 0 40px;
 }
 
 .form-content {
@@ -4444,11 +4446,13 @@ body #content .menu-list-content {
     color: #418bca !important;
     font-size: 12px !important;
 }
+
 .tab-sm {
     padding: 4px 8px !important;
     color: #fff !important;
     font-size: 12px !important;
 }
+
 .dn {
     display: none;
 }
@@ -4465,71 +4469,76 @@ body #content .menu-list-content {
     margin-left: 0 !important;
 }
 
-.tables-t{
-    margin:10px 0;
+.tables-t {
+    margin: 10px 0;
     overflow: hidden;
-    height:45px;
+    height: 45px;
 }
 
-.h4-st{
+.h4-st {
     float: left;
-    font-size:16px;
+    font-size: 16px;
     color: #fff;
 }
-.btns{
+
+.btns {
     float: right;
 }
-.btns .btn{
+
+.btns .btn {
     position: relative;
-    top:10px;
+    top: 10px;
     right: 10px;
-    margin:0 10px 0 0;
+    margin: 0 10px 0 0;
 }
 
-
-#flow-area-list{
-    width:510px;
+#flow-area-list {
+    width: 510px;
     overflow: auto;
-    padding:0;
+    padding: 0;
     margin: 0;
 }
-#flow-area-list li{
+
+#flow-area-list li {
     list-style: none;
     float: left;
-    width:100px;
-    height:30px;
-    margin:0;
-}
-#flow-area-list li input{
-    position: relative;
-    top:-3px;
+    width: 100px;
+    height: 30px;
+    margin: 0;
 }
 
-.card-interval{
+#flow-area-list li input {
+    position: relative;
+    top: -3px;
+}
+
+.card-interval {
     display: none;
     position: relative;
-    top:3px;
+    top: 3px;
 }
-#card-area-btn{
+
+#card-area-btn {
     width: 110px;
 }
 
-.btn-links{
+.btn-links {
     display: inline;
     color: #fff;
-    text-decoration:underline;
+    text-decoration: underline;
 }
+
 #shareIncomeManager_form.layerTable table th,
 #shareIncomeManager_form.layerTable table td,
 #earningsManager_form.layerTable table th,
 #earningsManager_form.layerTable table td,
 #shareIncomeDetailManager_form.layerTable table th,
-#shareIncomeDetailManager_form.layerTable table td{
-    border:1px solid #ccc;
+#shareIncomeDetailManager_form.layerTable table td {
+    border: 1px solid #ccc;
     color: #666;
 }
 
-.active-date{
+.active-date {
     position: relative;
     top: 9px;
     left: 2px;
@@ -4537,6 +4546,16 @@ body #content .menu-list-content {
     color: #fff;
 }
 
-body #content .tile table.table-custom>tbody>tr>td.line35{
-    line-height:35px;
+body #content .tile table.table-custom > tbody > tr > td.line35 {
+    line-height: 35px;
+}
+
+.dataTables_length {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .form-inline .form-group {
+        margin-bottom: 10px;
+    }
 }
