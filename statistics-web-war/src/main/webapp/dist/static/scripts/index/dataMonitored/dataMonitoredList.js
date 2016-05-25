@@ -52,7 +52,8 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
 
 
 
-        getMonitoredList(UrlConfig.getMonitorsList);
+
+        getMonitoredList('/admin/monitors?token=' + token + '&queryParam=&area=&status=&activityStatus=&productType=-1&startDate=-1&endDate=-1');
 
         function getMonitoredList(url) {
             var col = [{

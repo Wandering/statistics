@@ -6,6 +6,7 @@ define(function (require, exports, module) {
         //获取所需组件依赖
         require('bootstrap');
         require('cookie');
+        var Tool = require('../tools');
         var timeFomate = require('../common/timeFomate.js');
         var message = require('../message.js');
         var Table = require('../datatable.js');
@@ -16,8 +17,6 @@ define(function (require, exports, module) {
             $('#tab-btn li[roletype="2"]').remove();
             willOutput(UrlConfig.getGoodsMange);
         }
-
-
         require('datetimepicker');
         require('datetimepickerCN');
         $('#goods_start_date').datetimepicker({

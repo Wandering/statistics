@@ -1,11 +1,12 @@
 /**
  * Created by pdeng on 16/3/23.
  */
-define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/goodsManager/outbound_from', 'static/scripts/index/goodsManager/outbound_batch_from', 'static/scripts/index/goodsManager/outbound_flow_area'], function (require, exports, module) {
+define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootstrap/bootstrap', 'sea-modules/jquery/cookie/jquery.cookie', 'static/scripts/index/tools', 'static/scripts/index/common/timeFomate', 'static/scripts/index/message', 'static/scripts/index/datatable', 'static/scripts/index/common/urlConfig', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker', 'sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN', 'sea-modules/jquery/dialog/jquery.dialog', 'static/scripts/index/goodsManager/outbound_from', 'static/scripts/index/goodsManager/outbound_batch_from', 'static/scripts/index/goodsManager/outbound_flow_area'], function (require, exports, module) {
     module.exports = function () {
         //获取所需组件依赖
         require('sea-modules/bootstrap/bootstrap');
         require('sea-modules/jquery/cookie/jquery.cookie');
+        var Tool = require('static/scripts/index/tools');
         var timeFomate = require('static/scripts/index/common/timeFomate');
         var message = require('static/scripts/index/message');
         var Table = require('static/scripts/index/datatable');
@@ -16,8 +17,6 @@ define('static/scripts/index/goodsManager/goodsSelectList', ['sea-modules/bootst
             $('#tab-btn li[roletype="2"]').remove();
             willOutput(UrlConfig.getGoodsMange);
         }
-
-
         require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker');
         require('sea-modules/bootstrap/datetimepicker/bootstrap-datetimepicker.zh-CN');
         $('#goods_start_date').datetimepicker({
