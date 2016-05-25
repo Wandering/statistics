@@ -37,10 +37,10 @@
             <if test="condition.countyId!=null and condition.countyId != ''">
                 AND info.countyId like #{condition.countyId}
             </if>
-            <if test="condition.activeDateStart!=null and condition.activeDateStart!=''">
+            <if test="condition.activeDateStart!=null and condition.activeDateStart!='' and condition.activeDateStart!=-1">
                 AND card.activeDate &gt; #{condition.activeDateStart}
             </if>
-            <if test="condition.activeDateEnd!=null and condition.activeDateEnd!=''">
+            <if test="condition.activeDateEnd!=null and condition.activeDateEnd!='' and condition.activeDateEnd!=-1">
                 AND card.activeDate &lt;  #{condition.activeDateEnd}
             </if>
             <if test="condition.errorStatus!=null and condition.errorStatus!=''">
@@ -93,10 +93,10 @@
             <if test="countyId!=null and countyId != ''">
                 AND info.countyId like #{countyId}
             </if>
-            <if test="activeDateStart!=null and activeDateStart!=''">
+            <if test="activeDateStart!=null and activeDateStart!='' and activeDateStart!=-1">
                 AND card.activeDate &gt; #{activeDateStart}
             </if>
-            <if test="activeDateEnd!=null and activeDateEnd!=''">
+            <if test="activeDateEnd!=null and activeDateEnd!='' and activeDateEnd!=-1">
                 AND card.activeDate &lt;  #{activeDateEnd}
             </if>
             <if test="errorStatus!=null and errorStatus!=''">
