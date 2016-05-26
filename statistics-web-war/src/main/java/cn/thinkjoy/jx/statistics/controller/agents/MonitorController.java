@@ -56,29 +56,31 @@ public class MonitorController extends BaseCommonController<IMonitorExService>{
             condition.put("area",area);
             AgentsInfoUtils.getVIPUserAreaLine(condition);
         }
-        if(status!=null) {
-            //异常状态0/null正常1异常
-            if(status==1) {
-                condition.put("errorStatus", status);
-            }
-            if(status==0){
-                condition.put("errorStatus2", status);
-            }
-        }
+//        if(status!=null) {
+//            //异常状态0/null正常1异常
+//            if(status==1) {
+//                condition.put("errorStatus", status);
+//            }
+//            if(status==0){
+//                condition.put("errorStatus2", status);
+//            }
+//        }
 
         if(StringUtils.isNotEmpty(activityStatus)){
             Integer activityStatusInt=Integer.parseInt(activityStatus);
            switch (activityStatusInt){
                case 0:
-                   condition.put("status2", 0);
+                   condition.put("status2", "0");
                    break;
                case 1:
-                   condition.put("status", 1);
+                   condition.put("status", "1");
                    break;
                default:
                    break;
            }
         }
+//        condition.put("status", activityStatus==null||activityStatus==""?-1:activityStatus);
+        condition.put("errorStatus", status==null?-1:status);
         condition.put("productType",productType);
         condition.put("activeDateStart",startDate);
         condition.put("activeDateEnd", endDate);

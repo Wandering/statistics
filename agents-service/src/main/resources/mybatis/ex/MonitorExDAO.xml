@@ -43,11 +43,8 @@
             <if test="condition.activeDateEnd!=null and condition.activeDateEnd!='' and condition.activeDateEnd!=-1">
                 AND card.activeDate &lt;  #{condition.activeDateEnd}
             </if>
-            <if test="condition.errorStatus!=null and condition.errorStatus!=''">
+            <if test="condition.errorStatus != -1">
                 AND card.errorStatus=#{condition.errorStatus}
-            </if>
-            <if test="condition.errorStatus2!=null and condition.errorStatus2!='' ">
-                AND (card.errorStatus=#{condition.errorStatus2} OR card.errorStatus IS NULL)
             </if>
             <!--激活查询-->
             <if test="condition.status!=null and condition.status!=''">
@@ -56,6 +53,7 @@
             <if test="condition.status2!=null and condition.status2!=''">
                 and (card.status IS NULL or card.status = #{condition.status2})
             </if>
+
             <if test="condition.productType != -1">
                 and card.productType = #{condition.productType}
             </if>
@@ -99,12 +97,10 @@
             <if test="activeDateEnd!=null and activeDateEnd!='' and activeDateEnd!=-1">
                 AND card.activeDate &lt;  #{activeDateEnd}
             </if>
-            <if test="errorStatus!=null and errorStatus!=''">
+            <if test="errorStatus!=-1">
                 AND card.errorStatus=#{errorStatus}
             </if>
-            <if test="errorStatus2!=null and errorStatus2!='' ">
-                AND (card.errorStatus=#{errorStatus2} OR card.errorStatus IS NULL)
-            </if>
+
             <!--激活查询-->
             <if test="status!=null and status!=''">
                 and card.status = #{status}
