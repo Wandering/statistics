@@ -117,7 +117,7 @@ define('static/scripts/index/dataMonitored/dataMonitoredList', ['sea-modules/boo
                 "render": function (data, type, row) {
                     var str = '';
                     if (data == '1') {
-                        str = '异常'
+                        str = '<p class="unusual">异常</p>';
                     } else {
                         str = '正常'
                     }

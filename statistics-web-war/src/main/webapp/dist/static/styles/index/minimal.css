@@ -4559,3 +4559,32 @@ body #content .tile table.table-custom > tbody > tr > td.line35 {
         margin-bottom: 10px;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.input-append.date .add-on i{
+    cursor: pointer;
+    width: 14px;
+    height: 14px;
+}
+
+
+.unusual{
+    background: #d80c18;
+    color: #fff;
+}
