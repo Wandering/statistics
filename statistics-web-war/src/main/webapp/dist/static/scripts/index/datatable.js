@@ -48,7 +48,8 @@ define('static/scripts/index/datatable', ['sea-modules/jquery/dataTables/jquery.
                 "searching": false,
                 "ordering": false,
                 "paging": this.paging, //分页
-                "lengthMenu": [[5, 10, 15], [5, 10, 15]],
+                //"lengthMenu": [[5, 10, 15], [5, 10, 15]],
+                "lengthMenu": [[15], [15]],
                 "language": {
                     "sLengthMenu": "每页显示 _MENU_ 条记录",
                     "sZeroRecords": "抱歉， 没有找到相关数据",

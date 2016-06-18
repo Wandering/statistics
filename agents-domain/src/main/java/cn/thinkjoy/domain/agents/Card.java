@@ -40,6 +40,8 @@ public class Card extends CreateBaseDomain<Long>{
     private Long outputDate3;
     /** 激活日期 */
     private Long activeDate;
+    /** 套餐类型 */
+    private Integer productType;
 
 	public Card(){
 	}
@@ -121,7 +123,15 @@ public class Card extends CreateBaseDomain<Long>{
         return this.activeDate;
     }
 
-	public String toString() {
+    public Integer getProductType() {
+        return productType;
+    }
+
+    public void setProductType(Integer productType) {
+        this.productType = productType;
+    }
+
+    public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
 			.append("Id",getId())
 			.append("GoodsNumber",getGoodsNumber())

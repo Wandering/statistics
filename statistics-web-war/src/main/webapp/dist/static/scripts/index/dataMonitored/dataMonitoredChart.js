@@ -15,6 +15,9 @@ define('static/scripts/index/dataMonitored/dataMonitoredChart', ['sea-modules/bo
     var token = $.cookie('bizData');
 
 
+
+
+
     var UrlConfig = require('static/scripts/index/common/urlConfig');
 
     var Controller = {
@@ -217,16 +220,19 @@ define('static/scripts/index/dataMonitored/dataMonitoredChart', ['sea-modules/bo
                 $('#statusType option[value="1"]').attr('selected',true);
                 $('#activityStatusSelect option[value="1"]').attr('selected',true);
                 var endDate = (Tool.timeFormat(new Date(+new Date(param.name) + 24 * 60 * 60 * 1000), 'yyyy-MM-dd'));
-                var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=1&activityStatus=1&startDate='+param.name + "&endDate="+endDate;
+                var timesStartDate = Date.parse(new Date(param.name));
+                var timesEndDate = Date.parse(new Date(endDate));
+                var link = '/admin/monitors?token=' + token + '&queryParam=' + numberOrCard + '&area=' + selectArea + '&status=1&activityStatus=1&startDate='+timesStartDate + "&endDate="+timesEndDate;
                 getMonitoredList(link);
             },
+
             legendData: [],
             data: function(bizData) {
                 var xAxisData = [],
                     num = [];
                 for (var i = 0; i < bizData.length; i++) {
                     xAxisData.push(bizData[i].date);
-                    num.push(bizData[i].number);
+                    num.push(bizData[i].status);
                 }
                 console.log(num);
                 console.log(eval(num.join('+')));
@@ -236,7 +242,7 @@ define('static/scripts/index/dataMonitored/dataMonitoredChart', ['sea-modules/bo
                 return {
                     xAxisData: xAxisData,
                     seriesData: [{
-                        name: '已激活用户总数',
+                        name: '异常数据',
                         type: 'line',
                         barMaxWidth: 30,
                         data: num
@@ -278,7 +284,7 @@ define('static/scripts/index/dataMonitored/dataMonitoredChart', ['sea-modules/bo
             "render": function (data, type, row) {
                 var str = '';
                 if (data == '1') {
-                    str = '异常'
+                    str = '<p class="unusual">异常</p>'
                 } else {
                     str = '正常'
                 }

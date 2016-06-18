@@ -24,7 +24,16 @@ public interface IEXOrderService {
      * @param pageSize
      * @return
      */
-    Map<String,Object> queryOrderPageByConditions(int orderFrom,int handleState,String orderNoOrPhone,long departmentCode,int currentPageNo,int pageSize);
+    Map<String,Object> queryOrderPageByConditions(
+            int orderFrom,
+            int handleState,
+            String orderNoOrPhone,
+            long departmentCode,
+            int currentPageNo,
+            int pageSize,
+            long startDate,
+            long endDate,
+            int productType);
 
     /**
      * 系统管理员根据地区查询所有代理商总收益

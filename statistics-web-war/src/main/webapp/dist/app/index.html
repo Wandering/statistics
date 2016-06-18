@@ -313,18 +313,12 @@
 					<a id="export_excel" href="javascript:void(0)" style="display:none;">导出excel</a>
 				</div>
 			</div>
-
-
-
-
-
-
-
-
-
-
-
 </script>
+
+
+
+
+
 
 <script type="text/html" id="tmpl_2">
     <div id="change_pwd_form" class="form-horizontal">
@@ -398,16 +392,33 @@
 <script type="text/html" id="goodsSelect">
     <section class="tile transparent grid">
         <div class="tile-body transparent rounded-corners pd30">
-            <div id="form_search">
-                <div class="control-group">
+            <div id="form_search" class="form-inline">
+                <div class="form-group">
                     <div class="controls">
                         <input class="form-control input-sm form-w180" data-type="0" type="text" id="vip-card"
                                placeholder="未出库vip卡号查询">
-                        <div class="btn btn-sm btn-primary" data-type="0" id="search-btn">查询</div>
                     </div>
                     <p class="form-error"></p>
                 </div>
+                <div class="form-group">
+                    <select id="goodsSelectTypePrice" class="form-control input-sm form-w180">
+                        <option value="-1">全部</option>
+                        <option value="1">金榜登科</option>
+                        <option value="2">状元及第</option>
+                        <option value="3">金榜题名</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input size="16" type="text" placeholder="开始时间"  class="form_date" id="goods_start_date">
+                    </div>
+                    <div class="col-xs-12">
+                        <input size="16" type="text" placeholder="结束时间" class="form_date" id="goods_end_date">
+                    </div>
+                </div>
+                <div class="btn btn-sm btn-primary" data-type="0" id="search-btn">查询</div>
             </div>
+
             <!--<div class="form-button" id="form_button">-->
             <!--</div>-->
             <div id="tab-btn">
@@ -461,14 +472,14 @@
                     <input type="text" class="form-control input-sm form-w180" id="phoneNum"
                            placeholder="输入手机号">
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<select id="orderTypePrice" class="form-control input-sm form-w180">-->
-                        <!--<option value="">全部</option>-->
-                        <!--<option value="1">金榜题名</option>-->
-                        <!--<option value="2">微信</option>-->
-                        <!--<option value="3">web</option>-->
-                    <!--</select>-->
-                <!--</div>-->
+                <div class="form-group">
+                    <select id="orderTypePrice" class="form-control input-sm form-w180">
+                        <option value="-1">种类</option>
+                        <option value="1">金榜登科</option>
+                        <option value="2">状元及第</option>
+                        <option value="3">金榜题名</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <select id="orderType" class="form-control input-sm form-w180">
                         <option value="-1">订单来源</option>
@@ -476,15 +487,15 @@
                         <option value="1">web</option>
                     </select>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<div class="col-xs-12">-->
-                        <!--<input size="16" type="text" readonly placeholder="开始时间"  class="form_date" id="start_date">-->
-                    <!--</div>-->
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input size="16" type="text"  placeholder="开始时间"  class="form_date" id="start_date">
+                    </div>
 
-                    <!--<div class="col-xs-12">-->
-                        <!--<input size="16" type="text" readonly placeholder="结束时间"  class="form_date" id="end_date">-->
-                    <!--</div>-->
-                <!--</div>-->
+                    <div class="col-xs-12">
+                        <input size="16" type="text"  placeholder="结束时间" class="form_date" id="end_date">
+                    </div>
+                </div>
 
                 <div class="form-group">
                     <div class="btn btn-sm btn-primary" id="orderSearch">查询</div>
@@ -521,94 +532,10 @@
 
 
 <!--data-monitored数据监控-->
-<!--<script type="text/html" id="dataMonitored">-->
-
-    <!--<div class="tile-body transparent rounded-corners">-->
-
-        <!--<section class="tile transparent grid pd30">-->
-            <!--<div class="form-inline" id="">-->
-                <!--<div class="control-group date-condition">-->
-                    <!--<div class="col-xs-12">-->
-                        <!--<label class="control-label">时间</label>-->
-                        <!--<button type="button" class="btn btn-default btn-primary" id="recently_7">最近7日</button>-->
-                        <!--<button type="button" class="btn btn-default" id="recently_30">最近30日</button>-->
-                        <!--<button type="button" class="btn btn-default" id="recently_182">最近半年</button>-->
-                    <!--</div>-->
-                    <!--<div class="col-xs-12">-->
-                        <!--<label class="control-label">开始时间:</label>-->
-                        <!--<input size="16" type="text" readonly class="form_date" id="start_date">-->
-                    <!--</div>-->
-                    <!--<div class="col-xs-12">-->
-                        <!--<label class="control-label">结束时间:</label>-->
-                        <!--<input size="16" type="text" readonly class="form_date" id="end_date">-->
-                    <!--</div>-->
-                    <!--<button type="button" class="btn btn-default" id="defined">自定义时间查看</button>-->
-                    <!--<div id="date_error_tip" style="margin-left:10px;color:#fff"></div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="chart-content">-->
-                <!--<div class="chart" id="myChart"></div>-->
-                <!--<p id="chartsTxt" class="chartsTxt"></p>-->
-            <!--</div>-->
-        <!--</section>-->
-
-        <!--<section class="tile transparent grid pd30">-->
-            <!--<div class="table-responsive" >-->
-                <!--<form class="form-inline">-->
-                    <!--<p class="color-white">用户数据明细：</p>-->
-                    <!--<div class="form-group">-->
-                        <!--<input type="email" class="form-control input-sm form-w180" id="phoneOrVipNumber"-->
-                               <!--placeholder="输入用户VIP卡号">-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<select id="orderTypePrice" class="form-control input-sm form-w180">-->
-                            <!--<option value="">全部</option>-->
-                            <!--<option value="1">金榜题名</option>-->
-                            <!--<option value="2">微信</option>-->
-                            <!--<option value="3">web</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<select id="selectArea" class="form-control input-sm form-w180"></select>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<select id="statusType" class="form-control input-sm form-w180">-->
-                            <!--<option value="">状态</option>-->
-                            <!--<option value="0">正常</option>-->
-                            <!--<option value="1">异常</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<select id="activityStatusSelect" class="form-control input-sm form-w180">-->
-                            <!--<option value="">激活状态</option>-->
-                            <!--<option value="1">已激活</option>-->
-                            <!--<option value="0">未激活</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-
-                    <!--<div class="form-group">-->
-                        <!--<div class="col-xs-12">-->
-                            <!--<span class="active-date">激活时间:</span>-->
-                            <!--<input size="16" type="text" readonly placeholder="开始时间"  class="form_date" id="active_start_date">-->
-                        <!--</div>-->
-                        <!--<div class="col-xs-12">-->
-                            <!--<input size="16" type="text" readonly placeholder="结束时间"  class="form_date" id="active_end_date">-->
-                        <!--</div>-->
-                    <!--</div>-->
-                    <!--<div class="form-group">-->
-                        <!--<div class="btn btn-sm btn-primary" id="monitoredSearch">查询</div>-->
-                    <!--</div>-->
-                <!--</form>-->
-                <!--<div id="dataMonitoredContent">-->
-
-                <!--</div>-->
-            <!--</div>-->
-        <!--</section>-->
-    <!--</div>-->
-<!--</script>-->
-
 <script type="text/html" id="dataMonitored">
+
     <div class="tile-body transparent rounded-corners">
+
         <section class="tile transparent grid pd30">
             <div class="form-inline" id="">
                 <div class="control-group date-condition">
@@ -620,11 +547,11 @@
                     </div>
                     <div class="col-xs-12">
                         <label class="control-label">开始时间:</label>
-                        <input size="16" type="text" readonly class="form_date" id="start_date">
+                        <input size="16" type="text"  class="form_date" id="start_date">
                     </div>
                     <div class="col-xs-12">
                         <label class="control-label">结束时间:</label>
-                        <input size="16" type="text" readonly class="form_date" id="end_date">
+                        <input size="16" type="text"  class="form_date" id="end_date">
                     </div>
                     <button type="button" class="btn btn-default" id="defined">自定义时间查看</button>
                     <div id="date_error_tip" style="margin-left:10px;color:#fff"></div>
@@ -642,7 +569,15 @@
                     <p class="color-white">用户数据明细：</p>
                     <div class="form-group">
                         <input type="email" class="form-control input-sm form-w180" id="phoneOrVipNumber"
-                               placeholder="输入用户VIP卡号／手机号">
+                               placeholder="输入用户VIP卡号">
+                    </div>
+                    <div class="form-group">
+                        <select id="orderTypePrice" class="form-control input-sm form-w180">
+                            <option value="-1">全部</option>
+                            <option value="1">金榜登科</option>
+                            <option value="2">状元及第</option>
+                            <option value="3">金榜题名</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <select id="selectArea" class="form-control input-sm form-w180"></select>
@@ -656,82 +591,31 @@
                     </div>
                     <div class="form-group">
                         <select id="activityStatusSelect" class="form-control input-sm form-w180">
-                            <option value="">激活时间</option>
+                            <option value="">激活状态</option>
                             <option value="1">已激活</option>
                             <option value="0">未激活</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12 input-append date">
+                            <span class="active-date">激活时间:</span>
+                            <input size="16" type="text" placeholder="开始时间"  class="form_date" id="active_start_date">
+                        </div>
+                        <div class="col-xs-12">
+                            <input size="16" type="text" placeholder="结束时间"  class="form_date" id="active_end_date">
+                        </div>
                     </div>
                     <div class="form-group">
                         <div class="btn btn-sm btn-primary" id="monitoredSearch">查询</div>
                     </div>
                 </form>
                 <div id="dataMonitoredContent">
-
                 </div>
-            </div>
+</div>
         </section>
     </div>
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
