@@ -251,7 +251,7 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                     title: '联系电话'
                 }, {
                     data: 'registAddress',
-                    title: '注册地址'
+                    title: '收货地址'
                 }, {
                     data: 'goodsCount',
                     title: '数量'
@@ -446,7 +446,7 @@ define('static/scripts/index/orderManager/orderManager', ['sea-modules/bootstrap
                     title: '联系电话'
                 }, {
                     data: 'registAddress',
-                    title: '注册地址'
+                    title: '收货地址'
                 }, {
                     data: 'goodsCount',
                     title: '数量'

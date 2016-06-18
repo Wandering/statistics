@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.controller;
+package cn.thinkjoy.jx.statistics.controller.agents;
 
 import cn.thinkjoy.agents.service.ex.common.UserInfoContext;
 import cn.thinkjoy.common.domain.SearchField;

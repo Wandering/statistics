@@ -30,7 +30,7 @@ public class OrderDetailPojo implements Serializable {
     private String phoneNum;
 
     /**
-     * 注册地址
+     * 注册地址-->用户收货地址  modify 2016.06.18
      */
     private String registAddress;
 

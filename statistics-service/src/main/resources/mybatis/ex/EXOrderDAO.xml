@@ -9,7 +9,7 @@
             t0.order_no as orderNo ,
             t0.channle as channle ,
             t0.create_date as createDate ,
-            t0.goods_address as registAddress ,
+            t3.receivingAddress as registAddress ,
             t0.goods_count as goodsCount ,
             t0.handle_state as handleState ,
             t1.name as userName ,
@@ -19,6 +19,7 @@
             zgk_order t0 ,
             zgk_user_info t1 ,
             zgk_user_account t2
+        LEFT JOIN zgk_user_goodsadress t3 ON t2.id = t3.userId
         where
             t0.user_id = t1.id
         and t1.id = t2.id
@@ -56,6 +57,7 @@
             zgk_order t0 ,
             zgk_user_info t1 ,
             zgk_user_account t2
+        LEFT JOIN zgk_user_goodsadress t3 ON t2.id = t3.userId
         where
         t0.user_id = t1.id
         and t1.id = t2.id
