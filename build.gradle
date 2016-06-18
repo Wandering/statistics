@@ -24,7 +24,7 @@ tasks.withType(Compile) {
 /** 此闭包内的声明子类皆可使用 */
 allprojects {
     group = 'cn.thinkjoy.zgk.statistics'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.2-SNAPSHOT'
 
     apply plugin: 'java'
     apply plugin: 'idea'
@@ -116,6 +116,12 @@ subprojects{
     dependencies{
         //都会依赖domain
         compile group: "cn.thinkjoy.common", name: "thinkjoy-domain-common", version: "$thinkjoyCommonVersion", changing: true
+
+        compile ("cn.thinkjoy.zgk.zgksystem:zgksystem-api:$k12systemVersion") {
+            exclude group: 'cn.thinkjoy.zgk.zgksystem', module: 'menuAuthority-domain'
+        }
+
+        compile "cn.thinkjoy.zgk.zgksystem:zgksystem-common:$k12systemVersion"
     }
 }
 

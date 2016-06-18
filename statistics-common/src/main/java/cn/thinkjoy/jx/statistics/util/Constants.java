@@ -29,6 +29,5 @@ public class Constants {
     public static final int WECHAT = 0; // 微信来源
     public static final int WEB = 1; // web来源
 
-
-
+    public static final long ONE_YEAR = 365*24*60*60*1000l; // 一年
 }

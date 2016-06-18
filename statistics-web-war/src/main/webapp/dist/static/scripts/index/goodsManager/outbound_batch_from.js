@@ -19,8 +19,20 @@ define('static/scripts/index/goodsManager/outbound_batch_from', [], function(req
 
     function validateForm(callback) {
 
-        if($.trim($('#outbound_batch_num').val())=='' || $.trim($('#outbound_batch_num').val())=='0'){
-            tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
+        //if($.trim($('#outbound_batch_num').val())=='' || $.trim($('#outbound_batch_num').val())=='0'){
+        //    tip($('#dep_provinces_batch').parent().parent(), '请输入出库数量');
+        //    return;
+        //}
+        //
+        //
+        //var  warehouseType = $('#dep_type_batch').find('option:selected').val();
+        //if(warehouseType==""){
+        //    tip($('#dep_type_batch').parent().parent(), '请选择种类');
+        //    return;
+        //}
+
+        if($('#card-start').text()=="" || $('#card-end').text()==""){
+            tip($('#card-start').parent().parent(), '请先查询卡号区段');
             return;
         }
 
@@ -33,6 +45,7 @@ define('static/scripts/index/goodsManager/outbound_batch_from', [], function(req
         }
         callback([simpleCode]);
     }
+
 
 
     module.exports = {

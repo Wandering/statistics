@@ -9,15 +9,17 @@
             t0.order_no as orderNo ,
             t0.channle as channle ,
             t0.create_date as createDate ,
-            t0.goods_address as registAddress ,
+            t3.receivingAddress as registAddress ,
             t0.goods_count as goodsCount ,
             t0.handle_state as handleState ,
             t1.name as userName ,
-            t2.account as phoneNum
+            t2.account as phoneNum,
+            t0.product_type as productType
         from
             zgk_order t0 ,
             zgk_user_info t1 ,
             zgk_user_account t2
+        LEFT JOIN zgk_user_goodsadress t3 ON t2.id = t3.userId
         where
             t0.user_id = t1.id
         and t1.id = t2.id
@@ -29,6 +31,15 @@
         </if>
         <if test="departmentCode != -1">
             and t0.department_code = #{departmentCode}
+        </if>
+        <if test="productType != -1">
+            and t0.product_type = #{productType}
+        </if>
+        <if test="startDate != -1">
+            and t0.create_date &gt; #{startDate}
+        </if>
+        <if test="endDate != -1">
+            and t0.create_date &lt; #{endDate}
         </if>
         <if test="orderNoOrPhone != null and orderNoOrPhone != ''">
             and (t0.order_no = #{orderNoOrPhone} or t2.account = #{orderNoOrPhone})
@@ -46,6 +57,7 @@
             zgk_order t0 ,
             zgk_user_info t1 ,
             zgk_user_account t2
+        LEFT JOIN zgk_user_goodsadress t3 ON t2.id = t3.userId
         where
         t0.user_id = t1.id
         and t1.id = t2.id
@@ -83,6 +95,7 @@
         WHERE
             department_code = #{departmentCode}
         AND channle = #{channel}
+        and product_type = #{productType}
         and status = 1
     </select>
 

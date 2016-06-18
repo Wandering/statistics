@@ -20,7 +20,8 @@
         outputDate1 as outputDate1 ,
         outputDate2 as outputDate2 ,
         outputDate3 as outputDate3 ,
-        activeDate as activeDate
+        activeDate as activeDate,
+        productType as productType
     </sql>
 
     <select id="outPutCardNumber" resultType="java.util.Map">
@@ -34,18 +35,22 @@
                 and id in (${condition.whereSql})
             </if>
             <!--未出库查询-->
-                and goodsNumber=#{condition.userArea}
-                and status=0
+            and productType = #{condition.productType}
+            <!-- 当卡类型为金榜登科时,忽略以前库里边的存量卡 -->
+            <if test="condition.productType == 1">
+                and creator != 1
+            </if>
+            and goodsNumber = #{condition.userArea}
+            and status=0
         </where>
         <if test="condition.orderBy!=null">
             ORDER BY ${condition.orderBy} ${condition.sortBy}
         </if>
-            limit  ${condition.rows}
+            limit ${condition.rows}
         </if>
     </select>
 
     <select id="queryPage" resultType="java.util.Map">
-
         SELECT
         <if test="selector!=null">
             <trim prefixOverrides=",">
@@ -100,6 +105,9 @@
                 <if test="selector.activeDate!=null">
                     , activeDate
                 </if>
+                <if test="selector.productType!=null">
+                    , productType
+                </if>
             </trim>
         </if>
         <if test="selector==null">
@@ -114,10 +122,22 @@
             <!--未出库查询-->
             <if test="condition.notoutput!=null">
                 and goodsNumber=#{condition.userArea}
+                <if test="condition.startDate != -1">
+                    and createDate &gt; #{condition.startDate}
+                </if>
+                <if test="condition.endDate != -1">
+                    and createDate &lt; #{condition.endDate}
+                </if>
             </if>
             <!--已出库查询-->
             <if test="condition.output!=null">
                 and goodsNumber LIKE CONCAT(#{condition.userArea} ,'_', '%')
+                <if test="condition.startDate != -1">
+                    and ${condition.queryDte} &gt; #{condition.startDate}
+                </if>
+                <if test="condition.endDate != -1">
+                    and ${condition.queryDte} &lt; #{condition.endDate}
+                </if>
             </if>
             <!--流向地查询-->
             <if test="condition.flowlist!=null">
@@ -127,9 +147,14 @@
                 </foreach>
             </if>
             <!--卡号查询-->
-            <if test="condition.cardNumber!=null">
+            <if test="condition.cardNumber!=null and condition.cardNumber!=''">
                 and cardNumber LIKE CONCAT('%', #{condition.cardNumber} , '%')
             </if>
+            <!-- 卡片类型 -->
+            <if test="condition.productType != -1">
+                and productType = #{condition.productType}
+            </if>
+
         </where>
         <if test="orderBy!=null">
             ORDER BY ${orderBy} ${sortBy}
@@ -150,10 +175,22 @@
             <!--未出库查询-->
             <if test="notoutput!=null">
                 and goodsNumber=#{userArea}
+                <if test="startDate != -1">
+                    and createDate &gt; #{startDate}
+                </if>
+                <if test="endDate != -1">
+                    and createDate &lt; #{endDate}
+                </if>
             </if>
             <!--已出库查询-->
             <if test="output!=null">
                 and goodsNumber LIKE CONCAT(#{userArea} ,'_', '%')
+                <if test="startDate != -1">
+                    and ${queryDte} &gt; #{startDate}
+                </if>
+                <if test="endDate != -1">
+                    and ${queryDte} &lt; #{endDate}
+                </if>
             </if>
             <!--流向地查询-->
             <if test="flowlist!=null">
@@ -163,8 +200,12 @@
                 </foreach>
             </if>
             <!--卡号查询-->
-            <if test="cardNumber!=null">
+            <if test="cardNumber!=null and cardNumber!=''">
                 and cardNumber LIKE CONCAT('%', #{cardNumber} , '%')
+            </if>
+            <!-- 卡片类型 -->
+            <if test="productType != -1">
+                and productType = #{productType}
             </if>
         </where>
     </select>
@@ -200,6 +241,13 @@
             </if>
             <if test="cardNumber != null">
                 and cardNumber = #{cardNumber}
+            </if>
+            <!-- 当卡类型为金榜登科时,忽略以前库里边的存量卡 -->
+            <if test="productType == 1">
+                and creator != 1
+            </if>
+            <if test="productType != null and productType != -1">
+                and productType = #{productType}
             </if>
             and status=0
         </where>
@@ -275,5 +323,34 @@
         activeDate as activeDate
         FROM zgk_card cc
         WHERE cc.cardNumber=#{cardNumber}
+    </select>
+
+    <!-- 批量插入卡片 -->
+    <select id="batchCreateCard" parameterType="map">
+        INSERT INTO zgk_card (
+        cardNumber,
+        password,
+        status,
+        cardType,
+        creator,
+        createDate,
+        lastModifier,
+        lastModDate,
+        productType
+        ) VALUES
+        <foreach collection="cards" item="item" index="index" separator=",">
+            (
+            #{item.cardNumber},
+            #{item.password},
+            #{item.status},
+            #{item.cardType},
+            #{item.creator},
+            #{item.createDate},
+            #{item.lastModifier},
+            #{item.lastModDate},
+            #{item.productType}
+            )
+        </foreach>
+
     </select>
 </mapper>

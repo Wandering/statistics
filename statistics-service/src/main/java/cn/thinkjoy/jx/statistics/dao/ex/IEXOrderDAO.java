@@ -27,7 +27,10 @@ public interface IEXOrderDAO {
                                                      @Param("orderNoOrPhone") String orderNoOrPhone,
                                                      @Param("departmentCode") long departmentCode,
                                                      @Param("index") int index,
-                                                     @Param("pageSize") int pageSize);
+                                                     @Param("pageSize") int pageSize,
+                                                     @Param("startDate") long startDate,
+                                                     @Param("endDate") long endDate,
+                                                     @Param("productType") int productType);
 
     /**
      * 根据条件查询订单数量
@@ -41,7 +44,10 @@ public interface IEXOrderDAO {
     Integer getOrderCountByConditions(@Param("orderFrom") int orderFrom,
                                       @Param("handleState") int handleState,
                                       @Param("orderNoOrPhone") String orderNoOrPhone,
-                                      @Param("departmentCode") long departmentCode);
+                                      @Param("departmentCode") long departmentCode,
+                                      @Param("startDate") long startDate,
+                                      @Param("endDate") long endDate,
+                                      @Param("productType") int productType);
 
     /**
      * 根据部门编号查询未发货的订单个数
@@ -54,14 +60,14 @@ public interface IEXOrderDAO {
     /**
      * 根据部门编号和订单来源查询货物销售个数
      *
-     * TODO 由于业务原因,暂时用付款渠道代替
-     *
      * @param departmentCode
-     * @param channel
+     * @param channel 订单来源 0:微信  1:web
+     * @param productType
      * @return
      */
     Integer getGoodsCountByChannelAndDepartCode(@Param("departmentCode") long departmentCode,
-                                                @Param("channel") int channel);
+                                                @Param("channel") int channel,
+                                                @Param("productType") int productType);
 
     /**
      * 根据部门编号 or 用户ID 获取已结算的金额

@@ -80,32 +80,31 @@
                 <!-- Quick Actions -->
                 <ul class="nav navbar-nav quick-actions">
 
-                    <li class="dropdown divided user" id="current-user">
+                    <li class="dropdown divided" id="current-user">
                         <a class="dropdown-toggle options" data-toggle="dropdown" href="#">
-                            <span id="login_real_name"></span><i class="fa fa-caret-down"></i>
+                            您好,<span id="login_real_name"></span>
                         </a>
-                        <ul class="dropdown-menu arrow settings">
-                            <li>
-                                <h3>换肤:</h3>
-                                <ul id="color-schemes">
-                                    <li><a href="#" class="bg-1"></a></li>
-                                    <li><a href="#" class="bg-2"></a></li>
-                                    <li><a href="#" class="bg-3"></a></li>
-                                    <li><a href="#" class="bg-4"></a></li>
-                                    <li><a href="#" class="bg-5"></a></li>
-                                    <li><a href="#" class="bg-6"></a></li>
-                                </ul>
-                            </li>
+                        <!--<ul class="dropdown-menu arrow settings">-->
+                            <!--<li>-->
+                                <!--<h3>换肤:</h3>-->
+                                <!--<ul id="color-schemes">-->
+                                    <!--<li><a href="#" class="bg-1"></a></li>-->
+                                    <!--<li><a href="#" class="bg-2"></a></li>-->
+                                    <!--<li><a href="#" class="bg-3"></a></li>-->
+                                    <!--<li><a href="#" class="bg-4"></a></li>-->
+                                    <!--<li><a href="#" class="bg-5"></a></li>-->
+                                    <!--<li><a href="#" class="bg-6"></a></li>-->
+                                <!--</ul>-->
+                            <!--</li>-->
 
-                            <li class="divider"></li>
-                            <li><a href="javascript:void(0)" id="change_pwd"><i class="fa fa-user"></i>&nbsp;账户设置</a>
-                            </li>
-                            <li class="divider"></li>
+                            <!--<li class="divider"></li>-->
 
-                            <li>
-                                <a href="#" id="logout"><i class="fa fa-power-off"></i>退出</a>
-                            </li>
-                        </ul>
+                        <!--</ul>-->
+                    </li>
+                    <li><a href="javascript:void(0)" id="change_pwd"><i class="fa fa-user"></i>&nbsp;账户设置</a>
+                    </li>
+                    <li>
+                        <a href="#" id="logout"><i class="fa fa-power-off"></i>退出</a>
                     </li>
                 </ul>
                 <!-- /Quick Actions -->
@@ -315,18 +314,12 @@
 					<a id="export_excel" href="javascript:void(0)" style="display:none;">导出excel</a>
 				</div>
 			</div>
-
-
-
-
-
-
-
-
-
-
-
 </script>
+
+
+
+
+
 
 <script type="text/html" id="tmpl_2">
     <div id="change_pwd_form" class="form-horizontal">
@@ -400,16 +393,33 @@
 <script type="text/html" id="goodsSelect">
     <section class="tile transparent grid">
         <div class="tile-body transparent rounded-corners pd30">
-            <div id="form_search">
-                <div class="control-group">
+            <div id="form_search" class="form-inline">
+                <div class="form-group">
                     <div class="controls">
                         <input class="form-control input-sm form-w180" data-type="0" type="text" id="vip-card"
                                placeholder="未出库vip卡号查询">
-                        <div class="btn btn-sm btn-primary" data-type="0" id="search-btn">查询</div>
                     </div>
                     <p class="form-error"></p>
                 </div>
+                <div class="form-group">
+                    <select id="goodsSelectTypePrice" class="form-control input-sm form-w180">
+                        <option value="-1">全部</option>
+                        <option value="1">金榜登科</option>
+                        <option value="2">状元及第</option>
+                        <option value="3">金榜题名</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input size="16" type="text" placeholder="开始时间"  class="form_date" id="goods_start_date">
+                    </div>
+                    <div class="col-xs-12">
+                        <input size="16" type="text" placeholder="结束时间" class="form_date" id="goods_end_date">
+                    </div>
+                </div>
+                <div class="btn btn-sm btn-primary" data-type="0" id="search-btn">查询</div>
             </div>
+
             <!--<div class="form-button" id="form_button">-->
             <!--</div>-->
             <div id="tab-btn">
@@ -458,6 +468,19 @@
             </div>
             <form class="form-inline">
                 <p class="color-white">订单来源查询：</p>
+
+                <div class="form-group">
+                    <input type="text" class="form-control input-sm form-w180" id="phoneNum"
+                           placeholder="输入手机号">
+                </div>
+                <div class="form-group">
+                    <select id="orderTypePrice" class="form-control input-sm form-w180">
+                        <option value="-1">种类</option>
+                        <option value="1">金榜登科</option>
+                        <option value="2">状元及第</option>
+                        <option value="3">金榜题名</option>
+                    </select>
+                </div>
                 <div class="form-group">
                     <select id="orderType" class="form-control input-sm form-w180">
                         <option value="-1">订单来源</option>
@@ -466,9 +489,15 @@
                     </select>
                 </div>
                 <div class="form-group">
-                    <input type="text" class="form-control input-sm form-w180" id="phoneNum"
-                           placeholder="输入订单编号/联系电话">
+                    <div class="col-xs-12">
+                        <input size="16" type="text"  placeholder="开始时间"  class="form_date" id="start_date">
+                    </div>
+
+                    <div class="col-xs-12">
+                        <input size="16" type="text"  placeholder="结束时间" class="form_date" id="end_date">
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <div class="btn btn-sm btn-primary" id="orderSearch">查询</div>
                 </div>
@@ -519,11 +548,11 @@
                     </div>
                     <div class="col-xs-12">
                         <label class="control-label">开始时间:</label>
-                        <input size="16" type="text" readonly class="form_date" id="start_date">
+                        <input size="16" type="text"  class="form_date" id="start_date">
                     </div>
                     <div class="col-xs-12">
                         <label class="control-label">结束时间:</label>
-                        <input size="16" type="text" readonly class="form_date" id="end_date">
+                        <input size="16" type="text"  class="form_date" id="end_date">
                     </div>
                     <button type="button" class="btn btn-default" id="defined">自定义时间查看</button>
                     <div id="date_error_tip" style="margin-left:10px;color:#fff"></div>
@@ -541,7 +570,15 @@
                     <p class="color-white">用户数据明细：</p>
                     <div class="form-group">
                         <input type="email" class="form-control input-sm form-w180" id="phoneOrVipNumber"
-                               placeholder="输入用户VIP卡号／手机号">
+                               placeholder="输入用户VIP卡号">
+                    </div>
+                    <div class="form-group">
+                        <select id="orderTypePrice" class="form-control input-sm form-w180">
+                            <option value="-1">全部</option>
+                            <option value="1">金榜登科</option>
+                            <option value="2">状元及第</option>
+                            <option value="3">金榜题名</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <select id="selectArea" class="form-control input-sm form-w180"></select>
@@ -555,22 +592,40 @@
                     </div>
                     <div class="form-group">
                         <select id="activityStatusSelect" class="form-control input-sm form-w180">
-                            <option value="">激活时间</option>
+                            <option value="">激活状态</option>
                             <option value="1">已激活</option>
                             <option value="0">未激活</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-12 input-append date">
+                            <span class="active-date">激活时间:</span>
+                            <input size="16" type="text" placeholder="开始时间"  class="form_date" id="active_start_date">
+                        </div>
+                        <div class="col-xs-12">
+                            <input size="16" type="text" placeholder="结束时间"  class="form_date" id="active_end_date">
+                        </div>
                     </div>
                     <div class="form-group">
                         <div class="btn btn-sm btn-primary" id="monitoredSearch">查询</div>
                     </div>
                 </form>
                 <div id="dataMonitoredContent">
-
                 </div>
-            </div>
+</div>
         </section>
     </div>
 </script>
+
+
+
+
+
+
+
+
+
 
 
 

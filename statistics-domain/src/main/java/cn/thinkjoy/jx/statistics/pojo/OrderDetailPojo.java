@@ -30,7 +30,7 @@ public class OrderDetailPojo implements Serializable {
     private String phoneNum;
 
     /**
-     * 注册地址
+     * 注册地址-->用户收货地址  modify 2016.06.18
      */
     private String registAddress;
 
@@ -58,6 +58,11 @@ public class OrderDetailPojo implements Serializable {
      * 奖励金额
      */
     private double rewardMoney;
+
+    /**
+     * 套餐类型 1:金榜登科  2:状元及第  3:金榜题名
+     */
+    private int productType;
 
     public String getOrderNo() {
         return orderNo;
@@ -137,5 +142,13 @@ public class OrderDetailPojo implements Serializable {
 
     public void setRewardMoney(double rewardMoney) {
         this.rewardMoney = rewardMoney;
+    }
+
+    public int getProductType() {
+        return productType;
+    }
+
+    public void setProductType(int productType) {
+        this.productType = productType;
     }
 }

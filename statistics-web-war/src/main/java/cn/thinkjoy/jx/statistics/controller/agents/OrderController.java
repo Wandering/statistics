@@ -1,4 +1,4 @@
-package cn.thinkjoy.jx.statistics.controller;
+package cn.thinkjoy.jx.statistics.controller.agents;
 
 import cn.thinkjoy.agents.service.ex.common.UserInfoContext;
 import cn.thinkjoy.common.domain.SearchField;
@@ -16,7 +16,7 @@ import cn.thinkjoy.jx.statistics.pojo.OrderStatisticsPojo;
 import cn.thinkjoy.jx.statistics.service.IOrderService;
 import cn.thinkjoy.jx.statistics.service.ISettlementRecordService;
 import cn.thinkjoy.jx.statistics.service.ex.IEXOrderService;
-import cn.thinkjoy.jx.statistics.util.ModelUtil;
+import cn.thinkjoy.agents.util.ModelUtil;
 import cn.thinkjoy.zgk.zgksystem.DeparmentApiService;
 import cn.thinkjoy.zgk.zgksystem.common.Page;
 import cn.thinkjoy.zgk.zgksystem.domain.Department;
@@ -66,6 +66,9 @@ public class OrderController {
         int orderFrom = Integer.parseInt(request.getParameter("orderFrom"));
         int handleState = Integer.parseInt(request.getParameter("handleState"));
         String orderNoOrPhone = request.getParameter("orderNoOrPhone");
+        long startDate = Long.valueOf(HttpUtil.getParameter(request, "startDate", "-1"));
+        long endDate = Long.valueOf(HttpUtil.getParameter(request, "endDate", "-1"));
+        int productType = Integer.parseInt(HttpUtil.getParameter(request, "productType", "-1"));
 
         Long departmentCode = userPojo.getRoleType() == 1 ? -1:userPojo.getDepartmentCode();
 
@@ -75,7 +78,10 @@ public class OrderController {
                 orderNoOrPhone,
                 departmentCode,
                 currentPageNo,
-                pageSize);
+                pageSize,
+                startDate,
+                endDate,
+                productType);
 
         return returnMap;
     }
@@ -100,7 +106,7 @@ public class OrderController {
         if(userPojo == null){
             ModelUtil.throwException(ErrorCode.USER_EXPRIED_RELOGIN);
         }
-        Department department = deparmentApiService.quertDepartmentInfoByCode(userPojo.getDepartmentCode());
+        Department department = deparmentApiService.queryDepartmentInfoByCode(userPojo.getDepartmentCode());
         OrderStatisticsPojo pojo = exOrderService.querySingleDepartmentIncome(department);
         //TODO 由于前端框架原因,此处返回集合对象
         List<OrderStatisticsPojo> pojos = Lists.newArrayList();
@@ -158,7 +164,7 @@ public class OrderController {
         }
 
         if(type == 0){
-            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            Department department = deparmentApiService.queryDepartmentInfoByCode(departmentCode);
             departmentCode = Long.valueOf(department.getId().toString());
         }
 
@@ -193,7 +199,7 @@ public class OrderController {
 
         // TODO 协议设计不合理,此处应该传部门ID,现做特殊处理
         if(String.valueOf(departmentCode).length() > 7){
-            Department department = deparmentApiService.quertDepartmentInfoByCode(departmentCode);
+            Department department = deparmentApiService.queryDepartmentInfoByCode(departmentCode);
             departmentCode = Long.valueOf(department.getId().toString());
         }
 
