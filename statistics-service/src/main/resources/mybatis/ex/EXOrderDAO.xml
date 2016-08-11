@@ -9,7 +9,7 @@
             t0.order_no as orderNo ,
             t0.channle as channle ,
             t0.create_date as createDate ,
-            t3.receivingAddress as registAddress ,
+            CONCAT(t3.receivingAddress,';',t3.contactName,';',t3.contactPhone) as registAddress ,
             t0.goods_count as goodsCount ,
             t0.handle_state as handleState ,
             t1.name as userName ,
