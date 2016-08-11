@@ -8,7 +8,7 @@
         account.id AS id,
         goodsNumber,
         cardNumber,
-        userId,
+        card.userId,
         errorStatus,
         activeDate,
         account,
